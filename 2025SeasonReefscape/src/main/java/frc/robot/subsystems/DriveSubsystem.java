@@ -328,6 +328,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_desiredModuleStates[3].speedMetersPerSecond = 0;
   }
 
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return DriveConstants.k_DriveKinematics.toChassisSpeeds(
+        m_frontLeft.getState(),
+        m_frontRight.getState(),
+        m_rearLeft.getState(),
+        m_rearRight.getState()
+    );
+  }
+
   /**
      * A function designed to only drive the wheels
      * @param speed Velocity (meters per second) to turn the wheels 
