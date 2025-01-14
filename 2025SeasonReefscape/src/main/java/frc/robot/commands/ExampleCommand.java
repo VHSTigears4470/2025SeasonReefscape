@@ -4,23 +4,22 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ClimbingSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class ExampleCommand extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ClimbingSubsystem m_subsystem;
+  private final IntakeSubsystem m_intakeSub;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ClimbingSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public ExampleCommand(IntakeSubsystem intakeSub) {
+    m_intakeSub = intakeSub;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(intakeSub);
   }
 
   // Called when the command is initially scheduled.
