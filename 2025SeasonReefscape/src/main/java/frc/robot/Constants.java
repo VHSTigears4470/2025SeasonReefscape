@@ -130,4 +130,11 @@ public final class Constants {
   public static final class DebuggingConstants {
     public static final boolean k_swerveDriveDebug = true;
   }
+
+  public static final class IntakeConstants {
+    public static final int k_intakePortLeft = 3;
+    public static final int k_intakePortRight = 1;
+    public static final int k_shootPortLeft = 2;
+    public static final int k_shootPortRight = 0;
+  }
 }
