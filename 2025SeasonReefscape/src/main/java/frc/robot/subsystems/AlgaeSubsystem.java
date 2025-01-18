@@ -8,36 +8,51 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.AlgaeConstants.ARM_STATE;
 
+/** Algae Subsystem */
 public class AlgaeSubsystem extends SubsystemBase {
-  /** Algae Subsystem */
+  /** Variables for intake motors */
    private final SparkMax m_algaeTopMotorSparkMax;
    private final SparkMax m_algaeArmMotorSparkMax; 
    private final RelativeEncoder m_algaeTopEncoder;
    private final RelativeEncoder m_algaeArmEncoder;
+   
    // set positions equal to something later
    private double highestPos; 
    private double lowestPos; 
+   private double centeredPos;
    private double desiredReferencePosition;
    private ARM_STATE e_armState;
 
-  public AlgaeSubsystem(){
-    m_algaeMotorSparkMax = new SparkMax(Constants.AlgaeConstants.k_climbMotorID, MotorType.kBrushless);
-    m_algaeEncoder = m_algaeTopMotorSparkMax.getEncoder();
+   // Constructor:
+  public AlgaeSubsystem() {
+    m_algaeTopMotorSparkMax = new SparkMax(Constants.AlgaeConstants.k_topID, MotorType.kBrushless);
+    m_algaeTopEncoder = m_algaeTopMotorSparkMax.getEncoder();
+    m_algaeArmMotorSparkMax = new SparkMax(Constants.AlgaeConstants.k_topID, MotorType.kBrushless);
+    m_algaeArmEncoder = m_algaeTopMotorSparkMax.getEncoder();
   }
 
-  public double getAlgaeTopEncoder(){
+  //All get___AlgaeEncoder methods return value in radians
+  public double getAlgaeTopEncoder() {
     return (m_algaeTopEncoder.getPosition() * Math.PI) / 21;
   }
   
-  public double getArmAlgaeEncoder(){
+  public double getAlgaeArmEncoder() {
     return (m_algaeArmEncoder.getPosition() * Math.PI) / 21;
   }
 
   public ARM_STATE getArmState() {
     return e_armState;
+  }
+
+  public void resetAlgaeEncoders() {
+    m_algaeTopEncoder.setPosition(0);
+    m_algaeArmEncoder.setPosition(0);
   }
 
   public void setArmState(ARM_STATE desiredState) {
@@ -55,33 +70,27 @@ public class AlgaeSubsystem extends SubsystemBase {
     //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
   }
 
+
   public void intake() {
-    m_algaeTopMotor.setVoltage(-AlgaeConstants.k_fastVoltage);
+    m_algaeTopMotorSparkMax.setVoltage(-AlgaeConstants.k_fastVoltage);
   }
 
   public void shootSlow() {
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_slowVoltage);
+    m_algaeTopMotorSparkMax.setVoltage(AlgaeConstants.k_slowVoltage);
   }
 
   public void shootFast() {
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_fastVoltage);
+    m_algaeTopMotorSparkMax.setVoltage(AlgaeConstants.k_fastVoltage);
   }
   
-  public void resetAlgaeEncoders(){
-    m_algaeTopEncoder.setPosition(0);
-    m_algaeArmEncoder.setPosition(0);
-  }
+// Dashboard methods
 
-  public void setSmartDashboard(){
+  public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("AlgaeTopEncoder", getAlgaeTopEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("AlgaeArmEncoder", getAlgaeArmEncoder() * 180 / Math.PI);
   }
 
-  public void resetAlgaeEncoder(){
-    m_algaeTopEncoder.setPosition(0);
-    m_algaeArmEncoder.setPosition(0);
-  }
 
   //Still need to apply other methods
 
@@ -96,5 +105,4 @@ public class AlgaeSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run during simulation
   }
-
 }

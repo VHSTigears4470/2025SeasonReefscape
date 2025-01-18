@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.ARM_STATE;
 
+/** Intake Subsystem */
 public class IntakeSubsystem extends SubsystemBase {
   /** Variables for intake motors */
   private final SparkMax m_botMotor;
@@ -22,7 +23,6 @@ public class IntakeSubsystem extends SubsystemBase {
   private final RelativeEncoder m_botEncoder;
   private final RelativeEncoder m_armEncoder;
   private ARM_STATE e_armState;
-  //add sensor if necessary
 
   public IntakeSubsystem() {
     e_armState = ARM_STATE.FORWARD;

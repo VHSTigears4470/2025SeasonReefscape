@@ -8,20 +8,25 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ClimbConstants.CLIMB_STATE;
 
+/** CLimb Subsystem */
 public class ClimbSubsystem extends SubsystemBase {
-  /** CLimb Subsystem */
-   private final SparkMax m_algaeMotorSparkMax; 
-   private final RelativeEncoder m_algaeEncoder;
-   private CLIMB_STATE e_armState;
+  /** Variables for intake motors */
+   private final SparkMax m_climbMotorSparkMax; 
+   private final RelativeEncoder m_climbEncoder;
+   private CLIMB_STATE e_climbState;
 
+   // Constructor:
   public ClimbSubsystem() {
-    m_algaeMotorSparkMax = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
-    m_algaeEncoder = m_algaeMotorSparkMax.getEncoder();
+    m_climbMotorSparkMax = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
+    m_climbEncoder = m_climbMotorSparkMax.getEncoder();
   }
 
+  //All get___ClimbEncoder methods return value in radians
   public double getClimbEncoder(){
     return (m_climbEncoder.getPosition() * Math.PI) / 21;
   }
@@ -41,12 +46,13 @@ public class ClimbSubsystem extends SubsystemBase {
     //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
   }
 
-  public void setSmartDashboard(){
+  // Dashboard Methods
+  public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("ClimbEncoder", getClimbEncoder() * 180 / Math.PI);
   }
 
-  public void resetAlgaeEncoder(){
+  public void resetAlgaeEncoder() {
     m_climbEncoder.setPosition(0);
   }
 
