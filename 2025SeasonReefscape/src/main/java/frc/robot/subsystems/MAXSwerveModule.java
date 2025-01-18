@@ -22,11 +22,11 @@ import frc.robot.Configs;
 import frc.robot.Constants.DriveConstants.MotorLocation;
 
 public class MAXSwerveModule {
-  private final SparkMax m_drivingSpark;
-  private final SparkMax m_turningSpark;
+  private final SparkMax m_driveMotor;
+  private final SparkMax m_turnMotor;
 
-  private final RelativeEncoder m_drivingEncoder;
-  private final AbsoluteEncoder m_turningEncoder;
+  private final RelativeEncoder m_driveEncoder;
+  private final AbsoluteEncoder m_turnEncoder;
 
   private final SparkClosedLoopController m_drivingClosedLoopController;
   private final SparkClosedLoopController m_turningClosedLoopController;
@@ -42,29 +42,30 @@ public class MAXSwerveModule {
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
    */
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, MotorLocation motorLocation) {
-    m_drivingSpark = new SparkMax(drivingCANId, MotorType.kBrushless);
-    m_turningSpark = new SparkMax(turningCANId, MotorType.kBrushless);
+  public MAXSwerveModule(int p_drivingCANId, int p_turningCANId, double p_chassisAngularOffset, MotorLocation p_motorLocation) {
 
-    m_drivingEncoder = m_drivingSpark.getEncoder();
-    m_turningEncoder = m_turningSpark.getAbsoluteEncoder();
+    m_driveMotor = new SparkMax(p_drivingCANId, MotorType.kBrushless);
+    m_turnMotor = new SparkMax(p_turningCANId, MotorType.kBrushless);
 
-    m_drivingClosedLoopController = m_drivingSpark.getClosedLoopController();
-    m_turningClosedLoopController = m_turningSpark.getClosedLoopController();
+    m_driveEncoder = m_driveMotor.getEncoder();
+    m_turnEncoder = m_turnMotor.getAbsoluteEncoder();
 
-    m_motorLocation = motorLocation;
+    m_drivingClosedLoopController = m_driveMotor.getClosedLoopController();
+    m_turningClosedLoopController = m_turnMotor.getClosedLoopController();
+
+    m_motorLocation = p_motorLocation;
 
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
-    m_drivingSpark.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
+    m_driveMotor.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-    m_turningSpark.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
+    m_turnMotor.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    m_chassisAngularOffset = chassisAngularOffset;
-    m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
-    m_drivingEncoder.setPosition(0);
+    m_chassisAngularOffset = p_chassisAngularOffset;
+    m_desiredState.angle = new Rotation2d(m_turnEncoder.getPosition());
+    m_driveEncoder.setPosition(0);
   }
 
   /**
@@ -75,8 +76,8 @@ public class MAXSwerveModule {
   public SwerveModuleState getState() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
-    return new SwerveModuleState(m_drivingEncoder.getVelocity(),
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+    return new SwerveModuleState(m_driveEncoder.getVelocity(),
+        new Rotation2d(m_turnEncoder.getPosition() - m_chassisAngularOffset));
   }
 
   /**
@@ -84,7 +85,7 @@ public class MAXSwerveModule {
    * @return double of velocity of the drive module converted
    */
   public double getDriveVelocity() {
-      return m_drivingEncoder.getVelocity();
+      return m_driveEncoder.getVelocity();
   }
 
     /**
@@ -92,7 +93,7 @@ public class MAXSwerveModule {
      * @return double of turn motor's encoder value converted
      */
     public double getTurnPosition() {
-        return m_turningEncoder.getPosition();
+        return m_turnEncoder.getPosition();
     }
 
     /**
@@ -100,7 +101,7 @@ public class MAXSwerveModule {
      * @return double of velocity of the turn module converted
      */
     public double getTurnVelocity() {
-        return m_drivingEncoder.getVelocity();
+        return m_driveEncoder.getVelocity();
     }
 
   /**
@@ -112,8 +113,8 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModulePosition(
-        m_drivingEncoder.getPosition(),
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        m_driveEncoder.getPosition(),
+        new Rotation2d(m_turnEncoder.getPosition() - m_chassisAngularOffset));
   }
 
   /**
@@ -128,7 +129,7 @@ public class MAXSwerveModule {
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
-    correctedDesiredState.optimize(new Rotation2d(m_turningEncoder.getPosition()));
+    correctedDesiredState.optimize(new Rotation2d(m_turnEncoder.getPosition()));
 
     // Command driving and turning SPARKS towards their respective setpoints.
     m_drivingClosedLoopController.setReference(correctedDesiredState.speedMetersPerSecond, ControlType.kVelocity);
@@ -139,12 +140,12 @@ public class MAXSwerveModule {
 
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
-    m_drivingEncoder.setPosition(0);
+    m_driveEncoder.setPosition(0);
   }
 
   public void stopMotors() {
-    m_drivingSpark.stopMotor();
-    m_turningSpark.stopMotor();
+    m_driveMotor.stopMotor();
+    m_turnMotor.stopMotor();
   }
 
     /**
@@ -152,7 +153,7 @@ public class MAXSwerveModule {
      * @param speed of motor in meters per second (m/s)
      */
     public void testDriveMotors(double speed) {
-        m_drivingSpark.set(speed);
+        m_driveMotor.set(speed);
     }
 
     /**
@@ -168,7 +169,7 @@ public class MAXSwerveModule {
      */
     public void updateSmartDashboard() {
         // Position of Drive and Turn Motors
-        SmartDashboard.putNumber(m_motorLocation + " driver encoder", m_drivingEncoder.getPosition());
-        SmartDashboard.putNumber(m_motorLocation + " turn encoder", m_turningEncoder.getPosition());
+        SmartDashboard.putNumber(m_motorLocation + " driver encoder", m_driveEncoder.getPosition());
+        SmartDashboard.putNumber(m_motorLocation + " turn encoder", m_turnEncoder.getPosition());
     }
 }
