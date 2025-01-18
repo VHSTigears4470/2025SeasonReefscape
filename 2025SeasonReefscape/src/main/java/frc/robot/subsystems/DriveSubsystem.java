@@ -10,16 +10,23 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DebuggingConstants;
 import frc.robot.Constants.DriveConstants;
@@ -79,12 +86,13 @@ public class DriveSubsystem extends SubsystemBase {
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
       //Prints exceptions
+      config = null;
       e.printStackTrace();
     }
     //Configure Autobuilder after constructor
      AutoBuilder.configure(
             this::getPose, // Robot pose supplier
-            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
@@ -107,7 +115,16 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  
+    public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
+    {
+      //Update with track width
+        DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0);
+        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
+        //Set left velocity
+        double leftVelocity = wheelSpeeds.leftMetersPerSecond;
+        //Set right velocity
+        double rightVelocity = wheelSpeeds.rightMetersPerSecond;
+    }
     /**
      * Gets a list of Swerve Module States
      * @return A list of Swerve Module State from front left, front right, back left, back right
