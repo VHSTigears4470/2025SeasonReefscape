@@ -9,7 +9,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
@@ -70,6 +69,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void stop(){
     m_climbMotor.stopMotor();
+  }
+  
   public void resetAlgaeEncoder() {
     m_climbEncoder.setPosition(0);
   }

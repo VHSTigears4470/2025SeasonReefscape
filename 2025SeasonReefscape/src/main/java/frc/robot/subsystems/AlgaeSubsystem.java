@@ -9,13 +9,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
-import frc.robot.Constants.AlgaeConstants;
-import frc.robot.Constants.AlgaeConstants.ARM_STATE;
 
 /** Algae Subsystem */
 public class AlgaeSubsystem extends SubsystemBase {
@@ -23,8 +20,6 @@ public class AlgaeSubsystem extends SubsystemBase {
    private final SparkMax m_algaeTopMotor;
    private final SparkMax m_algaeArmMotor; 
   /** Variables for intake motors */
-   private final SparkMax m_algaeTopMotorSparkMax;
-   private final SparkMax m_algaeArmMotorSparkMax; 
    private final RelativeEncoder m_algaeTopEncoder;
    private final RelativeEncoder m_algaeArmEncoder;
    
@@ -32,11 +27,9 @@ public class AlgaeSubsystem extends SubsystemBase {
    private double highestPos; 
    private double lowestPos; 
    private double centeredPos;
-   private double desiredReferencePosition;
-   private ARM_STATE e_armState;
+   private ALGAE_ARM_STATE e_armState;
   // set positions equal to something later
    private double d_desiredReferencePosition;
-   private ALGAE_ARM_STATE e_armState;
 
   public AlgaeSubsystem(){
     m_algaeTopMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless);
@@ -46,17 +39,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
     resetEncoders();
 
-    setAlgaeState(ALGAE_ARM_STATE.RAISED);
-  }
-  
-  //All get___Encoder methods return value in radians
-  public double getAlgaeTopEncoder(){
-   // Constructor:
-  public AlgaeSubsystem() {
-    m_algaeTopMotorSparkMax = new SparkMax(Constants.AlgaeConstants.k_topID, MotorType.kBrushless);
-    m_algaeTopEncoder = m_algaeTopMotorSparkMax.getEncoder();
-    m_algaeArmMotorSparkMax = new SparkMax(Constants.AlgaeConstants.k_topID, MotorType.kBrushless);
-    m_algaeArmEncoder = m_algaeTopMotorSparkMax.getEncoder();
+    setArmState(ALGAE_ARM_STATE.RAISED);
   }
 
   //All get___AlgaeEncoder methods return value in radians
@@ -64,7 +47,6 @@ public class AlgaeSubsystem extends SubsystemBase {
     return (m_algaeTopEncoder.getPosition() * Math.PI) / 21;
   }
   
-  public double getAlgaeArmEncoder(){
   public double getAlgaeArmEncoder() {
     return (m_algaeArmEncoder.getPosition() * Math.PI) / 21;
   }
@@ -78,15 +60,15 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder.setPosition(0);
   }
 
-  public void setArmState(ARM_STATE desiredState) {
+  public void setArmState(ALGAE_ARM_STATE desiredState) {
     double desiredReferencePosition;
-    if (desiredState == ARM_STATE.RAISED) {
+    if (desiredState == ALGAE_ARM_STATE.RAISED) {
       e_armState = desiredState;
       desiredReferencePosition = highestPos;
-    } else if (desiredState == ARM_STATE.CENTERED) {
+    } else if (desiredState == ALGAE_ARM_STATE.CENTERED) {
       e_armState = desiredState;
       desiredReferencePosition = centeredPos;
-    } else if (desiredState == ARM_STATE.LOWERED) {
+    } else if (desiredState == ALGAE_ARM_STATE.LOWERED) {
         e_armState = desiredState;
       desiredReferencePosition = lowestPos;
     }
@@ -97,18 +79,11 @@ public class AlgaeSubsystem extends SubsystemBase {
 
 
   public void intake() {
-    m_algaeTopMotorSparkMax.setVoltage(-AlgaeConstants.k_fastVoltage);
-  }
-
-  public void shootSlow() {
-    m_algaeTopMotorSparkMax.setVoltage(AlgaeConstants.k_slowVoltage);
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
+    m_algaeTopMotor.setVoltage(-AlgaeConstants.k_intakeVoltage);
   }
 
   public void dispense() {
     m_algaeTopMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
-  public void shootFast() {
-    m_algaeTopMotorSparkMax.setVoltage(AlgaeConstants.k_fastVoltage);
   }
 
   public void resetEncoders(){
