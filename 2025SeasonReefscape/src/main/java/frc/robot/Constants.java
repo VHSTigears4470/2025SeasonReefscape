@@ -88,9 +88,31 @@ public final class Constants {
     }
   }
 
+public static final class AlgaeConstants {
+    //Change IDS
+    public static final int k_topID = 0;
+    public static final int k_botID = 1;
+    public static final int k_armID = 2;
+    
+    //Change voltages
+    public static final double k_fastVoltage = 4.0; 
+    public static final double k_slowVoltage = 1.5; 
+
+    public static enum ARM_STATE {
+      RAISED,
+      LOWERED,
+      CENTERED;
+    }    
+  }
+
   public static final class ClimbConstants {
     //TODO: Change IDS
     public static final int k_climbMotorID = 0;
+
+    public static enum CLIMB_STATE {
+      UP,
+      DOWN;
+    }
   }
 
   public static final class ModuleConstants {

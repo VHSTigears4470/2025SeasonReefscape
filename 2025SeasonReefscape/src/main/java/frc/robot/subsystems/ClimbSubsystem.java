@@ -12,17 +12,42 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ClimbSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-   private final SparkMax m_climbMotoSparkMax; 
-   private final RelativeEncoder m_climbEncoder;
+  /** CLimb Subsystem */
+   private final SparkMax m_algaeMotorSparkMax; 
+   private final RelativeEncoder m_algaeEncoder;
+   private CLIMB_STATE e_armState;
 
   public ClimbSubsystem() {
-    m_climbMotoSparkMax = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
-    m_climbEncoder = m_climbMotoSparkMax.getEncoder();
+    m_algaeMotorSparkMax = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
+    m_algaeEncoder = m_algaeMotorSparkMax.getEncoder();
   }
 
   public double getClimbEncoder(){
     return (m_climbEncoder.getPosition() * Math.PI) / 21;
+  }
+
+  public CLIMB_STATE getClimbState() {
+    return e_climbState;
+  }
+
+  public void setClimbState(CLIMB_STATE desiredState) {
+    if (desiredState == CLIMB_STATE.UP) {
+      e_climbState = desiredState;
+      //desiredReferencePosition = highestPos;
+    } else if (desiredState == CLIMB_STATE.DOWN) {
+      e_climbState = desiredState;
+      //desiredReferencePosition = lowestPos;
+    }
+    //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
+  }
+
+  public void setSmartDashboard(){
+    //Encoder values in degrees - subject to change 
+    SmartDashboard.putNumber("ClimbEncoder", getClimbEncoder() * 180 / Math.PI);
+  }
+
+  public void resetAlgaeEncoder(){
+    m_climbEncoder.setPosition(0);
   }
 
   //Still need to apply other methods
@@ -30,6 +55,7 @@ public class ClimbSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setSmartDashboard();
   }
 
   @Override

@@ -85,7 +85,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
   }
 
-  public void setSmartDashboard(){
+  public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("TopEncoder", getTopEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("BottomEncoder", getBotEncoder() * 180 / Math.PI);
