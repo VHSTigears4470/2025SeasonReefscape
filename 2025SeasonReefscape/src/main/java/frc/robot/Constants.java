@@ -130,4 +130,14 @@ public final class Constants {
   public static final class DebuggingConstants {
     public static final boolean k_swerveDriveDebug = true;
   }
+
+  public static enum ARM_STATE {
+    FORWARD,
+    BACKWARD;
+  }
+
+  public static final class VoltageConstants { // Placeholder Values: Change Later
+    public static final double FAST_INTAKE_VOLTAGE = 4.0; // Fast
+    public static final double SLOW_INTAKE_VOLTAGE = 1.5; // Slow
+  } 
 }

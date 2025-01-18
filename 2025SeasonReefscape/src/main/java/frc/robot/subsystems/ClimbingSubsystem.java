@@ -4,12 +4,27 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbingSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public ClimbingSubsystem() {}
+   private final SparkMax m_climbMotoSparkMax; 
+   private final RelativeEncoder m_climbEncoder
+  
+
+  public ClimbingSubsystem() {
+    m_climbMotoSparkMax = new SparkMax(0, MotorType.kBrushless);
+    m_climbEncoder = m_climbMotoSparkMax.getEncoder();
+  }
+
+  public getEncoder(){
+    
+  }
 
   /**
    * Example command factory method.
@@ -25,7 +40,7 @@ public class ClimbingSubsystem extends SubsystemBase {
         });
   }
 
-  /**
+    /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
