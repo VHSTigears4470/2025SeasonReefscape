@@ -21,10 +21,11 @@ public class IntakeSubsystem extends SubsystemBase {
   private final RelativeEncoder m_topEncoder;
   private final RelativeEncoder m_botEncoder;
   private final RelativeEncoder m_armEncoder;
+  private double d_desiredReferencePosition;
   private ARM_STATE e_armState;
   //add sensor if necessary
 
-  public IntakeSubsystem() {
+  public IntakeSubsystem(){
     e_armState = ARM_STATE.FORWARD;
     m_botMotor = new SparkMax(IntakeConstants.k_botID, MotorType.kBrushless);
     m_topMotor = new SparkMax(IntakeConstants.k_topID, MotorType.kBrushless);
@@ -36,26 +37,24 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   //All get___Encoder methods return value in radians
-  public double getTopEncoder() {
+  public double getTopEncoder(){
     return (m_topEncoder.getPosition() * Math.PI) / 21;
   }
   
-  public double getBotEncoder() {
+  public double getBotEncoder(){
     return (m_botEncoder.getPosition() * Math.PI) / 21;
   }
 
-  public double getArmEncoder() {
+  public double getArmEncoder(){
     return (m_armEncoder.getPosition() * Math.PI) / 21;
   }
-
-  public void resetEncoders(){
-    m_topEncoder.setPosition(0);
-    m_botEncoder.setPosition(0);
-    m_armEncoder.setPosition(0);
+  
+  public ARM_STATE getArmState(){
+    return e_armState;
   }
 
-  public ARM_STATE getArmState() {
-    return e_armState;
+  public double getDesiredPos(){
+    return d_desiredReferencePosition;
   }
 
   public void intake() {
@@ -73,33 +72,45 @@ public class IntakeSubsystem extends SubsystemBase {
     m_botMotor.setVoltage(IntakeConstants.k_fastVoltage);
   }
 
-  //TODO: Finish
-  public void setArmState(ARM_STATE desiredState) {
-    if (desiredState == ARM_STATE.FORWARD) {
-      e_armState = desiredState;
-      //desiredReferencePosition = highestPos;
-    } else if (desiredState == ARM_STATE.BACKWARD) {
-      e_armState = desiredState;
-      //desiredReferencePosition = lowestPos;
+  public void setArmState(ARM_STATE p_desiredState) {
+    if (p_desiredState == ARM_STATE.FORWARD) {
+      e_armState = p_desiredState;
+      d_desiredReferencePosition = IntakeConstants.k_forwardArmPos;
+    } else if (p_desiredState == ARM_STATE.BACKWARD) {
+      e_armState = p_desiredState;
+      d_desiredReferencePosition = IntakeConstants.k_backwordArmPos;
     }
     //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
+    //Apply above in config
   }
 
-  public void setSmartDashboard() {
+  public void resetEncoders(){
+    m_topEncoder.setPosition(0);
+    m_botEncoder.setPosition(0);
+    m_armEncoder.setPosition(0);
+  }
+
+  public void setSmartDashboard(){
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("TopEncoder", getTopEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("BottomEncoder", getBotEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("ArmEncoder", getArmEncoder() * 180 / Math.PI);
   }
+
+  public void stop(){
+    m_topMotor.stopMotor();
+    m_botMotor.stopMotor();
+    m_armMotor.stopMotor();
+  }
   
   @Override
-  public void periodic() {
+  public void periodic(){
     // This method will be called once per scheduler run
     setSmartDashboard();
   }
 
   @Override
-  public void simulationPeriodic() {
+  public void simulationPeriodic(){
     // This method will be called once per scheduler run during simulation
   }
   

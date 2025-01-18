@@ -8,66 +8,74 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 
 public class AlgaeSubsystem extends SubsystemBase {
   /** Algae Subsystem */
-   private final SparkMax m_algaeTopMotorSparkMax;
-   private final SparkMax m_algaeArmMotorSparkMax; 
+   private final SparkMax m_algaeTopMotor;
+   private final SparkMax m_algaeArmMotor; 
    private final RelativeEncoder m_algaeTopEncoder;
    private final RelativeEncoder m_algaeArmEncoder;
-   // set positions equal to something later
-   private double highestPos; 
-   private double lowestPos; 
-   private double desiredReferencePosition;
-   private ARM_STATE e_armState;
+  // set positions equal to something later
+   private double d_desiredReferencePosition;
+   private ALGAE_ARM_STATE e_armState;
 
   public AlgaeSubsystem(){
-    m_algaeMotorSparkMax = new SparkMax(Constants.AlgaeConstants.k_climbMotorID, MotorType.kBrushless);
-    m_algaeEncoder = m_algaeTopMotorSparkMax.getEncoder();
-  }
+    m_algaeTopMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless);
+    m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
 
+    m_algaeTopEncoder = m_algaeTopMotor.getEncoder();
+    m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
+    resetEncoders();
+
+    setAlgaeState(ALGAE_ARM_STATE.RAISED);
+  }
+  
+  //All get___Encoder methods return value in radians
   public double getAlgaeTopEncoder(){
     return (m_algaeTopEncoder.getPosition() * Math.PI) / 21;
   }
   
-  public double getArmAlgaeEncoder(){
+  public double getAlgaeArmEncoder(){
     return (m_algaeArmEncoder.getPosition() * Math.PI) / 21;
   }
 
-  public ARM_STATE getArmState() {
+  public ALGAE_ARM_STATE getArmState(){
     return e_armState;
   }
 
-  public void setArmState(ARM_STATE desiredState) {
-    double desiredReferencePosition;
-    if (desiredState == ARM_STATE.RAISED) {
-      e_armState = desiredState;
-      desiredReferencePosition = highestPos;
-    } else if (desiredState == ARM_STATE.CENTERED) {
-      e_armState = desiredState;
-      desiredReferencePosition = centeredPos;
-    } else if (desiredState == ARM_STATE.LOWERED) {
-        e_armState = desiredState;
-      desiredReferencePosition = lowestPos;
+  public double getDesiredPos(){
+    return d_desiredReferencePosition;
+  }
+
+  public void setAlgaeState(ALGAE_ARM_STATE p_desiredState) {
+    if (p_desiredState == ALGAE_ARM_STATE.RAISED) {
+      e_armState = p_desiredState;
+      d_desiredReferencePosition = AlgaeConstants.k_raisedArmPos;
+    } else if (p_desiredState == ALGAE_ARM_STATE.CENTERED) {
+      e_armState = p_desiredState;
+      d_desiredReferencePosition = AlgaeConstants.k_centeredArmPos;
+    } else if (p_desiredState == ALGAE_ARM_STATE.LOWERED) {
+      e_armState = p_desiredState;
+      d_desiredReferencePosition = AlgaeConstants.k_loweredArmPos;
     }
     //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
-  }
-
-  public void intake() {
-    m_algaeTopMotor.setVoltage(-AlgaeConstants.k_fastVoltage);
-  }
-
-  public void shootSlow() {
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_slowVoltage);
-  }
-
-  public void shootFast() {
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_fastVoltage);
+    //Apply above in config
   }
   
-  public void resetAlgaeEncoders(){
+  public void intake() {
+    m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
+  }
+
+  public void dispense() {
+    m_algaeTopMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
+  }
+
+  public void resetEncoders(){
     m_algaeTopEncoder.setPosition(0);
     m_algaeArmEncoder.setPosition(0);
   }
@@ -77,13 +85,11 @@ public class AlgaeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("AlgaeTopEncoder", getAlgaeTopEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("AlgaeArmEncoder", getAlgaeArmEncoder() * 180 / Math.PI);
   }
-
-  public void resetAlgaeEncoder(){
-    m_algaeTopEncoder.setPosition(0);
-    m_algaeArmEncoder.setPosition(0);
+  
+  public void stop(){
+    m_algaeTopMotor.stopMotor();
+    m_algaeArmMotor.stopMotor();
   }
-
-  //Still need to apply other methods
 
   @Override
   public void periodic() {
@@ -93,7 +99,6 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    
     // This method will be called once per scheduler run during simulation
   }
 

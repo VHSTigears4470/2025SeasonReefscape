@@ -31,9 +31,9 @@ public final class Constants {
     public static final double k_MaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double k_TrackWidth = Units.inchesToMeters(26.5);
+    public static final double k_TrackWidth = Units.inchesToMeters(24.5);
     // Distance between centers of right and left wheels on robot
-    public static final double k_WheelBase = Units.inchesToMeters(26.5);
+    public static final double k_WheelBase = Units.inchesToMeters(24.5);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics k_DriveKinematics = new SwerveDriveKinematics(
         new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),
@@ -77,6 +77,10 @@ public final class Constants {
     public static final int k_topID = 0;
     public static final int k_botID = 1;
     public static final int k_armID = 2;
+
+    //Find correct values
+    public static final double k_forwardArmPos = 0;
+    public static final double k_backwordArmPos = 0;
     
     //Change voltages
     public static final double k_fastVoltage = 4.0; 
@@ -90,15 +94,19 @@ public final class Constants {
 
 public static final class AlgaeConstants {
     //Change IDS
-    public static final int k_topID = 0;
-    public static final int k_botID = 1;
-    public static final int k_armID = 2;
-    
-    //Change voltages
-    public static final double k_fastVoltage = 4.0; 
-    public static final double k_slowVoltage = 1.5; 
+    public static final int k_algaeTopID = 0;
+    public static final int k_algaeArmID = 1;
 
-    public static enum ARM_STATE {
+    //Find correct values
+    public static final double k_loweredArmPos = 0;
+    public static final double k_centeredArmPos = 5;
+    public static final double k_raisedArmPos = 20;
+    
+    //Find correct voltages
+    public static final double k_intakeVoltage = -1; 
+    public static final double k_dispenseVoltage = 1; 
+
+    public static enum ALGAE_ARM_STATE {
       RAISED,
       LOWERED,
       CENTERED;
@@ -108,6 +116,10 @@ public static final class AlgaeConstants {
   public static final class ClimbConstants {
     //TODO: Change IDS
     public static final int k_climbMotorID = 0;
+
+    //Find correct values
+    public static final double k_upClimbPos = 90;
+    public static final double k_downClimbPos = 45;
 
     public static enum CLIMB_STATE {
       UP,
