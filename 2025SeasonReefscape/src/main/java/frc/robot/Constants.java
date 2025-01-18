@@ -72,6 +72,27 @@ public final class Constants {
     public static final boolean k_GyroReversed = false;
   }
 
+  public static final class IntakeConstants {
+    //Change IDS
+    public static final int k_topID = 0;
+    public static final int k_botID = 1;
+    public static final int k_armID = 2;
+    
+    //Change voltages
+    public static final double k_fastVoltage = 4.0; 
+    public static final double k_slowVoltage = 1.5; 
+    
+    public static enum ARM_STATE {
+      FORWARD,
+      BACKWARD;
+    }
+  }
+
+  public static final class ClimbConstants {
+    //TODO: Change IDS
+    public static final int k_climbMotorID = 0;
+  }
+
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
@@ -132,14 +153,4 @@ public final class Constants {
   public static final class DebuggingConstants {
     public static final boolean k_swerveDriveDebug = true;
   }
-
-  public static enum ARM_STATE {
-    FORWARD,
-    BACKWARD;
-  }
-
-  public static final class VoltageConstants { // Placeholder Values: Change Later
-    public static final double FAST_INTAKE_VOLTAGE = 4.0; // Fast
-    public static final double SLOW_INTAKE_VOLTAGE = 1.5; // Slow
-  } 
 }

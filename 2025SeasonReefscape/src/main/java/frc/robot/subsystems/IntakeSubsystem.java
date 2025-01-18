@@ -6,19 +6,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.VoltageConstants;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.IntakeConstants.ARM_STATE;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Variables for intake motors */
@@ -26,88 +19,88 @@ public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax m_topMotor;
   private final SparkMax m_armMotor;
   private final RelativeEncoder m_topEncoder;
-  private final RelativeEncoder m_bottomEncoder;
+  private final RelativeEncoder m_botEncoder;
   private final RelativeEncoder m_armEncoder;
-  
+  private ARM_STATE e_armState;
+  //add sensor if necessary
 
   public IntakeSubsystem() {
-
-
-    m_botMotor = new SparkMax(0, MotorType.kBrushless);
-    m_topMotor = new SparkMax(0, MotorType.kBrushless);
-    m_armMotor = new SparkMax(0, MotorType.kBrushless);
+    e_armState = ARM_STATE.FORWARD;
+    m_botMotor = new SparkMax(IntakeConstants.k_botID, MotorType.kBrushless);
+    m_topMotor = new SparkMax(IntakeConstants.k_topID, MotorType.kBrushless);
+    m_armMotor = new SparkMax(IntakeConstants.k_armID, MotorType.kBrushless);
     m_topEncoder = m_topMotor.getEncoder();
-    m_bottomEncoder = m_botMotor.getEncoder();
+    m_botEncoder = m_botMotor.getEncoder();
     m_armEncoder = m_armMotor.getEncoder();
+    resetEncoders();
   }
 
-  
+  //All get___Encoder methods return value in radians
   public double getTopEncoder() {
     return (m_topEncoder.getPosition() * Math.PI) / 21;
   }
   
-  public double getBottomEncoder() {
-    return (m_bottomEncoder.getPosition() * Math.PI) / 21;
+  public double getBotEncoder() {
+    return (m_botEncoder.getPosition() * Math.PI) / 21;
   }
 
-  public double getArmState() {
+  public double getArmEncoder() {
     return (m_armEncoder.getPosition() * Math.PI) / 21;
   }
 
-  public void setArmState(ARM_STATE, desiredState) {
-    if (desiredState == ArmState.forward) {
-      currState = desiredState;
-      desiredReferencePosition = highestPos;
-    } else if (desiredState == ArmState.backward) {
-      currState = desiredState;
-      desiredReferencePosition = lowestPos;
-    }
-    pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
-  }
-
-public void setHeightState(ELEVATOR_STATE desiredState) {
-    if (desiredState == ArmState.FORWARD) {
-      currState = desiredState;
-      desiredReferencePosition = FORWARD;
-    } else if (desiredState == ELEVATOR_STATE.DOW) {
-      currState = desiredState;
-      desiredReferencePosition = lowestPos;
-    } else if (desiredState == ELEVATOR_STATE.CLIMB) {
-      currState = desiredState;
-      desiredReferencePosition = ElevatorConstants.CLIMB_HEIGHT;
-    }
-    pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
-  }
-  public void setSmartDashboard(){
-      SmartDashboard.putNumber("TopEncoder", m_topEncoder.getPosition());
-      SmartDashboard.putNumber("BottomEncoder", m_bottomEncoder.getPosition());
-      SmartDashboard.putNumber("ArmEncoder", m_armEncoder.getPosition());
-  }
-  
-  public void resetEncoder(){
+  public void resetEncoders(){
     m_topEncoder.setPosition(0);
-    m_bottomEncoder.setPosition(0);
+    m_botEncoder.setPosition(0);
     m_armEncoder.setPosition(0);
   }
 
-  public void setTopIntakeVoltage() {
-    m_topMotor.setVoltage(-VoltageConstants.FAST_INTAKE_VOLTAGE);
+  public ARM_STATE getArmState() {
+    return e_armState;
   }
 
-
-   public void setBottomIntakeVoltage() {
-    m_botMotor.setVoltage(-VoltageConstants.SLOW_INTAKE_VOLTAGE);
+  public void intake() {
+    m_topMotor.setVoltage(-IntakeConstants.k_fastVoltage);
+    m_botMotor.setVoltage(-IntakeConstants.k_fastVoltage);
   }
 
+  public void shootSlow() {
+    m_topMotor.setVoltage(IntakeConstants.k_slowVoltage);
+    m_botMotor.setVoltage(IntakeConstants.k_slowVoltage);
+  }
+
+  public void shootFast() {
+    m_topMotor.setVoltage(IntakeConstants.k_fastVoltage);
+    m_botMotor.setVoltage(IntakeConstants.k_fastVoltage);
+  }
+
+  //TODO: Finish
+  public void setArmState(ARM_STATE desiredState) {
+    if (desiredState == ARM_STATE.FORWARD) {
+      e_armState = desiredState;
+      //desiredReferencePosition = highestPos;
+    } else if (desiredState == ARM_STATE.BACKWARD) {
+      e_armState = desiredState;
+      //desiredReferencePosition = lowestPos;
+    }
+    //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
+  }
+
+  public void setSmartDashboard(){
+    //Encoder values in degrees - subject to change 
+    SmartDashboard.putNumber("TopEncoder", getTopEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("BottomEncoder", getBotEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("ArmEncoder", getArmEncoder() * 180 / Math.PI);
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+    setSmartDashboard();
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
- 
+  
 }
