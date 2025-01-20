@@ -6,11 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.TeleConstants;
-import frc.robot.commands.Drivetrain.SwerveJoystickCommand;
-import frc.robot.commands.Drivetrain.TestDrivingMotors;
-import frc.robot.commands.Drivetrain.TestSetPosCommand;
-import frc.robot.commands.Drivetrain.TestTurningMotors;
+import frc.robot.Constants.UsingConstants;
+import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
+import frc.robot.commands.SwerveDrivetrain.SwerveJoystickCommand;
+import frc.robot.commands.SwerveDrivetrain.TestDrivingMotors;
+import frc.robot.commands.SwerveDrivetrain.TestSetPosCommand;
+import frc.robot.commands.SwerveDrivetrain.TestTurningMotors;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.KitbotDriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -25,25 +28,39 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  DriveSubsystem m_driveSub = new DriveSubsystem();
+  DriveSubsystem m_driveSub;
+  KitbotDriveSubsystem m_kitbotDriveSub;
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OIConstants.k_DriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_driveSub
-    .setDefaultCommand(new SwerveJoystickCommand(
-        m_driveSub, 
-        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY),
-        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot),
-        () -> true,
-        "Default / Field Oriented"
-      )
-    );
+     initSubsystems();    
     // Configure the trigger bindings
     configureBindings();
+  }
+
+  private void initSubsystems() {
+        if(UsingConstants.k_usingSwerveDrive) {
+                m_driveSub = new DriveSubsystem();
+                m_driveSub.setDefaultCommand(new SwerveJoystickCommand(
+                        m_driveSub, 
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY),
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot),
+                        () -> true,
+                        "Default / Field Oriented"
+                )
+                );
+        } else if(UsingConstants.k_usingKitbotDrive) { // else if because we should only have one drive at once
+                m_kitbotDriveSub = new KitbotDriveSubsystem();
+                m_kitbotDriveSub.setDefaultCommand(new ArcadeDrive(
+                        m_kitbotDriveSub,
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot))
+                );
+        }
   }
 
   /**

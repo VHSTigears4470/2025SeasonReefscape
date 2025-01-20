@@ -92,6 +92,13 @@ public final class Constants {
     }
   }
 
+  public static final class KitbotDriveConstants {
+    public static final int k_frontRightMotorID = 11;
+    public static final int k_frontLeftMotorID = 12;
+    public static final int k_rearRightMotorID = 13;
+    public static final int k_rearLeftMotorID = 14;
+  }
+
 public static final class AlgaeConstants {
     //Change IDS
     public static final int k_algaeTopID = 0;
@@ -186,5 +193,19 @@ public static final class AlgaeConstants {
 
   public static final class DebuggingConstants {
     public static final boolean k_swerveDriveDebug = true;
+    public static final boolean k_algeaDebug = true;
+    public static final boolean k_intakeDebug = true;
+    public static final boolean k_climbDebug = true;
+    public static final boolean k_kitbotDriveDebug = true;
+  }
+
+  public static final class UsingConstants {
+    // Drives
+    public static final boolean k_usingSwerveDrive = true;
+    public static final boolean k_usingKitbotDrive = false;
+
+    public static final boolean k_usingAlgea = false;
+    public static final boolean k_usingInake = false;
+    public static final boolean k_usingClimb = false;
   }
 }
