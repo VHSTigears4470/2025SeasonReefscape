@@ -97,6 +97,9 @@ public final class Constants {
     public static final int k_frontLeftMotorID = 12;
     public static final int k_rearRightMotorID = 13;
     public static final int k_rearLeftMotorID = 14;
+
+    public static final double k_kitbotWheelRadius = 3;
+    public static final double k_kitbotGearRatio = 10.75;
   }
 
 public static final class AlgaeConstants {

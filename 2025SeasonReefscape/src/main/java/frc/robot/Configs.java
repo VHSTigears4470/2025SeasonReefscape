@@ -4,12 +4,21 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
  
 public final class Configs {
     public static final class MAXSwerveModule {
+        // Swerve
         public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
+
+        // Kitbot Drive
+        public static final SparkMaxConfig frontRightKitbot = new SparkMaxConfig();
+        public static final SparkMaxConfig frontLeftKitbot = new SparkMaxConfig();
+        public static final SparkMaxConfig rearRightKitbot = new SparkMaxConfig();
+        public static final SparkMaxConfig rearLeftKitbot = new SparkMaxConfig();
 
         static {
             // Use module constants to calculate conversion factors and feed forward gain.
@@ -51,6 +60,36 @@ public final class Configs {
                     // longer route.
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, turningFactor);
+
+
+                double kitBotFactor = 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius / KitbotDriveConstants.k_kitbotGearRatio;
+                frontRightKitbot
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50);
+                frontRightKitbot.encoder
+                    .positionConversionFactor(kitBotFactor) // meters
+                    .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+
+                frontRightKitbot
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50);
+                frontRightKitbot.encoder
+                    .positionConversionFactor(kitBotFactor) // meters
+                    .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+
+                frontRightKitbot
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50);
+                frontRightKitbot.encoder
+                    .positionConversionFactor(kitBotFactor) // meters
+                    .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+
+                    frontRightKitbot
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50);
+                frontRightKitbot.encoder
+                    .positionConversionFactor(kitBotFactor) // meters
+                    .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
         }
     }
 }
