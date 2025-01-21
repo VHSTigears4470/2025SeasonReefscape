@@ -70,26 +70,30 @@ public final class Configs {
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
 
-                frontRightKitbot
+                frontLeftKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
-                frontRightKitbot.encoder
+                frontLeftKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
 
-                frontRightKitbot
+                rearRightKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
-                frontRightKitbot.encoder
+                    rearRightKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+                rearRightKitbot
+                    .follow(KitbotDriveConstants.k_frontRightMotorID, false);
 
-                    frontRightKitbot
+                rearLeftKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
-                frontRightKitbot.encoder
+                rearLeftKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+                rearRightKitbot
+                    .follow(KitbotDriveConstants.k_frontLeftMotorID, false);
         }
     }
 }

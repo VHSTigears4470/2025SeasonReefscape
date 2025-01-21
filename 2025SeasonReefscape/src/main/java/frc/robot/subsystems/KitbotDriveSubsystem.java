@@ -2,11 +2,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs;
 import frc.robot.Constants.DebuggingConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 
@@ -31,6 +34,15 @@ public class KitbotDriveSubsystem extends SubsystemBase {
         m_frontLeftMotor = new SparkMax(KitbotDriveConstants.k_frontLeftMotorID, MotorType.kBrushless);
         m_rearRightMotor = new SparkMax(KitbotDriveConstants.k_rearRightMotorID, MotorType.kBrushless);
         m_rearLeftMotor = new SparkMax(KitbotDriveConstants.k_rearLeftMotorID, MotorType.kBrushless);
+
+        m_frontRightMotor.configure(Configs.MAXSwerveModule.frontRightKitbot, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+        m_frontLeftMotor.configure(Configs.MAXSwerveModule.frontLeftKitbot, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+        m_rearRightMotor.configure(Configs.MAXSwerveModule.rearRightKitbot, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+        m_rearLeftMotor.configure(Configs.MAXSwerveModule.rearLeftKitbot, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
 
         m_frontRightEncoder = m_frontRightMotor.getEncoder();
         m_frontLeftEncoder = m_frontLeftMotor.getEncoder();

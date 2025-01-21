@@ -117,13 +117,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
-      //Update with track width
-        DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0);
-        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
-        //Set left velocity
-        double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-        //Set right velocity
-        double rightVelocity = wheelSpeeds.rightMetersPerSecond;
+        SwerveModuleState[] desiredStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        m_frontLeft.setDesiredState(desiredStates[0]);
+        m_frontRight.setDesiredState(desiredStates[1]);
+        m_rearLeft.setDesiredState(desiredStates[2]);
+        m_rearRight.setDesiredState(desiredStates[3]);
     }
     /**
      * Gets a list of Swerve Module States

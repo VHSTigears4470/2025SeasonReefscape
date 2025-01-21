@@ -79,7 +79,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
 
   public void intake() {
-    m_algaeTopMotor.setVoltage(-AlgaeConstants.k_intakeVoltage);
+    m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
   }
 
   public void dispense() {
