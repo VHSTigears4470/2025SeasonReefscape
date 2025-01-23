@@ -17,25 +17,23 @@ import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 /** Algae Subsystem */
 public class AlgaeSubsystem extends SubsystemBase {
   /** Algae Subsystem */
-   private final SparkMax m_algaeTopMotor;
-   private final SparkMax m_algaeArmMotor; 
-  /** Variables for intake motors */
-   private final RelativeEncoder m_algaeTopEncoder;
+   private final SparkMax m_algaeTopMotor; /* Variables for algae motors */
+   private final SparkMax m_algaeArmMotor;
+   private final RelativeEncoder m_algaeTopEncoder; /** Variables for algae encoders */
    private final RelativeEncoder m_algaeArmEncoder;
    
-   // set positions equal to something later
-   private double highestPos; 
+   private double highestPos; // set positions equal to something later
    private double lowestPos; 
    private double centeredPos;
    private ALGAE_ARM_STATE e_armState;
-  // set positions equal to something later
    private double d_desiredReferencePosition;
 
+
   public AlgaeSubsystem(){
-    m_algaeTopMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless);
+    m_algaeTopMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless); // motor controller
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
 
-    m_algaeTopEncoder = m_algaeTopMotor.getEncoder();
+    m_algaeTopEncoder = m_algaeTopMotor.getEncoder(); //recieving the encoder value
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
     resetEncoders();
 
@@ -56,11 +54,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void resetAlgaeEncoders() {
-    m_algaeTopEncoder.setPosition(0);
+    m_algaeTopEncoder.setPosition(0); // reset the algae encoder ticks
     m_algaeArmEncoder.setPosition(0);
   }
 
-  public void setArmState(ALGAE_ARM_STATE desiredState) {
+  public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; raised, centered, lowered
     double desiredReferencePosition;
     if (desiredState == ALGAE_ARM_STATE.RAISED) {
       e_armState = desiredState;
