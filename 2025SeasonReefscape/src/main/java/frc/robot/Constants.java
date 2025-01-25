@@ -72,7 +72,7 @@ public final class Constants {
     public static final boolean k_GyroReversed = false;
   }
 
-  public static final class IntakeConstants {
+  public static final class CoralConstants {
     //Change IDS
     public static final int k_topID = 0;
     public static final int k_botID = 1;

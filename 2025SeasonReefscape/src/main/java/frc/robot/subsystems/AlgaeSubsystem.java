@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,10 +23,8 @@ public class AlgaeSubsystem extends SubsystemBase {
    private final SparkMax m_algaeArmMotor;
    private final RelativeEncoder m_algaeTopEncoder; /** Variables for algae encoders */
    private final RelativeEncoder m_algaeArmEncoder;
+   private final SparkClosedLoopController m_algaeClosedLoopController;
    
-   private double highestPos; // set positions equal to something later
-   private double lowestPos; 
-   private double centeredPos;
    private ALGAE_ARM_STATE e_armState;
    private double d_desiredReferencePosition;
 
@@ -36,6 +36,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeTopEncoder = m_algaeTopMotor.getEncoder(); //recieving the encoder value
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
     resetEncoders();
+
+    m_algaeClosedLoopController = m_algaeArmMotor.getClosedLoopController();
 
     setArmState(ALGAE_ARM_STATE.RAISED);
   }
@@ -59,23 +61,19 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; raised, centered,
-    double desiredReferencePosition;
     if (desiredState == ALGAE_ARM_STATE.RAISED) {
       e_armState = desiredState;
-      desiredReferencePosition = highestPos;
+      d_desiredReferencePosition = Constants.AlgaeConstants.k_raisedArmPos;
     } else if (desiredState == ALGAE_ARM_STATE.CENTERED) {
       e_armState = desiredState;
-      desiredReferencePosition = centeredPos;
+      d_desiredReferencePosition = Constants.AlgaeConstants.k_centeredArmPos;
     } else if (desiredState == ALGAE_ARM_STATE.LOWERED) {
-        e_armState = desiredState;
-      desiredReferencePosition = lowestPos;
+      e_armState = desiredState;
+      d_desiredReferencePosition = Constants.AlgaeConstants.k_loweredArmPos;
     }
-    //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
-    //Apply above in config
+    m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
   
-
-
   public void intake() {
     m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
   }
@@ -88,9 +86,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeTopEncoder.setPosition(0);
     m_algaeArmEncoder.setPosition(0);
   }
-  
-// Dashboard methods
 
+  // Dashboard methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("AlgaeTopEncoder", getAlgaeTopEncoder() * 180 / Math.PI);
@@ -101,7 +98,6 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeTopMotor.stopMotor();
     m_algaeArmMotor.stopMotor();
   }
-
 
   //Still need to apply other methods
 

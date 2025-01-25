@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +21,7 @@ public class ClimbSubsystem extends SubsystemBase {
   /** CLimb Subsystem */
    private final SparkMax m_climbMotor; 
    private final RelativeEncoder m_climbEncoder;
+   private final SparkClosedLoopController m_climbClosedLoopController;
    private CLIMB_STATE e_climbState;
    private double d_desiredReferencePosition;
 
@@ -28,9 +31,10 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbEncoder = m_climbMotor.getEncoder();
     resetEncoders();
 
+    m_climbClosedLoopController = m_climbMotor.getClosedLoopController();
+
     setClimbState(CLIMB_STATE.DOWN);
   }
-
     
   //All get___Encoder methods return value in radians
   public double getClimbEncoder(){
@@ -53,8 +57,7 @@ public class ClimbSubsystem extends SubsystemBase {
       e_climbState = p_desiredState;
       d_desiredReferencePosition = ClimbConstants.k_downClimbPos;
     }
-    //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
-    //Apply above in config
+    m_climbClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
 
   public void resetEncoders(){
