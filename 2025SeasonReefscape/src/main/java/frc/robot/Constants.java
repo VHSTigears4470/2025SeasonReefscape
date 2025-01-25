@@ -95,10 +95,10 @@ public final class Constants {
   }
 
   public static final class KitbotDriveConstants {
-    public static final int k_frontRightMotorID = 11;
-    public static final int k_frontLeftMotorID = 12;
-    public static final int k_rearRightMotorID = 13;
-    public static final int k_rearLeftMotorID = 14;
+    public static final int k_frontRightMotorID = 6;
+    public static final int k_frontLeftMotorID = 7;
+    public static final int k_rearRightMotorID = 8;
+    public static final int k_rearLeftMotorID = 9;
 
     public static final double k_kitbotWheelRadius = 3;
     public static final double k_kitbotGearRatio = 10.75;
