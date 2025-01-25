@@ -130,12 +130,12 @@ public static final class AlgaeConstants {
     public static final int k_climbMotorID = 0;
 
     //Find correct values
-    public static final double k_upClimbPos = 90;
-    public static final double k_downClimbPos = 45;
+    public static final double k_forwardClimbPos = 90;
+    public static final double k_backClimbPos = 45;
 
     public static enum CLIMB_STATE {
-      UP,
-      DOWN;
+      FORWARD,
+      BACK;
     }
   }
 

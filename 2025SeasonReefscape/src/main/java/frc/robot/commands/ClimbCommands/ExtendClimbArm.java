@@ -9,26 +9,26 @@ public class ExtendClimbArm extends Command {
         
         public ExtendClimbArm(ClimbSubsystem climbSub) {
             m_climbSub = climbSub;
+            addRequirements(m_climbSub);//might not need? - Kenji
         } 
     
-    @Override
-    public void initialize() {}
+        @Override
+        public void initialize() {}
 
-    @Override
-    public void execute() {
-        m_climbSub.setClimbArmState(CLIMB_STATE.DOWN);
-    }
+        @Override
+        public void execute() {
+            m_climbSub.setArmSpeed(0.25);
+        }
 
-    @Override
-    public void end(boolean interrupted) { //Should we stop the retractArm method or algaeSub before .stop? -- Vidur and Jay
-        //probably stop motors or something
-        m_climbSub.stop();
-      }
+        @Override
+        public void end(boolean interrupted) { 
+            m_climbSub.stop();
+        
+        }
     
-      // Returns true when the command should end.
-      //maybe need to change
-      @Override
-    public boolean isFinished() {
-        return false;
-    }
+        // Returns true when the command should end.
+        @Override
+        public boolean isFinished() {
+            return true;
+        }
 }

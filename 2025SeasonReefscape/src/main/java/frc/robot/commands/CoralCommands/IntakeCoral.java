@@ -1,14 +1,14 @@
-package frc.robot.commands.AlgaeCommands;
+package frc.robot.commands.CoralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeSubsystem;
 
-public class IntakeAlgae extends Command {
-    private final AlgaeSubsystem m_algaeSub;
+public class IntakeCoral extends Command {
+    private final CoralSubsystem m_coralSub;
 
-    public IntakeAlgae(AlgaeSubsystem algaeSub) {
-        m_algaeSub = algaeSub;
-        addRequirements(algaeSub);
+    public IntakeCoral(CoralSubsystem coralSub) {
+        m_coralSub = coralSub;
+        addRequirements(m_coralSub);
     }
     
 
@@ -19,13 +19,15 @@ public class IntakeAlgae extends Command {
     // Called every time he scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_algaeSub.intake();
+        //Intakes the coral
+        m_coralSub.intake();
     } 
     
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_algaeSub.stop();
+        //stops the coral subsystem
+        m_coralSub.stop();
     }
 
     // Returns true when the command should end.

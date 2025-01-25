@@ -92,7 +92,7 @@ public class CoralSubsystem extends SubsystemBase {
       d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
     } else if (desiredState == ARM_STATE.BACKWARD) {
       e_armState = desiredState;
-      d_desiredReferencePosition = Constants.CoralConstants.k_backwordArmPos;
+      d_desiredReferencePosition = Constants.CoralConstants.k_backwardArmPos;
     }
     m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
