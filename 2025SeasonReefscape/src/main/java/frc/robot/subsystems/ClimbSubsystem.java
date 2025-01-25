@@ -24,6 +24,8 @@ public class ClimbSubsystem extends SubsystemBase {
    private final SparkClosedLoopController m_climbClosedLoopController;
    private CLIMB_STATE e_climbState;
    private double d_desiredReferencePosition;
+   private double d_upperLimit = 1;//change later to actual value
+   private double d_lowerLimit = -1;//subject to change
 
    // Constructor:
   public ClimbSubsystem() {
@@ -50,14 +52,21 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public void setClimbArmState(CLIMB_STATE p_desiredState) {
-    if (p_desiredState == CLIMB_STATE.UP) {
+    if (p_desiredState == CLIMB_STATE.FORWARD) {
       e_climbState = p_desiredState;
-      d_desiredReferencePosition = ClimbConstants.k_upClimbPos;
-    } else if (p_desiredState == CLIMB_STATE.DOWN) {
+      d_desiredReferencePosition = ClimbConstants.k_forwardClimbPos;
+    } else if (p_desiredState == CLIMB_STATE.BACK) {
       e_climbState = p_desiredState;
-      d_desiredReferencePosition = ClimbConstants.k_downClimbPos;
+      d_desiredReferencePosition = ClimbConstants.k_backClimbPos;
     }
     m_climbClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
+  }
+
+  public void setArmSpeed(double speed){
+      if((speed > 0 && getClimbEncoder() >= d_upperLimit) || (speed < 0 && getClimbEncoder() <= d_lowerLimit)){
+        speed = 0;
+      }
+      m_climbMotor.set(speed);
   }
 
   public void resetEncoders(){

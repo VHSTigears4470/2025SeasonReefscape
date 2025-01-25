@@ -17,23 +17,20 @@ public class ShootAlgae extends Command {
     public void initialize() {}
 
     // Called every time he scheduler runs while the command is scheduled.
-    // Probably need to put something here
     @Override
     public void execute() {
         m_algaeSub.dispense();
     } 
     
     // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    //probably stop motors or something
-    m_algaeSub.stop();
-  }
+    @Override
+    public void end(boolean interrupted) {
+        m_algaeSub.stop();
+    }
 
-  // Returns true when the command should end.
-  //maybe need to change
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
