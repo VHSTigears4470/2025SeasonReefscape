@@ -1,10 +1,7 @@
-package frc.robot.commands.AlgaeCommands;
+package frc.robot.commands.ClimbCommands;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
-import frc.robot.subsystems.AlgaeSubsystem;
 
-public class RetractAlgaeArm extends Command {
+public class RetractClimbArm extends Command {
     private static AlgaeSubsystem m_algaeSub;
         
         public RetractAlgaeArm(AlgaeSubsystem algaeSub, double desiredReferencePosition) {
@@ -32,6 +29,4 @@ public class RetractAlgaeArm extends Command {
     public boolean isFinished() {
         return false;
     }
-
-
 }

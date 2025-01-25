@@ -5,13 +5,16 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.IntakeConstants.ARM_STATE;
+import frc.robot.Constants;
+import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.CoralConstants.ARM_STATE;
 
 public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
@@ -21,18 +24,21 @@ public class CoralSubsystem extends SubsystemBase {
   private final RelativeEncoder m_topEncoder;
   private final RelativeEncoder m_botEncoder;
   private final RelativeEncoder m_armEncoder;
+  private final SparkClosedLoopController m_armClosedLoopController;
+  private double d_desiredReferencePosition;
   private ARM_STATE e_armState;
   //add sensor if necessary
 
   public CoralSubsystem() {
-    e_armState = ARM_STATE.FORWARD;
-    m_botMotor = new SparkMax(IntakeConstants.k_botID, MotorType.kBrushless);
-    m_topMotor = new SparkMax(IntakeConstants.k_topID, MotorType.kBrushless);
-    m_armMotor = new SparkMax(IntakeConstants.k_armID, MotorType.kBrushless);
+    m_botMotor = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
+    m_topMotor = new SparkMax(CoralConstants.k_topID, MotorType.kBrushless);
+    m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
     m_topEncoder = m_topMotor.getEncoder();
     m_botEncoder = m_botMotor.getEncoder();
     m_armEncoder = m_armMotor.getEncoder();
     resetEncoders();
+    m_armClosedLoopController = m_armMotor.getClosedLoopController();
+    setArmState(ARM_STATE.FORWARD);
   }
 
   //All get___Encoder methods return value in radians
@@ -64,32 +70,35 @@ public class CoralSubsystem extends SubsystemBase {
 
 
   public void intake() {
-    m_topMotor.setVoltage(-IntakeConstants.k_fastVoltage);
-    m_botMotor.setVoltage(-IntakeConstants.k_fastVoltage);
+    m_topMotor.setVoltage(-CoralConstants.k_fastVoltage);
+    m_botMotor.setVoltage(-CoralConstants.k_fastVoltage);
   }
 
 //Shoots slow by decreasing the voltage of the top and bottom motors
   public void shootSlow() {
-    m_topMotor.setVoltage(IntakeConstants.k_slowVoltage);
-    m_botMotor.setVoltage(IntakeConstants.k_slowVoltage);
+    m_topMotor.setVoltage(CoralConstants.k_slowVoltage);
+    m_botMotor.setVoltage(CoralConstants.k_slowVoltage);
   }
 
 //Shoots fast by increasing the voltage of the top and bottom motors
   public void shootFast() {
-    m_topMotor.setVoltage(IntakeConstants.k_fastVoltage);
-    m_botMotor.setVoltage(IntakeConstants.k_fastVoltage);
+    m_topMotor.setVoltage(CoralConstants.k_fastVoltage);
+    m_botMotor.setVoltage(CoralConstants.k_fastVoltage);
   }
 
-  //TODO: Finish
   public void setArmState(ARM_STATE desiredState) {
     if (desiredState == ARM_STATE.FORWARD) {
       e_armState = desiredState;
-      //desiredReferencePosition = highestPos;
+      d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
     } else if (desiredState == ARM_STATE.BACKWARD) {
       e_armState = desiredState;
-      //desiredReferencePosition = lowestPos;
+      d_desiredReferencePosition = Constants.CoralConstants.k_backwordArmPos;
     }
-    //pidController.setReference(desiredReferencePosition, ControlType.kSmartMotion);
+    m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
+  }
+
+  public boolean isAtDesiredPosition(){
+    return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
   }
 
 //sets the encoders to default values

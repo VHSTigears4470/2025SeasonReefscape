@@ -10,12 +10,15 @@ public class IntakeAlgae extends Command {
         m_algaeSub = algaeSub;
         addRequirements(algaeSub);
     }
+    
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+      
+    }
 
-    // Called every time he scheduler runs while the ommand is scheduled.
+    // Called every time he scheduler runs while the command is scheduled.
     // Probably need to put something here
     @Override
     public void execute() {

@@ -23,6 +23,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final double k_sparkMaxConversionFactor = 0; //TODO: Update
+  public static final double k_positionBuffer = 1; //TODO: Update
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -36,10 +37,10 @@ public final class Constants {
     public static final double k_WheelBase = Units.inchesToMeters(24.5);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics k_DriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),
-        new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),
-        new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),
-        new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2));
+        new Translation2d(k_WheelBase / 2, k_TrackWidth / 2), // Front Left
+        new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2), // Front Right
+        new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2), // Back Left
+        new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Back Right
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double k_FrontLeftChassisAngularOffset = -Math.PI / 2;
@@ -72,7 +73,7 @@ public final class Constants {
     public static final boolean k_GyroReversed = false;
   }
 
-  public static final class IntakeConstants {
+  public static final class CoralConstants {
     //Change IDS
     public static final int k_topID = 0;
     public static final int k_botID = 1;
