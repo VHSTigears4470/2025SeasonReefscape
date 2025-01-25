@@ -1,29 +1,28 @@
-package frc.robot.commands.AlgaeCommands;
+package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
-import frc.robot.subsystems.AlgaeSubsystem;
+import frc.robot.Constants.ClimbConstants.CLIMB_STATE;
+import frc.robot.subsystems.ClimbSubsystem;
 
-public class RetractAlgaeArm extends Command {
-    private static AlgaeSubsystem m_algaeSub;
+public class ExtendClimbArm extends Command {
+    private static ClimbSubsystem m_climbSub;
         
-        public RetractAlgaeArm(AlgaeSubsystem algaeSub, double desiredReferencePosition) {
-            m_algaeSub = algaeSub;
-        }
-       
+        public ExtendClimbArm(ClimbSubsystem climbSub) {
+            m_climbSub = climbSub;
+        } 
     
     @Override
     public void initialize() {}
 
     @Override
     public void execute() {
-        m_algaeSub.setArmState(ALGAE_ARM_STATE.RAISED);
+        m_climbSub.setClimbArmState(CLIMB_STATE.DOWN);
     }
 
     @Override
     public void end(boolean interrupted) { //Should we stop the retractArm method or algaeSub before .stop? -- Vidur and Jay
         //probably stop motors or something
-        m_algaeSub.stop();
+        m_climbSub.stop();
       }
     
       // Returns true when the command should end.
@@ -32,6 +31,4 @@ public class RetractAlgaeArm extends Command {
     public boolean isFinished() {
         return false;
     }
-
-
 }

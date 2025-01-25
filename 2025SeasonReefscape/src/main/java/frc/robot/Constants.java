@@ -23,7 +23,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final double k_sparkMaxConversionFactor = 0; //TODO: Update
-  public static final double k_positionBuffer = 1;
+  public static final double k_positionBuffer = 1; //TODO: Update
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of

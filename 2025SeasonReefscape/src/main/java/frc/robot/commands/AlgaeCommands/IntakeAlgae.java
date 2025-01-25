@@ -2,11 +2,9 @@ package frc.robot.commands.AlgaeCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeAlgae extends Command {
     private final AlgaeSubsystem m_algaeSub;
-    private final IntakeSubsystem m_intakeSub;
 
     public IntakeAlgae(AlgaeSubsystem algaeSub) {
         m_algaeSub = algaeSub;
@@ -17,7 +15,7 @@ public class IntakeAlgae extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+      
     }
 
     // Called every time he scheduler runs while the command is scheduled.

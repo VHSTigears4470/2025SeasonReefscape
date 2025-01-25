@@ -33,7 +33,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     m_climbClosedLoopController = m_climbMotor.getClosedLoopController();
 
-    setClimbState(CLIMB_STATE.DOWN);
+    setClimbArmState(CLIMB_STATE.DOWN);
   }
     
   //All get___Encoder methods return value in radians
@@ -49,7 +49,7 @@ public class ClimbSubsystem extends SubsystemBase {
     return d_desiredReferencePosition;
   }
 
-  public void setClimbState(CLIMB_STATE p_desiredState) {
+  public void setClimbArmState(CLIMB_STATE p_desiredState) {
     if (p_desiredState == CLIMB_STATE.UP) {
       e_climbState = p_desiredState;
       d_desiredReferencePosition = ClimbConstants.k_upClimbPos;
