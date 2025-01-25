@@ -35,7 +35,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     m_climbClosedLoopController = m_climbMotor.getClosedLoopController();
 
-    setClimbArmState(CLIMB_STATE.DOWN);
+    setClimbArmState(CLIMB_STATE.BACK);
   }
     
   //All get___Encoder methods return value in radians

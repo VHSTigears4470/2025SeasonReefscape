@@ -30,6 +30,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   DriveSubsystem m_driveSub;
   KitbotDriveSubsystem m_kitbotDriveSub;
+  private final CoralSubsystem m_coralSub = new CoralSubsystem();
+  private final AlgaeSubsystem m_algaeSub = new AlgaeSubsystem();
+  private final ClimbSubsystem m_climbSub = new ClimbSubsystem();
+  
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OIConstants.k_DriverControllerPort);
@@ -100,10 +104,42 @@ public class RobotContainer {
   /**
    * The default / main preset used for comps
    * Does the following: 
-   * nothing for now :D
+   *    Left Joystick : Swerve (XY Translation)
+   *    Right Joystick :  Swerve (Heading)
+   *    Y : Intake/Extend Algae
+   *    B : Retract Algae
+   *    X : Toggle Coral Arm
+   *    A :  Shoot Algae
+   *    LB:  Fast Shoot
+   *    LT:  Slow Shoot
+   *    RB: Climb Extend
+   *    RT: Climb Retract
+   *    D-Pad: Intake Coral
    */
-  public void controllerPresetMain() {
-
+  public void controllerPresetMain() { //subject to change (while/on true)
+        //Swerve stuff goes here
+        //Left Joystick
+        
+        //Right Joystick
+        
+        //Y-button
+        m_driverController.y().onTrue(new IntakeExtendAlgae(m_algaeSub));
+        //B-Button
+        m_driverController.b().whileTrue(new RetractAlgaeArm(m_algaeSub));
+        //X-Button
+        m_driverController.x().onTrue(newToggleCoralArm(m_coralSub));
+        //A-Button
+        m_driverController.a().whileTrue(new ShootAlgae(m_algaeSub));
+        //LB
+        m_driverController.leftBumber().whileTrue(new ShootCoralFast(m_coralSub));
+        //LT
+        m_driverController.leftTrigger().whileTrue(new ShootCoralSlow(m_coralSub));
+        //RB
+        m_driverController.rightBumper().whileTrue(new ExtendClimbArm(m_climbSub));
+        //RT
+        m_driverController.rightTrigger().whileTrue(new RetractClimbArm(m_climbSub));
+        //D-Pad 
+        m_driverController.povAny().whileTrue(new IntakeCoral(m_coralSub));//chack validity later
   }
 
   /**
@@ -302,6 +338,8 @@ public class RobotContainer {
                         "Backward Movement"
                 )
         );
+\
+
 
         // backwards rotation
         m_driverController.a().and(m_driverController.leftTrigger().negate()).whileTrue(
