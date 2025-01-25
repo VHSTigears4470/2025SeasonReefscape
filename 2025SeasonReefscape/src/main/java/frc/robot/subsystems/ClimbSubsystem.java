@@ -64,6 +64,10 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbEncoder.setPosition(0);
   }
 
+  public boolean isAtDesiredPosition(){
+    return (Math.abs(getClimbEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
+  }
+
   // Dashboard Methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 

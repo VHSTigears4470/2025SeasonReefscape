@@ -97,6 +97,10 @@ public class CoralSubsystem extends SubsystemBase {
     m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
 
+  public boolean isAtDesiredPosition(){
+    return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
+  }
+
 //sets the encoders to default values
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
