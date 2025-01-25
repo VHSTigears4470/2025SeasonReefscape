@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ClimbConstants;
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
@@ -117,7 +118,7 @@ public final class Configs {
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
                 intakeMotorTop
-                    .follow(IntakeConstants.k_topID, false);
+                    .follow(CoralConstants.k_topID, false);
 
                 intakeMotorBottom
                     .idleMode(IdleMode.kBrake)
@@ -126,7 +127,7 @@ public final class Configs {
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
                 intakeMotorBottom
-                    .follow(IntakeConstants.k_botID, false);
+                    .follow(CoralConstants.k_botID, false);
 
                 intakeMotorArm
                     .idleMode(IdleMode.kBrake)
@@ -135,7 +136,7 @@ public final class Configs {
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
                 intakeMotorArm
-                    .follow(IntakeConstants.k_armID, false);
+                    .follow(CoralConstants.k_armID, false);
 
                 algaeTopMotor
                     .idleMode(IdleMode.kBrake)
