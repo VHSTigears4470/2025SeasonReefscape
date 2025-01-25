@@ -164,9 +164,8 @@ public class DriveSubsystem extends SubsystemBase {
      * Updates general robot data to SmartDasboard such as heading or pose
      */
     public void updateSmartDashboard() {
-        SmartDashboard.putNumber("Robot Heading", getHeading());
-        SmartDashboard.putNumber("Robot Heading", m_gyro.getRoll().getValue().in(Units.Degree));
-        SmartDashboard.putNumber("Yaw", m_gyro.getYaw().getValue().in(Units.Degree));
+        SmartDashboard.putNumber("Robot Heading (Yaw)", getHeading());
+        SmartDashboard.putNumber("Roll", m_gyro.getRoll().getValue().in(Units.Degree));
         SmartDashboard.putNumber("Pitch", m_gyro.getPitch().getValue().in(Units.Degree));
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }

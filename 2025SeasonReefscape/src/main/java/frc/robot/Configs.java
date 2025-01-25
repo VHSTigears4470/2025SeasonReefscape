@@ -5,6 +5,9 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.ClimbConstants;
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
  
@@ -19,6 +22,18 @@ public final class Configs {
         public static final SparkMaxConfig frontLeftKitbot = new SparkMaxConfig();
         public static final SparkMaxConfig rearRightKitbot = new SparkMaxConfig();
         public static final SparkMaxConfig rearLeftKitbot = new SparkMaxConfig();
+
+        //Coral Subsystem
+        public static final SparkMaxConfig intakeMotorTop = new SparkMaxConfig();
+        public static final SparkMaxConfig intakeMotorBottom = new SparkMaxConfig();
+        public static final SparkMaxConfig intakeMotorArm= new SparkMaxConfig();
+
+        //AlgaeSubsystem
+        public static final SparkMaxConfig algaeTopMotor = new SparkMaxConfig();
+        public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
+
+        //ClimbSubsystem
+        public static final SparkMaxConfig climbMotor = new SparkMaxConfig();
 
         static {
             // Use module constants to calculate conversion factors and feed forward gain.
@@ -69,6 +84,8 @@ public final class Configs {
                 frontRightKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+                frontRightKitbot
+                    .inverted(true); // ORBB: false | AR: true    
 
                 frontLeftKitbot
                     .idleMode(IdleMode.kBrake)
@@ -76,7 +93,7 @@ public final class Configs {
                 frontLeftKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
-
+                
                 rearRightKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
@@ -94,6 +111,64 @@ public final class Configs {
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
                 rearRightKitbot
                     .follow(KitbotDriveConstants.k_frontLeftMotorID, false);
+
+                intakeMotorTop
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+                intakeMotorTop.encoder
+                    .positionConversionFactor(drivingFactor) //TODO
+                    .velocityConversionFactor(drivingFactor / 60.0); 
+                intakeMotorTop
+                    .follow(CoralConstants.k_topID, false);
+
+                intakeMotorBottom
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+                intakeMotorBottom.encoder
+                    .positionConversionFactor(drivingFactor) //TODO
+                    .velocityConversionFactor(drivingFactor / 60.0); 
+                intakeMotorBottom
+                    .follow(CoralConstants.k_botID, false);
+
+                intakeMotorArm
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+                intakeMotorArm.encoder
+                    .positionConversionFactor(drivingFactor) //TODO
+                    .velocityConversionFactor(drivingFactor / 60.0); 
+                intakeMotorArm
+                    .follow(CoralConstants.k_armID, false);
+
+                algaeTopMotor
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+                algaeTopMotor.encoder
+                    .positionConversionFactor(drivingFactor) //TODO
+                    .velocityConversionFactor(drivingFactor / 60.0); 
+                algaeTopMotor
+                    .follow(AlgaeConstants.k_algaeTopID, false);
+
+                algaeArmMotor
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+                algaeArmMotor.encoder
+                    .positionConversionFactor(drivingFactor) //TODO
+                    .velocityConversionFactor(drivingFactor / 60.0); 
+                algaeArmMotor
+                    .follow(AlgaeConstants.k_algaeArmID, false);
+
+                climbMotor
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+                climbMotor.encoder
+                    .positionConversionFactor(drivingFactor) //TODO
+                    .velocityConversionFactor(drivingFactor / 60.0); 
+                climbMotor
+                    .follow(ClimbConstants.k_climbMotorID, false);
+
+                
+
+                
         }
     }
 }
