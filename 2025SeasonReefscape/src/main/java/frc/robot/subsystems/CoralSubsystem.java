@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.ARM_STATE;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
   private final SparkMax m_botMotor;
   private final SparkMax m_topMotor;
@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private ARM_STATE e_armState;
   //add sensor if necessary
 
-  public IntakeSubsystem() {
+  public CoralSubsystem() {
     e_armState = ARM_STATE.FORWARD;
     m_botMotor = new SparkMax(IntakeConstants.k_botID, MotorType.kBrushless);
     m_topMotor = new SparkMax(IntakeConstants.k_topID, MotorType.kBrushless);
