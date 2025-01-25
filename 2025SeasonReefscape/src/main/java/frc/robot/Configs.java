@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
  
@@ -85,6 +84,8 @@ public final class Configs {
                 frontRightKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
+                frontRightKitbot
+                    .inverted(true); // ORBB: false | AR: true    
 
                 frontLeftKitbot
                     .idleMode(IdleMode.kBrake)
@@ -92,7 +93,7 @@ public final class Configs {
                 frontLeftKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
-
+                
                 rearRightKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
