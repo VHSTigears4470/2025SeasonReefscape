@@ -210,7 +210,7 @@ public static final class AlgaeConstants {
     public static final boolean k_usingKitbotDrive = false;
 
     public static final boolean k_usingAlgea = false;
-    public static final boolean k_usingInake = false;
+    public static final boolean k_usingCoral = false;
     public static final boolean k_usingClimb = false;
   }
 }

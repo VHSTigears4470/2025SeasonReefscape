@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.TeleConstants;
 import frc.robot.Constants.UsingConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 import frc.robot.commands.AlgaeCommands.RetractAlgaeArm;
@@ -20,9 +19,6 @@ import frc.robot.commands.CoralCommands.ToggleCoralArm;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
 import frc.robot.commands.KitbotDrivetrain.MoveDistance;
 import frc.robot.commands.SwerveDrivetrain.SwerveJoystickCommand;
-import frc.robot.commands.SwerveDrivetrain.TestDrivingMotors;
-import frc.robot.commands.SwerveDrivetrain.TestSetPosCommand;
-import frc.robot.commands.SwerveDrivetrain.TestTurningMotors;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
@@ -45,11 +41,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  DriveSubsystem m_driveSub;
-  KitbotDriveSubsystem m_kitbotDriveSub;
-  private final CoralSubsystem m_coralSub = new CoralSubsystem();
-  private final AlgaeSubsystem m_algaeSub = new AlgaeSubsystem();
-  private final ClimbSubsystem m_climbSub = new ClimbSubsystem();
+  private DriveSubsystem m_driveSub;
+  private KitbotDriveSubsystem m_kitbotDriveSub;
+  private CoralSubsystem m_coralSub;
+  private AlgaeSubsystem m_algaeSub;
+  private ClimbSubsystem m_climbSub;
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -74,6 +70,7 @@ public class RobotContainer {
                         "Default / Field Oriented"
                 )
                 );
+                m_kitbotDriveSub = null;
         } else if(UsingConstants.k_usingKitbotDrive) { // else if because we should only have one drive at once
                 m_kitbotDriveSub = new KitbotDriveSubsystem();
                 m_kitbotDriveSub.setDefaultCommand(new ArcadeDrive(
@@ -81,6 +78,28 @@ public class RobotContainer {
                         () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
                         () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot))
                 );
+                m_driveSub = null;
+        } else {
+                m_driveSub = null;
+                m_kitbotDriveSub = null;
+        }
+
+        if(UsingConstants.k_usingAlgea) {
+                m_algaeSub = new AlgaeSubsystem();
+        } else {
+                m_algaeSub = null;
+        }
+
+        if(UsingConstants.k_usingClimb) {
+                m_climbSub = new ClimbSubsystem();
+        } else {
+                m_climbSub = null;
+        }
+
+        if(UsingConstants.k_usingCoral) {
+                m_coralSub = new CoralSubsystem();
+        } else {
+                m_coralSub = null;
         }
   }
 
