@@ -1,4 +1,4 @@
- frc package frc.robot.commands.CoralCommands;
+package frc.robot.commands.CoralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralSubsystem;
@@ -6,7 +6,7 @@ import frc.robot.subsystems.CoralSubsystem;
 public class ShootCoralSlow extends Command {
     private final CoralSubsystem m_coralSub;
 
-    public IntakeCoral(CoralSubsystem coralSub) {
+    public ShootCoralSlow(CoralSubsystem coralSub) {
         m_coralSub = coralSub;
         addRequirements(m_coralSub);
     }
@@ -35,3 +35,4 @@ public class ShootCoralSlow extends Command {
     public boolean isFinished() {
         return false;
     }
+}

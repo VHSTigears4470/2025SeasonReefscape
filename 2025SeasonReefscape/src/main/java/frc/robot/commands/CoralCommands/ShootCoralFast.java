@@ -6,7 +6,7 @@ import frc.robot.subsystems.CoralSubsystem;
 public class ShootCoralFast extends Command {
     private final CoralSubsystem m_coralSub;
 
-    public IntakeCoral(CoralSubsystem coralSub) {
+    public ShootCoralFast(CoralSubsystem coralSub) {
         m_coralSub = coralSub;
         addRequirements(m_coralSub);
     }

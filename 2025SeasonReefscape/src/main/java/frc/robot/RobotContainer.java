@@ -7,11 +7,25 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.TeleConstants;
 import frc.robot.Constants.UsingConstants;
+import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
+import frc.robot.commands.AlgaeCommands.RetractAlgaeArm;
+import frc.robot.commands.AlgaeCommands.ShootAlgae;
+import frc.robot.commands.ClimbCommands.ExtendClimbArm;
+import frc.robot.commands.ClimbCommands.RetractClimbArm;
+import frc.robot.commands.CommandGroups.IntakeExtendAlgae;
+import frc.robot.commands.CoralCommands.IntakeCoral;
+import frc.robot.commands.CoralCommands.ShootCoralFast;
+import frc.robot.commands.CoralCommands.ShootCoralSlow;
+import frc.robot.commands.CoralCommands.ToggleCoralArm;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
+import frc.robot.commands.KitbotDrivetrain.MoveDistance;
 import frc.robot.commands.SwerveDrivetrain.SwerveJoystickCommand;
 import frc.robot.commands.SwerveDrivetrain.TestDrivingMotors;
 import frc.robot.commands.SwerveDrivetrain.TestSetPosCommand;
 import frc.robot.commands.SwerveDrivetrain.TestTurningMotors;
+import frc.robot.subsystems.AlgaeSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -77,7 +91,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    int preset = 2;
+    int preset = 1;
     switch (preset) {
             case 0: 
                     controllerPresetMain();
@@ -85,6 +99,8 @@ public class RobotContainer {
             case 1:
                     controllerPresetOne();
                     break;
+            case 2:
+                        controllerPresetTwo();
             default:
                     controllerPresetMain();
                     break;
@@ -127,11 +143,11 @@ public class RobotContainer {
         //B-Button
         m_driverController.b().whileTrue(new RetractAlgaeArm(m_algaeSub));
         //X-Button
-        m_driverController.x().onTrue(newToggleCoralArm(m_coralSub));
+        m_driverController.x().onTrue(new ToggleCoralArm(m_coralSub, CORAL_ARM_STATE.BACKWARD));
         //A-Button
         m_driverController.a().whileTrue(new ShootAlgae(m_algaeSub));
         //LB
-        m_driverController.leftBumber().whileTrue(new ShootCoralFast(m_coralSub));
+        m_driverController.leftBumper().whileTrue(new ShootCoralFast(m_coralSub));
         //LT
         m_driverController.leftTrigger().whileTrue(new ShootCoralSlow(m_coralSub));
         //RB
@@ -139,7 +155,7 @@ public class RobotContainer {
         //RT
         m_driverController.rightTrigger().whileTrue(new RetractClimbArm(m_climbSub));
         //D-Pad 
-        m_driverController.povAny().whileTrue(new IntakeCoral(m_coralSub));//chack validity later
+        m_driverController.povUp().whileTrue(new IntakeCoral(m_coralSub));//chack validity later
   }
 
   /**
@@ -154,210 +170,101 @@ public class RobotContainer {
    *    Left Bumper : Rotate Counter Clockwise
    */
   public void controllerPresetOne() {
-        // Reset Odom
-        m_driverController.b().onTrue(
-                new SequentialCommandGroup(
+        if(UsingConstants.k_usingSwerveDrive) {
+                // Reset Odom
+                m_driverController.b().onTrue(
+                        new SequentialCommandGroup(
+                                new InstantCommand(
+                                        ()-> m_driveSub.zeroHeading(),
+                                        m_driveSub
+                                ),
+                                new InstantCommand(
+                                        ()-> m_driveSub.resetOdometry(new Pose2d()),
+                                        m_driveSub
+                                )
+                        )
+                );
+
+                // Stop Button
+                m_driverController.a().onTrue(
                         new InstantCommand(
-                                ()-> m_driveSub.zeroHeading(),
-                                m_driveSub
-                        ),
-                        new InstantCommand(
-                                ()-> m_driveSub.resetOdometry(new Pose2d()),
+                                () -> m_driveSub.stopModules(), 
                                 m_driveSub
                         )
-                )
-        );
+                );
 
-        // Stop Button
-        m_driverController.a().onTrue(
-                new InstantCommand(
-                        () -> m_driveSub.stopModules(), 
-                        m_driveSub
-                )
-        );
-
-        // Straighten Wheels
-        m_driverController.x().whileTrue(
-                new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (boolean) false,
-                        "Wheels Straight"
-                )
-        );
+                // Straighten Wheels
+                m_driverController.x().whileTrue(
+                        new SwerveJoystickCommand(
+                                m_driveSub,
+                                () -> (double) 0.0,
+                                () -> (double) 0.0,
+                                () -> (double) 0.0,
+                                () -> (boolean) false,
+                                "Wheels Straight"
+                        )
+                );
 
 
-        // drive with Robot Orientation
-        m_driverController.rightTrigger().whileTrue(
-                new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot),
-                        // When pressed, changes to robot orientated
-                        () -> false,
-                        "Robot Orientated"
-                )
-        );
+                // drive with Robot Orientation
+                m_driverController.rightTrigger().whileTrue(
+                        new SwerveJoystickCommand(
+                                m_driveSub,
+                                () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY),
+                                () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
+                                () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot),
+                                // When pressed, changes to robot orientated
+                                () -> false,
+                                "Robot Orientated"
+                        )
+                );
 
-        // drive forward only
-        m_driverController.rightBumper().whileTrue(
-                new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) 0.4,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (boolean) false,
-                        "Forward"
-                )
-        );
+                // drive forward only
+                m_driverController.rightBumper().whileTrue(
+                        new SwerveJoystickCommand(
+                                m_driveSub,
+                                () -> (double) 0.4,
+                                () -> (double) 0.0,
+                                () -> (double) 0.0,
+                                () -> (boolean) false,
+                                "Forward"
+                        )
+                );
 
-        // rotate clockwise with joystick input
-        m_driverController.leftBumper().whileTrue(
-                new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (double) 0.4,
-                        () -> (boolean) false,
-                        "Rotate"
-                )
-        );
+                // rotate clockwise with joystick input
+                m_driverController.leftBumper().whileTrue(
+                        new SwerveJoystickCommand(
+                                m_driveSub,
+                                () -> (double) 0.0,
+                                () -> (double) 0.0,
+                                () -> (double) 0.4,
+                                () -> (boolean) false,
+                                "Rotate"
+                        )
+                );
 
-        // rotate counter clockwise with joystick input
-        m_driverController.leftTrigger().whileTrue(
-                new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (double) -0.4,
-                        () -> (boolean) false,
-                        "Rotate"
-                )
-        );
-
+                // rotate counter clockwise with joystick input
+                m_driverController.leftTrigger().whileTrue(
+                        new SwerveJoystickCommand(
+                                m_driveSub,
+                                () -> (double) 0.0,
+                                () -> (double) 0.0,
+                                () -> (double) -0.4,
+                                () -> (boolean) false,
+                                "Rotate"
+                        )
+                );
+        }
   }
 
   /**
-   * The default / main preset used for comps
+   * Preset for kitbot
    * Does the following: 
-   *    Right Trigger : Reset Heading & Odom
-   *    Right Bumper : Rotate Wheels Clockwise
-   *    Left Bumper : Rotate Wheels Clockwise
-   * 
-   *    Button B : Set Wheels Right
-   *    Button X : Set Wheels Left
-   *    Button Y : Set Wheel Straight
-   *    Button A : Set Wheels Backward
-   *    
-   *    Left Trigger + Button B : Move Robot Right
-   *    Left Trigger + Button X : Move Robot Left
-   *    Left Trigger + Button Y : Move Robot Forward
-   *    Left Trigger + Button A : Move Robot Backward
-   * 
-   *    Start Button : Move Wheels In Whatever Direction they're facing at 10% max speed
+   *    Button A : Drive robot forwards 5 meters
    */
   public void controllerPresetTwo() {
-        // Reset odom, reset encoders, go to 0 pos (turn), turn, 
-        // Reset pos = > zero gyro -> reset odom
-        // turn (idk why )
-        m_driverController.rightTrigger().onTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(
-                                ()-> m_driveSub.zeroHeading(),
-                                m_driveSub
-                        ),
-                        new InstantCommand(
-                                ()-> m_driveSub.resetOdometry(new Pose2d()),
-                                m_driveSub
-                        )
-                )
-        );
-
-        // right movement
-        m_driverController.b().and(m_driverController.leftTrigger()).whileTrue(
-                    new SwerveJoystickCommand(
-                    m_driveSub,
-                    () -> (double) 0.0,
-                    () -> (double) 0.4,
-                    () -> (double) 0.0,
-                    () -> (boolean) false,
-                    "Right Movement"
-                )
-        );
-
-        // right rotation
-        m_driverController.b().and(m_driverController.leftTrigger().negate()).whileTrue(
-                new TestSetPosCommand(m_driveSub, Math.PI * 0.5)
-        );
-
-        // left movement
-        m_driverController.x().and(m_driverController.leftTrigger()).whileTrue(
-                        new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) 0.0,
-                        () -> (double) -0.4,
-                        () -> (double) 0.0,
-                        () -> (boolean) false,
-                        "Left Movement"
-                )
-        );
-
-        // left rotation
-        m_driverController.x().and(m_driverController.leftTrigger().negate()).whileTrue(
-                new TestSetPosCommand(m_driveSub, Math.PI * 1.5)
-        );
-
-        // forwards movement
-        m_driverController.y().and(m_driverController.leftTrigger()).whileTrue(
-                        new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) 0.4,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (boolean) false,
-                        "Forward Movement"
-                )
-        );
-
-        // forwards rotation
-        m_driverController.y().and(m_driverController.leftTrigger().negate()).whileTrue(
-                new TestSetPosCommand(m_driveSub, 0)
-        );
-
-        // backwards movement
-        m_driverController.a().and(m_driverController.leftTrigger()).whileTrue(
-                        new SwerveJoystickCommand(
-                        m_driveSub,
-                        () -> (double) -0.4,
-                        () -> (double) 0.0,
-                        () -> (double) 0.0,
-                        () -> (boolean) false,
-                        "Backward Movement"
-                )
-        );
-\
-
-
-        // backwards rotation
-        m_driverController.a().and(m_driverController.leftTrigger().negate()).whileTrue(
-                new TestSetPosCommand(m_driveSub, Math.PI)
-        );
-
-        // Rotate wheels clockwise
-        m_driverController.rightBumper().whileTrue(
-                new TestTurningMotors(m_driveSub, true)
-        );
-
-        // Rotate wheels counterclockwise
-        m_driverController.leftBumper().whileTrue(
-                new TestTurningMotors(m_driveSub, false)
-        );
-
-        m_driverController.start().whileTrue(
-                new TestDrivingMotors(m_driveSub, 0.10 * TeleConstants.k_MaxSpeedMetersPerSecond)
-        );
+        if(UsingConstants.k_usingKitbotDrive) {
+                m_driverController.a().onTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
+        }
   }
 }

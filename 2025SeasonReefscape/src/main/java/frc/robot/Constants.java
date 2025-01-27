@@ -81,14 +81,14 @@ public final class Constants {
 
     //Find correct values
     public static final double k_forwardArmPos = 0;
-    public static final double k_backwordArmPos = 0;
+    public static final double k_backwardArmPos = 0;
     
     //Changes arm states
     //Change voltages
     public static final double k_fastVoltage = 4.0; 
     public static final double k_slowVoltage = 1.5; 
     
-    public static enum ARM_STATE {
+    public static enum CORAL_ARM_STATE {
       FORWARD,
       BACKWARD;
     }

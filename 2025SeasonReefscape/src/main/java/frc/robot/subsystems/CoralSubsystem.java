@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.Constants.CoralConstants.ARM_STATE;
+import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 
 public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
@@ -26,7 +26,7 @@ public class CoralSubsystem extends SubsystemBase {
   private final RelativeEncoder m_armEncoder;
   private final SparkClosedLoopController m_armClosedLoopController;
   private double d_desiredReferencePosition;
-  private ARM_STATE e_armState;
+  private CORAL_ARM_STATE e_armState;
   //add sensor if necessary
 
   public CoralSubsystem() {
@@ -38,7 +38,7 @@ public class CoralSubsystem extends SubsystemBase {
     m_armEncoder = m_armMotor.getEncoder();
     resetEncoders();
     m_armClosedLoopController = m_armMotor.getClosedLoopController();
-    setArmState(ARM_STATE.FORWARD);
+    setArmState(CORAL_ARM_STATE.FORWARD);
   }
 
   //All get___Encoder methods return value in radians
@@ -64,7 +64,7 @@ public class CoralSubsystem extends SubsystemBase {
   }
 
 //Returning the arm state
-  public ARM_STATE getArmState() {
+  public CORAL_ARM_STATE getArmState() {
     return e_armState;
   }
 
@@ -86,11 +86,11 @@ public class CoralSubsystem extends SubsystemBase {
     m_botMotor.setVoltage(CoralConstants.k_fastVoltage);
   }
 
-  public void setArmState(ARM_STATE desiredState) {
-    if (desiredState == ARM_STATE.FORWARD) {
+  public void setArmState(CORAL_ARM_STATE desiredState) {
+    if (desiredState == CORAL_ARM_STATE.FORWARD) {
       e_armState = desiredState;
       d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
-    } else if (desiredState == ARM_STATE.BACKWARD) {
+    } else if (desiredState == CORAL_ARM_STATE.BACKWARD) {
       e_armState = desiredState;
       d_desiredReferencePosition = Constants.CoralConstants.k_backwardArmPos;
     }
@@ -107,6 +107,12 @@ public class CoralSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("TopEncoder", getTopEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("BottomEncoder", getBotEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("ArmEncoder", getArmEncoder() * 180 / Math.PI);
+  }
+
+  public void stop(){
+    m_topMotor.stopMotor();
+    m_botMotor.stopMotor();
+    m_armMotor.stopMotor();
   }
   
   @Override

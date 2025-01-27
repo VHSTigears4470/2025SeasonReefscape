@@ -5,7 +5,8 @@ import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 import frc.robot.subsystems.CoralSubsystem;
 
 public class ToggleCoralArm extends Command {
-    private static CoralSubsystem m_coralSub;
+    private final CoralSubsystem m_coralSub;
+    private CORAL_ARM_STATE m_coralArmState;
         
         public ToggleCoralArm(CoralSubsystem coralSub, CORAL_ARM_STATE armState) {
             m_coralSub = coralSub;
@@ -21,11 +22,11 @@ public class ToggleCoralArm extends Command {
         @Override
         public void execute(){ //runs every 20 milliseconds
             //if the arm is in the forward position, set it to the backward position
-            if (m_coralArmState == ARM_STATE. && !m_coralSub.isAtDesiredPosition()) {
+            if (m_coralArmState == CORAL_ARM_STATE.FORWARD && !m_coralSub.isAtDesiredPosition()) {
                 //if the arm is not at the desired position, set the arm state to backward
-                m_coralSub.setArmState(ARM_STATE.BACKWARD);
+                m_coralSub.setArmState(CORAL_ARM_STATE.BACKWARD);
             }else if (!m_coralSub.isAtDesiredPosition()){
-                m_coralSub.setArmState(ARM_STATE.FORWARD);
+                m_coralSub.setArmState(CORAL_ARM_STATE.FORWARD);
             }
         }
 

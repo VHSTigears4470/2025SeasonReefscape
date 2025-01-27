@@ -5,7 +5,7 @@ import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 import frc.robot.subsystems.AlgaeSubsystem;
 
 public class ExtendAlgaeArm extends Command {
-    private static AlgaeSubsystem m_algaeSub;
+    private AlgaeSubsystem m_algaeSub;
         
         public ExtendAlgaeArm(AlgaeSubsystem algaeSub) {
             m_algaeSub = algaeSub;

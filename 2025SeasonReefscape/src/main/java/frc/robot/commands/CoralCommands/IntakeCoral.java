@@ -1,7 +1,7 @@
 package frc.robot.commands.CoralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AlgaeSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
 
 public class IntakeCoral extends Command {
     private final CoralSubsystem m_coralSub;
