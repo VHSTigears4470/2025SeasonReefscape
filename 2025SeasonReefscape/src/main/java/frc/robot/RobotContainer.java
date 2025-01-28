@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.UsingConstants;
+import frc.robot.Constants.OperatingConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 import frc.robot.commands.AlgaeCommands.RetractAlgaeArm;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
@@ -59,7 +59,7 @@ public class RobotContainer {
   }
 
   private void initSubsystems() {
-        if(UsingConstants.k_usingSwerveDrive) {
+        if(OperatingConstants.k_usingSwerveDrive) {
                 m_driveSub = new DriveSubsystem();
                 m_driveSub.setDefaultCommand(new SwerveJoystickCommand(
                         m_driveSub, 
@@ -71,7 +71,7 @@ public class RobotContainer {
                 )
                 );
                 m_kitbotDriveSub = null;
-        } else if(UsingConstants.k_usingKitbotDrive) { // else if because we should only have one drive at once
+        } else if(OperatingConstants.k_usingKitbotDrive) { // else if because we should only have one drive at once
                 m_kitbotDriveSub = new KitbotDriveSubsystem();
                 m_kitbotDriveSub.setDefaultCommand(new ArcadeDrive(
                         m_kitbotDriveSub,
@@ -84,19 +84,19 @@ public class RobotContainer {
                 m_kitbotDriveSub = null;
         }
 
-        if(UsingConstants.k_usingAlgea) {
+        if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub = new AlgaeSubsystem();
         } else {
                 m_algaeSub = null;
         }
 
-        if(UsingConstants.k_usingClimb) {
+        if(OperatingConstants.k_usingClimb) {
                 m_climbSub = new ClimbSubsystem();
         } else {
                 m_climbSub = null;
         }
 
-        if(UsingConstants.k_usingCoral) {
+        if(OperatingConstants.k_usingCoral) {
                 m_coralSub = new CoralSubsystem();
         } else {
                 m_coralSub = null;
@@ -135,7 +135,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-        if(UsingConstants.k_usingSwerveDrive) {
+        if(OperatingConstants.k_usingSwerveDrive) {
                 return new PathPlannerAuto("Straight Auto");
         }
         return null;
@@ -157,6 +157,7 @@ public class RobotContainer {
    *    RT: Climb Retract
    *    D-Pad: Intake Coral
    */
+ 
   public void controllerPresetMain() { //subject to change (while/on true)
         //Swerve stuff goes here
         //Left Joystick
@@ -164,23 +165,41 @@ public class RobotContainer {
         //Right Joystick
         
         //Y-button
+        if(OperatingConstants.k_usingAlgae){
         m_driverController.y().onTrue(new IntakeExtendAlgae(m_algaeSub));
+        }
         //B-Button
+        if(OperatingConstants.k_usingAlgae){
         m_driverController.b().whileTrue(new RetractAlgaeArm(m_algaeSub));
+        }
         //X-Button
+        if(OperatingConstants.k_usingCoral){
         m_driverController.x().onTrue(new ToggleCoralArm(m_coralSub, CORAL_ARM_STATE.BACKWARD));
+        }
         //A-Button
+        if(OperatingConstants.k_usingAlgae){
         m_driverController.a().whileTrue(new ShootAlgae(m_algaeSub));
+        }
         //LB
+        if(OperatingConstants.k_usingCoral){
         m_driverController.leftBumper().whileTrue(new ShootCoralFast(m_coralSub));
+        }
         //LT
+        if(OperatingConstants.k_usingCoral){
         m_driverController.leftTrigger().whileTrue(new ShootCoralSlow(m_coralSub));
+        }
         //RB
+        if(OperatingConstants.k_usingClimb){
         m_driverController.rightBumper().whileTrue(new ExtendClimbArm(m_climbSub));
+        }
         //RT
+        if(OperatingConstants.k_usingClimb){
         m_driverController.rightTrigger().whileTrue(new RetractClimbArm(m_climbSub));
+        }
         //D-Pad 
+        if(OperatingConstants.k_usingCoral){
         m_driverController.povUp().whileTrue(new IntakeCoral(m_coralSub));//chack validity later
+        }
   }
 
   /**
@@ -195,7 +214,7 @@ public class RobotContainer {
    *    Left Bumper : Rotate Counter Clockwise
    */
   public void controllerPresetOne() {
-        if(UsingConstants.k_usingSwerveDrive) {
+        if(OperatingConstants.k_usingSwerveDrive) {
                 // Reset Odom
                 m_driverController.b().onTrue(
                         new SequentialCommandGroup(
@@ -288,7 +307,7 @@ public class RobotContainer {
    *    Button A : Drive robot forwards 5 meters
    */
   public void controllerPresetTwo() {
-        if(UsingConstants.k_usingKitbotDrive) {
+        if(OperatingConstants.k_usingKitbotDrive) {
                 m_driverController.a().onTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
         }
   }

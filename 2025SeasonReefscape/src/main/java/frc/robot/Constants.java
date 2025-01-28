@@ -210,13 +210,13 @@ public static final class AlgaeConstants {
     public static final boolean k_kitbotDriveDebug = true;
   }
 
-  public static final class UsingConstants {
+  public static final class OperatingConstants {
     // Drives
     public static final boolean k_usingSwerveDrive = true;
-    public static final boolean k_usingKitbotDrive = false;
+    public static final boolean k_usingKitbotDrive = true;
 
-    public static final boolean k_usingAlgea = false;
-    public static final boolean k_usingCoral = false;
-    public static final boolean k_usingClimb = false;
+    public static final boolean k_usingAlgae = true;
+    public static final boolean k_usingCoral = true;
+    public static final boolean k_usingClimb = true;
   }
 }
