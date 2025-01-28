@@ -87,10 +87,6 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder.setPosition(0);
   }
 
-  public boolean isAtDesiredPosition(){
-    return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
-  }
-
   // Dashboard methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
