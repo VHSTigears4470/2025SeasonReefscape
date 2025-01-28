@@ -22,12 +22,11 @@ public class ToggleCoralArm extends Command {
         @Override
         public void execute(){ //runs every 20 milliseconds
             //if the arm is in the forward position, set it to the backward position
-            if (m_coralArmState == CORAL_ARM_STATE.FORWARD && !m_coralSub.isAtDesiredPosition()) {
+            if (m_coralArmState == CORAL_ARM_STATE.FORWARD) 
                 //if the arm is not at the desired position, set the arm state to backward
                 m_coralSub.setArmState(CORAL_ARM_STATE.BACKWARD);
-            }else if (!m_coralSub.isAtDesiredPosition()){
+            else if (m_coralArmState == CORAL_ARM_STATE.BACKWARD)
                 m_coralSub.setArmState(CORAL_ARM_STATE.FORWARD);
-            }
         }
 
         // Called once the command ends or is interrupted.
