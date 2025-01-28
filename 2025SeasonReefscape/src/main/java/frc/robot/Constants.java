@@ -87,6 +87,9 @@ public final class Constants {
     //Change voltages
     public static final double k_fastVoltage = 4.0; 
     public static final double k_slowVoltage = 1.5; 
+
+    //Set arm speed
+    public static final double k_coralArmSpeed = 0.2;
     
     public static enum CORAL_ARM_STATE {
       FORWARD,
@@ -116,7 +119,10 @@ public static final class AlgaeConstants {
     
     //Find correct voltages
     public static final double k_intakeVoltage = -1; 
-    public static final double k_dispenseVoltage = 1; 
+    public static final double k_dispenseVoltage = 1;
+    
+    //Algae Arm Speed
+    public static final double k_algaeArmSpeed = 0.2;
 
     public static enum ALGAE_ARM_STATE {
       RAISED,

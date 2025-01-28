@@ -127,8 +127,6 @@ public final class Configs {
                 intakeMotorBottom.encoder
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
-                intakeMotorBottom
-                    .follow(CoralConstants.k_botID, false);
 
                 intakeMotorArm
                     .idleMode(IdleMode.kBrake)
@@ -136,8 +134,7 @@ public final class Configs {
                 intakeMotorArm.encoder
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
-                intakeMotorArm
-                    .follow(CoralConstants.k_armID, false);
+
 
                 algaeTopMotor
                     .idleMode(IdleMode.kBrake)
@@ -145,8 +142,6 @@ public final class Configs {
                 algaeTopMotor.encoder
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
-                algaeTopMotor
-                    .follow(AlgaeConstants.k_algaeTopID, false);
 
                 algaeArmMotor
                     .idleMode(IdleMode.kBrake)
@@ -154,8 +149,7 @@ public final class Configs {
                 algaeArmMotor.encoder
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
-                algaeArmMotor
-                    .follow(AlgaeConstants.k_algaeArmID, false);
+                    
 
                 climbMotor
                     .idleMode(IdleMode.kBrake)
@@ -163,8 +157,6 @@ public final class Configs {
                 climbMotor.encoder
                     .positionConversionFactor(drivingFactor) //TODO
                     .velocityConversionFactor(drivingFactor / 60.0); 
-                climbMotor
-                    .follow(ClimbConstants.k_climbMotorID, false);
 
                 
 

@@ -5,10 +5,13 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,7 +31,6 @@ public class CoralSubsystem extends SubsystemBase {
   private double d_desiredReferencePosition;
   private CORAL_ARM_STATE e_armState;
   //add sensor if necessary
-
   public CoralSubsystem() {
     m_botMotor = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
     m_topMotor = new SparkMax(CoralConstants.k_topID, MotorType.kBrushless);
@@ -97,9 +99,10 @@ public class CoralSubsystem extends SubsystemBase {
     m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
 
-  public boolean isAtDesiredPosition(){
+  //TBD
+  /* public boolean isAtDesiredPosition(){
     return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
-  }
+  } */
 
 //sets the encoders to default values
   public void setSmartDashboard() {
@@ -118,6 +121,10 @@ public class CoralSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if(getArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
+      m_armMotor.set(-Constants.CoralConstants.k_coralArmSpeed);
+    else if (getArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
+      m_armMotor.set(Constants.CoralConstants.k_coralArmSpeed);
     setSmartDashboard();
   }
 

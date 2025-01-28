@@ -71,7 +71,7 @@ public class AlgaeSubsystem extends SubsystemBase {
       e_armState = desiredState;
       d_desiredReferencePosition = Constants.AlgaeConstants.k_loweredArmPos;
     }
-    m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
+    m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
   }
   
   public void intake() {
@@ -88,7 +88,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public boolean isAtDesiredPosition(){
-    return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
+    return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer); //make sure in radians
   }
 
   // Dashboard methods
@@ -108,6 +108,10 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if(getAlgaeArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
+      m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
+    else if (getAlgaeArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
+      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
     setSmartDashboard();
   }
 
