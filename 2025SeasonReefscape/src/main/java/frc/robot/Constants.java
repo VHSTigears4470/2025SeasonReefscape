@@ -214,7 +214,7 @@ public static final class AlgaeConstants {
   public static final class OperatingConstants {
     // Drives
     public static final boolean k_usingSwerveDrive = true;
-    public static final boolean k_usingKitbotDrive = true;
+    public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
 
     public static final boolean k_usingAlgae = true;
     public static final boolean k_usingCoral = true;

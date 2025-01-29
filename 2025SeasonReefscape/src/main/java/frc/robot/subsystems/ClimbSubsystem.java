@@ -6,23 +6,17 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.ClimbConstants;
-import frc.robot.Constants.ClimbConstants.CLIMB_STATE;
 
 /** CLimb Subsystem */
 public class ClimbSubsystem extends SubsystemBase {
   /** CLimb Subsystem */
    private final SparkMax m_climbMotor; 
    private final RelativeEncoder m_climbEncoder;
-   private final SparkClosedLoopController m_climbClosedLoopController;
-   private CLIMB_STATE e_climbState;
    private double d_desiredReferencePosition;
    private double d_upperLimit = 1;//change later to actual value
    private double d_lowerLimit = -1;//subject to change
@@ -32,10 +26,6 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbMotor = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
     m_climbEncoder = m_climbMotor.getEncoder();
     resetEncoders();
-
-    m_climbClosedLoopController = m_climbMotor.getClosedLoopController();
-
-    setClimbArmState(CLIMB_STATE.BACK);
   }
     
   //All get___Encoder methods return value in radians
@@ -43,23 +33,8 @@ public class ClimbSubsystem extends SubsystemBase {
     return (m_climbEncoder.getPosition() * Math.PI) / 21;
   }
 
-  public CLIMB_STATE getClimbState(){
-    return e_climbState;
-  }
-
   public double getDesiredPos(){
     return d_desiredReferencePosition;
-  }
-
-  public void setClimbArmState(CLIMB_STATE p_desiredState) {
-    if (p_desiredState == CLIMB_STATE.FORWARD) {
-      e_climbState = p_desiredState;
-      d_desiredReferencePosition = ClimbConstants.k_forwardClimbPos;
-    } else if (p_desiredState == CLIMB_STATE.BACK) {
-      e_climbState = p_desiredState;
-      d_desiredReferencePosition = ClimbConstants.k_backClimbPos;
-    }
-    m_climbClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
 
   public void setArmSpeed(double speed){

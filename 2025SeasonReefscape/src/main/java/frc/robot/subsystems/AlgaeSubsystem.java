@@ -62,15 +62,13 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; raised, centered,
     if (desiredState == ALGAE_ARM_STATE.RAISED) {
-      e_armState = desiredState;
       d_desiredReferencePosition = Constants.AlgaeConstants.k_raisedArmPos;
     } else if (desiredState == ALGAE_ARM_STATE.CENTERED) {
-      e_armState = desiredState;
       d_desiredReferencePosition = Constants.AlgaeConstants.k_centeredArmPos;
     } else if (desiredState == ALGAE_ARM_STATE.LOWERED) {
-      e_armState = desiredState;
       d_desiredReferencePosition = Constants.AlgaeConstants.k_loweredArmPos;
     }
+    e_armState = desiredState;
     m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
   }
   
@@ -94,8 +92,8 @@ public class AlgaeSubsystem extends SubsystemBase {
   // Dashboard methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
-    SmartDashboard.putNumber("AlgaeTopEncoder", getAlgaeTopEncoder() * 180 / Math.PI);
-    SmartDashboard.putNumber("AlgaeArmEncoder", getAlgaeArmEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("AlgaeTopEncoder in Degrees", getAlgaeTopEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("AlgaeArmEncoder in Degrees", getAlgaeArmEncoder() * 180 / Math.PI);
   }
   
   public void stop(){
@@ -108,10 +106,10 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(getAlgaeArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
-      m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
-    else if (getAlgaeArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
-      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
+    // if(getAlgaeArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
+    //   m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
+    // else if (getAlgaeArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
+    //   m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
     setSmartDashboard();
   }
 

@@ -5,13 +5,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -90,19 +88,17 @@ public class CoralSubsystem extends SubsystemBase {
 
   public void setArmState(CORAL_ARM_STATE desiredState) {
     if (desiredState == CORAL_ARM_STATE.FORWARD) {
-      e_armState = desiredState;
       d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
     } else if (desiredState == CORAL_ARM_STATE.BACKWARD) {
-      e_armState = desiredState;
       d_desiredReferencePosition = Constants.CoralConstants.k_backwardArmPos;
     }
+    e_armState = desiredState;
     m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
 
-  //TBD
-  /* public boolean isAtDesiredPosition(){
+   public boolean isAtDesiredPosition(){
     return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
-  } */
+  } 
 
 //sets the encoders to default values
   public void setSmartDashboard() {
@@ -121,10 +117,10 @@ public class CoralSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(getArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
-      m_armMotor.set(-Constants.CoralConstants.k_coralArmSpeed);
-    else if (getArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
-      m_armMotor.set(Constants.CoralConstants.k_coralArmSpeed);
+    // if(getArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
+    //   m_armMotor.set(-Constants.CoralConstants.k_coralArmSpeed);
+    // else if (getArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
+    //   m_armMotor.set(Constants.CoralConstants.k_coralArmSpeed);
     setSmartDashboard();
   }
 
@@ -132,10 +128,5 @@ public class CoralSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-
-public boolean isAtDesiredPosition() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isAtDesiredPosition'");
-}
   
 }

@@ -4,9 +4,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import frc.robot.Constants.AlgaeConstants;
-import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
