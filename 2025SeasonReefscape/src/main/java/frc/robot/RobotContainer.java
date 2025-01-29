@@ -18,7 +18,6 @@ import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
 import frc.robot.commands.KitbotDrivetrain.MoveDistance;
-import frc.robot.commands.SwerveDrivetrain.SwerveJoystickCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
@@ -68,7 +67,8 @@ public class RobotContainer {
                                 OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), 0), 
                                 OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), 0), 
                                 OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), 0), 
-                                true
+                                true,
+                                "Default / Field Oriented"
                         ), 
                         m_driveSub)
                 );
@@ -118,13 +118,13 @@ public class RobotContainer {
     int preset = 1;
     switch (preset) {
             case 0: 
-                    controllerPresetMain();
+                    controllerPresetMain(); // Competition Configs
                     break;
             case 1:
-                    controllerPresetOne();
+                    controllerPresetOne(); // Swerve
                     break;
             case 2:
-                        controllerPresetTwo();
+                        controllerPresetTwo(); // Kitbot
             default:
                     controllerPresetMain();
                     break;
@@ -241,63 +241,72 @@ public class RobotContainer {
 
                 // Straighten Wheels
                 m_driverController.x().whileTrue(
-                        new SwerveJoystickCommand(
-                                m_driveSub,
-                                () -> (double) 0.0,
-                                () -> (double) 0.0,
-                                () -> (double) 0.0,
-                                () -> (boolean) false,
-                                "Wheels Straight"
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        0.0, 
+                                        0.0, 
+                                        0.0, 
+                                        false,
+                                        "Wheels Straight"
+                                ), 
+                                m_driveSub
                         )
                 );
 
 
                 // drive with Robot Orientation
                 m_driverController.rightTrigger().whileTrue(
-                        new SwerveJoystickCommand(
-                                m_driveSub,
-                                () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY),
-                                () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-                                () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot),
-                                // When pressed, changes to robot orientated
-                                () -> false,
-                                "Robot Orientated"
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), 0), 
+                                        OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), 0), 
+                                        OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), 0), 
+                                        true,
+                                        "Robot Orientated"
+                                ), 
+                                m_driveSub
                         )
                 );
 
                 // drive forward only
                 m_driverController.rightBumper().whileTrue(
-                        new SwerveJoystickCommand(
-                                m_driveSub,
-                                () -> (double) 0.4,
-                                () -> (double) 0.0,
-                                () -> (double) 0.0,
-                                () -> (boolean) false,
-                                "Forward"
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        0.4, 
+                                        0.0, 
+                                        0.0, 
+                                        false,
+                                        "Forward"
+                                ), 
+                                m_driveSub
                         )
                 );
 
                 // rotate clockwise with joystick input
                 m_driverController.leftBumper().whileTrue(
-                        new SwerveJoystickCommand(
-                                m_driveSub,
-                                () -> (double) 0.0,
-                                () -> (double) 0.0,
-                                () -> (double) 0.4,
-                                () -> (boolean) false,
-                                "Rotate"
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        0.0, 
+                                        0.0, 
+                                        0.4, 
+                                        false,
+                                        "Rotate ClockWise"
+                                ), 
+                                m_driveSub
                         )
                 );
 
                 // rotate counter clockwise with joystick input
                 m_driverController.leftTrigger().whileTrue(
-                        new SwerveJoystickCommand(
-                                m_driveSub,
-                                () -> (double) 0.0,
-                                () -> (double) 0.0,
-                                () -> (double) -0.4,
-                                () -> (boolean) false,
-                                "Rotate"
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        0.0, 
+                                        0.0, 
+                                        -0.4, 
+                                        false,
+                                        "Rotate CounterClockWise"
+                                ), 
+                                m_driveSub
                         )
                 );
         }

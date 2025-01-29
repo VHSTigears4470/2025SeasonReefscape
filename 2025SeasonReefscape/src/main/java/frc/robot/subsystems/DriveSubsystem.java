@@ -275,9 +275,9 @@ public class DriveSubsystem extends SubsystemBase {
    * @param ySpeed        Speed of the robot in the y direction (sideways).
    * @param rot           Angular rate of the robot.
    * @param fieldRelative Whether the provided x and y speeds are relative to the
-   *                      field.
+   *                      field. (true for field orientated, false for robot orientated)
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, String statusName) {
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeed * DriveConstants.k_MaxSpeedMetersPerSecond;
     double ySpeedDelivered = ySpeed * DriveConstants.k_MaxSpeedMetersPerSecond;
@@ -295,6 +295,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+    SmartDashboard.putString("Drive Mode", statusName); // Helps understand which command swerve drive is using
   }
 
   /**
