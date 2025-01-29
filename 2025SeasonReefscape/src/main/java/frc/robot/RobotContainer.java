@@ -27,9 +27,11 @@ import frc.robot.subsystems.KitbotDriveSubsystem;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -61,14 +63,14 @@ public class RobotContainer {
   private void initSubsystems() {
         if(OperatingConstants.k_usingSwerveDrive) {
                 m_driveSub = new DriveSubsystem();
-                m_driveSub.setDefaultCommand(new SwerveJoystickCommand(
-                        m_driveSub, 
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot),
-                        () -> true,
-                        "Default / Field Oriented"
-                )
+                m_driveSub.setDefaultCommand(new RunCommand(
+                        () -> m_driveSub.drive(
+                                OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), 0), 
+                                OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), 0), 
+                                OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), 0), 
+                                true
+                        ), 
+                        m_driveSub)
                 );
                 m_kitbotDriveSub = null;
         } else if(OperatingConstants.k_usingKitbotDrive) { // else if because we should only have one drive at once

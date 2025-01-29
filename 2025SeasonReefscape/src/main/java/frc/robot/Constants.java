@@ -28,7 +28,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double k_MaxSpeedMetersPerSecond = 4.8;
+    public static final double k_MaxSpeedMetersPerSecond = 4.46;
     public static final double k_MaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -149,10 +149,10 @@ public static final class AlgaeConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
-    public static final int k_DrivingMotorPinionTeeth = 14;
+    public static final int k_DrivingMotorPinionTeeth = 13;
 
     // Calculations required for driving motor conversion factors and feed forward
-    public static final double k_DrivingMotorFreeSpeedRps = NeoMotorConstants.k_FreeSpeedRpm / 60;
+    public static final double k_DrivingMotorFreeSpeedRps = NeoMotorConstants.k_FreeSpeedRpmNEO_V1_1 / 60;
     public static final double k_WheelDiameterMeters = 0.0762;
     public static final double k_WheelCircumferenceMeters = k_WheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
@@ -164,7 +164,7 @@ public static final class AlgaeConstants {
 
   public static final class OIConstants {
     public static final int k_DriverControllerPort = 0;
-    public static final double k_DriveDeadband = 0.05;
+    public static final double k_DriveDeadband = 0.25;
 
     public static final int k_driverXAxisInverted = 1;
     public static final int k_driverYAxisInverted = 1;
@@ -199,7 +199,8 @@ public static final class AlgaeConstants {
   }
 
   public static final class NeoMotorConstants {
-    public static final double k_FreeSpeedRpm = 5676;
+    public static final double k_FreeSpeedRpmNEO_V1_1 = 5676;
+    public static final double k_FreeSpeedRpmNEO_550 = 11000;
   }
 
   public static final class DebuggingConstants {
