@@ -169,7 +169,7 @@ public static final class AlgaeConstants {
 
   public static final class OIConstants {
     public static final int k_DriverControllerPort = 0;
-    public static final double k_DriveDeadband = 0.4;
+    public static final double k_DriveDeadband = 0.35;
 
     public static final int k_driverXAxisInverted = 1;
     public static final int k_driverYAxisInverted = 1;
