@@ -180,15 +180,15 @@ public class RobotContainer {
         }
         //A-Button
         if(OperatingConstants.k_usingAlgae){
-        m_driverController.a().whileTrue(new ShootAlgae(m_algaeSub));
+        m_driverController.a().onTrue(new ShootAlgae(m_algaeSub));
         }
         //LB
         if(OperatingConstants.k_usingCoral){
-        m_driverController.leftBumper().whileTrue(new ShootCoralFast(m_coralSub));
+        m_driverController.leftBumper().onTrue(new ShootCoralFast(m_coralSub));
         }
         //LT
         if(OperatingConstants.k_usingCoral){
-        m_driverController.leftTrigger().whileTrue(new ShootCoralSlow(m_coralSub));
+        m_driverController.leftTrigger().onTrue(new ShootCoralSlow(m_coralSub));
         }
         //RB
         if(OperatingConstants.k_usingClimb){

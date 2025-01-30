@@ -131,6 +131,11 @@ public static final class AlgaeConstants {
     }    
   }
 
+  public static final class KitbotCoralConstants {
+    public static final int k_outputMotorID = 0;
+    public static final double k_fastVoltage = 4.0; 
+  }
+
   public static final class ClimbConstants {
     //TODO: Change IDS
     public static final int k_climbMotorID = 0;
