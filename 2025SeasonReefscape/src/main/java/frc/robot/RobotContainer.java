@@ -78,7 +78,7 @@ public class RobotContainer {
                 m_kitbotDriveSub.setDefaultCommand(new ArcadeDrive(
                         m_kitbotDriveSub,
                         () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot))
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY))
                 );
                 m_driveSub = null;
         } else {
@@ -319,7 +319,7 @@ public class RobotContainer {
    */
   public void controllerPresetTwo() {
         if(OperatingConstants.k_usingKitbotDrive) {
-                m_driverController.a().onTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
+                m_driverController.a().whileTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
         }
   }
 }

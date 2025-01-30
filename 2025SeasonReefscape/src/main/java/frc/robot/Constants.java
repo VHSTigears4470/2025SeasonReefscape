@@ -103,7 +103,7 @@ public final class Constants {
     public static final int k_rearRightMotorID = 8;
     public static final int k_rearLeftMotorID = 9;
 
-    public static final double k_kitbotWheelRadius = 3;
+    public static final double k_kitbotWheelRadius = Units.inchesToMeters(3);
     public static final double k_kitbotGearRatio = 10.75;
   }
 
@@ -169,7 +169,7 @@ public static final class AlgaeConstants {
 
   public static final class OIConstants {
     public static final int k_DriverControllerPort = 0;
-    public static final double k_DriveDeadband = 0.25;
+    public static final double k_DriveDeadband = 0.4;
 
     public static final int k_driverXAxisInverted = 1;
     public static final int k_driverYAxisInverted = 1;
@@ -221,8 +221,8 @@ public static final class AlgaeConstants {
     public static final boolean k_usingSwerveDrive = true;
     public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
 
-    public static final boolean k_usingAlgae = true;
-    public static final boolean k_usingCoral = true;
-    public static final boolean k_usingClimb = true;
+    public static final boolean k_usingAlgae = false;
+    public static final boolean k_usingCoral = false;
+    public static final boolean k_usingClimb = false;
   }
 }

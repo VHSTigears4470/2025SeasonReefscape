@@ -43,7 +43,7 @@ public class MoveDistance extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_kitbotSub.arcadeDrive(speed, 0);
+    m_kitbotSub.arcadeDrive(0, -speed);
   }
 
   // Called once the command ends or is interrupted.
