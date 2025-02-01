@@ -65,6 +65,7 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbMotor.stopMotor();
   }
   
+  // Resets the encoders
   public void resetAlgaeEncoder() {
     m_climbEncoder.setPosition(0);
   }

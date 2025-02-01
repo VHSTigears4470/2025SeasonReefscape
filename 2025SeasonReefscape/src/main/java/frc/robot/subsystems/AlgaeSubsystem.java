@@ -73,14 +73,17 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
   }
   
+  // This method takes in the algae
   public void intake() {
     m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
   }
+
 
   public void dispense() {
     m_algaeTopMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
   }
 
+  // Resets the encoders
   public void resetEncoders(){
     m_algaeTopEncoder.setPosition(0);
     m_algaeArmEncoder.setPosition(0);
@@ -97,6 +100,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("AlgaeArmEncoder in Degrees", getAlgaeArmEncoder() * 180 / Math.PI);
   }
   
+  // This method stops the motors
   public void stop(){
     m_algaeTopMotor.stopMotor();
     m_algaeArmMotor.stopMotor();

@@ -7,7 +7,7 @@ import frc.robot.subsystems.AlgaeSubsystem;
 public class RetractAlgaeArm extends Command {
     private final AlgaeSubsystem m_algaeSub;
         
-        //creating a new RetractAlgae arm with the user's parameters, as well as making this the only command that is using the passed algae subsystem
+        //creates a new RetractAlgae arm with the user's parameters, as well as making this the only command that is using the passed algae subsystem
         public RetractAlgaeArm(AlgaeSubsystem algaeSub) {
             m_algaeSub = algaeSub;
             addRequirements(m_algaeSub);

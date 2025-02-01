@@ -9,8 +9,6 @@ import frc.robot.subsystems.AlgaeSubsystem;
 /** A complex auto command that drives forward, releases a hatch, and then drives backward. */
 public class IntakeExtendAlgae extends SequentialCommandGroup {
   /**
-   * Creates a new ComplexAuto.
-   *
    * @param AlgaeSubsystem The drive subsystem this command will run on
    */
   public IntakeExtendAlgae(AlgaeSubsystem algaeSubsystem) {

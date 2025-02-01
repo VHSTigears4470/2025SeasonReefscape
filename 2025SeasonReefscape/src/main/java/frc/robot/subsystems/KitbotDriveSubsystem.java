@@ -26,10 +26,12 @@ public class KitbotDriveSubsystem extends SubsystemBase {
     private final RelativeEncoder m_rearRightEncoder;
     private final RelativeEncoder m_rearLeftEncoder;
 
-    // drive subsystem
     private final DifferentialDrive m_differentialDrive;
 
+    /* Kitbot Drive Subsystem */
     public KitbotDriveSubsystem() {
+
+        // Initialize variables for motors
         m_frontRightMotor = new SparkMax(KitbotDriveConstants.k_frontRightMotorID, MotorType.kBrushless);
         m_frontLeftMotor = new SparkMax(KitbotDriveConstants.k_frontLeftMotorID, MotorType.kBrushless);
         m_rearRightMotor = new SparkMax(KitbotDriveConstants.k_rearRightMotorID, MotorType.kBrushless);
@@ -60,6 +62,7 @@ public class KitbotDriveSubsystem extends SubsystemBase {
         m_differentialDrive.tankDrive(xSpeed, ySpeed);
     }
 
+    // Gets encoders
     public double getFrontRightEncoder() {
         return m_frontRightEncoder.getPosition();
     }
@@ -76,6 +79,7 @@ public class KitbotDriveSubsystem extends SubsystemBase {
         return m_rearLeftEncoder.getPosition();
     }
 
+    // This stops the motors
     public void stopMotors() {
         m_frontRightMotor.stopMotor();
         m_frontLeftMotor.stopMotor();
@@ -84,12 +88,13 @@ public class KitbotDriveSubsystem extends SubsystemBase {
     }
 
     @Override
-  public void periodic() {
-    if(DebuggingConstants.k_kitbotDriveDebug) {
-        updateSmartDashboard();
-    } 
-  }
+    public void periodic() {
+        if(DebuggingConstants.k_kitbotDriveDebug) {
+            updateSmartDashboard();
+        } 
+    }
 
+    // Dashboard methods
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("Front Right Encoder", getFrontRightEncoder());
         SmartDashboard.putNumber("Front Left Encoder", getFrontLeftEncoder());

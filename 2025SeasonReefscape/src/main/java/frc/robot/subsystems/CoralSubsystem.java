@@ -68,7 +68,7 @@ public class CoralSubsystem extends SubsystemBase {
     return e_armState;
   }
 
-
+  //takes the coral in
   public void intake() {
     m_topMotor.setVoltage(-CoralConstants.k_fastVoltage);
     m_botMotor.setVoltage(-CoralConstants.k_fastVoltage);
@@ -86,6 +86,7 @@ public class CoralSubsystem extends SubsystemBase {
     m_botMotor.setVoltage(CoralConstants.k_fastVoltage);
   }
 
+  
   public void setArmState(CORAL_ARM_STATE desiredState) { //changes the position of the arm according to its desired state
     if (desiredState == CORAL_ARM_STATE.FORWARD) {
       d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
@@ -95,6 +96,7 @@ public class CoralSubsystem extends SubsystemBase {
     e_armState = desiredState;
     m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
+
 
    public boolean isAtDesiredPosition(){
     return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
@@ -108,15 +110,16 @@ public class CoralSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ArmEncoder", getArmEncoder() * 180 / Math.PI);
   }
 
+  //stops all the motors
   public void stop(){
     m_topMotor.stopMotor();
     m_botMotor.stopMotor();
     m_armMotor.stopMotor();
   }
   
+  // This method will be called once per scheduler run
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     // if(getArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
     //   m_armMotor.set(-Constants.CoralConstants.k_coralArmSpeed);
     // else if (getArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)

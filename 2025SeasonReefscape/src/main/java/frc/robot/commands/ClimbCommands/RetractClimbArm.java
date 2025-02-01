@@ -6,18 +6,22 @@ import frc.robot.subsystems.ClimbSubsystem;
 public class RetractClimbArm extends Command {
     private final ClimbSubsystem m_climbSub;
         
-        public RetractClimbArm(ClimbSubsystem climbSub) {
-            m_climbSub = climbSub;
-        }
+    public RetractClimbArm(ClimbSubsystem climbSub) {
+        m_climbSub = climbSub;
+    }
        
+        // Called once the command ends or is interrupted.
         @Override
-        public void initialize() {}
+        public void initialize() {
+        }
 
+        // Called every time the scheduler runs while the command is scheduled.
         @Override
         public void execute() {
             m_climbSub.setArmSpeed(-0.25);
         }
 
+        // Called once the command ends or is interrupted.
         @Override
         public void end(boolean interrupted) {
             m_climbSub.stop();

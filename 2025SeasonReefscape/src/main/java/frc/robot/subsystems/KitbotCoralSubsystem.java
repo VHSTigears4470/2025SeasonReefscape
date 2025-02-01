@@ -15,6 +15,7 @@ public class KitbotCoralSubsystem extends SubsystemBase{
     m_outputMotor.setVoltage(-KitbotCoralConstants.k_fastVoltage);
   }
   
+  // This stops the motor
   public void stop(){ 
     m_outputMotor.stopMotor();
   }
