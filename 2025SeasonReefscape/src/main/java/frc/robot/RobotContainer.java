@@ -16,6 +16,7 @@ import frc.robot.commands.CoralCommands.IntakeCoral;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
+import frc.robot.commands.KitbotCoralCommands.KitbotCoralSpeed;
 import frc.robot.commands.KitbotCoralCommands.OutputCoral;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
 import frc.robot.commands.KitbotDrivetrain.MoveDistance;
@@ -106,6 +107,13 @@ public class RobotContainer {
         } else {
                 m_coralSub = null;
         }
+
+        if(OperatingConstants.k_usingKitbotCoral) {
+            m_kitbotcoralSub = new KitbotCoralSubsystem();
+            m_kitbotcoralSub.setDefaultCommand(new KitbotCoralSpeed(m_kitbotcoralSub, () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot)));
+      } else {
+                  m_coralSub = null;
+      }
   }
 
   /**
@@ -118,7 +126,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    int preset = 1;
+    int preset = 2;
     switch (preset) {
             case 0: 
                     controllerPresetMain(); // Competition Configs

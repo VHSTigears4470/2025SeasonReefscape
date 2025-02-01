@@ -132,8 +132,8 @@ public static final class AlgaeConstants {
   }
 
   public static final class KitbotCoralConstants {
-    public static final int k_outputMotorID = 0;
-    public static final double k_fastVoltage = 4.0; 
+    public static final int k_outputMotorID = 1;
+    public static final double k_speed = 0.4; 
   }
 
   public static final class ClimbConstants {
@@ -218,9 +218,9 @@ public static final class AlgaeConstants {
 
   public static final class OperatingConstants {
     // Drives
-    public static final boolean k_usingSwerveDrive = true;
-    public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
-    public static final boolean k_usingKitbotCoral = false; // Should be true if swerve is not in use 
+    public static final boolean k_usingSwerveDrive = false;
+    public static final boolean k_usingKitbotDrive = true; // Should be true if swerve is not in use
+    public static final boolean k_usingKitbotCoral = true; 
 
     public static final boolean k_usingAlgae = false;
     public static final boolean k_usingCoral = false;
