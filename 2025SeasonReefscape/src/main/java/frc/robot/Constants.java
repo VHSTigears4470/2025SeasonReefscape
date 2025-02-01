@@ -220,6 +220,7 @@ public static final class AlgaeConstants {
     // Drives
     public static final boolean k_usingSwerveDrive = true;
     public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
+    public static final boolean k_usingKitbotCoral = false; // Should be true if swerve is not in use 
 
     public static final boolean k_usingAlgae = true;
     public static final boolean k_usingCoral = true;

@@ -16,12 +16,14 @@ import frc.robot.commands.CoralCommands.IntakeCoral;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
+import frc.robot.commands.KitbotCoralCommands.OutputCoral;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
 import frc.robot.commands.KitbotDrivetrain.MoveDistance;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.KitbotCoralSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -47,6 +49,7 @@ public class RobotContainer {
   private CoralSubsystem m_coralSub;
   private AlgaeSubsystem m_algaeSub;
   private ClimbSubsystem m_climbSub;
+  private KitbotCoralSubsystem m_kitbotcoralSub;
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -316,10 +319,17 @@ public class RobotContainer {
    * Preset for kitbot
    * Does the following: 
    *    Button A : Drive robot forwards 5 meters
+   *    Button B : Make motor move
    */
   public void controllerPresetTwo() {
+        //A
         if(OperatingConstants.k_usingKitbotDrive) {
                 m_driverController.a().onTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
+        }
+
+        //B
+        if(OperatingConstants.k_usingKitbotCoral){
+                m_driverController.b().whileTrue(new OutputCoral(m_kitbotcoralSub));
         }
   }
 }
