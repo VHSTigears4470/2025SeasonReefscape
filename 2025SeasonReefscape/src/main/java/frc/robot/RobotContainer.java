@@ -67,9 +67,9 @@ public class RobotContainer {
                 m_driveSub = new DriveSubsystem();
                 m_driveSub.setDefaultCommand(new RunCommand(
                         () -> m_driveSub.drive(
-                                OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), 0), 
-                                OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), 0), 
-                                OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), 0), 
+                                OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), OIConstants.k_DriveDeadband), 
+                                OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), OIConstants.k_DriveDeadband), 
+                                OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), OIConstants.k_DriveDeadband), 
                                 true,
                                 "Default / Field Oriented"
                         ), 
@@ -81,7 +81,7 @@ public class RobotContainer {
                 m_kitbotDriveSub.setDefaultCommand(new ArcadeDrive(
                         m_kitbotDriveSub,
                         () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot))
+                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY))
                 );
                 m_driveSub = null;
         } else {
@@ -261,9 +261,9 @@ public class RobotContainer {
                 m_driverController.rightTrigger().whileTrue(
                         new RunCommand(
                                 () -> m_driveSub.drive(
-                                        OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), 0), 
-                                        OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), 0), 
-                                        OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), 0), 
+                                        OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), OIConstants.k_DriveDeadband), 
+                                        OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), OIConstants.k_DriveDeadband), 
+                                        OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), OIConstants.k_DriveDeadband), 
                                         true,
                                         "Robot Orientated"
                                 ), 
@@ -324,7 +324,7 @@ public class RobotContainer {
   public void controllerPresetTwo() {
         //A
         if(OperatingConstants.k_usingKitbotDrive) {
-                m_driverController.a().onTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
+                m_driverController.a().whileTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
         }
 
         //B

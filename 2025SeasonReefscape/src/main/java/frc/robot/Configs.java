@@ -74,7 +74,9 @@ public final class Configs {
                     .positionWrappingInputRange(0, turningFactor);
 
 
-                double kitBotFactor = 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius / KitbotDriveConstants.k_kitbotGearRatio;
+                double kitBotFactor = 1 / ( 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius * KitbotDriveConstants.k_kitbotGearRatio);
+
+                //right motor no invert sets encoder, limits, and brakes
                 frontRightKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
@@ -82,8 +84,10 @@ public final class Configs {
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
                 frontRightKitbot
-                    .inverted(true); // ORBB: false | AR: true    
+                    .inverted(false); // ORBB: false | AR: true    
 
+
+                //left motor no invert sets encoder, limits, and brakes
                 frontLeftKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
@@ -91,22 +95,24 @@ public final class Configs {
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
                 
+                    //right back motor not invert sets encoder, limits, and brakes
                 rearRightKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
-                    rearRightKitbot.encoder
+                rearRightKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
                 rearRightKitbot
                     .follow(KitbotDriveConstants.k_frontRightMotorID, false);
 
+                    //left motor not invert sets encoder, limits, and brakes
                 rearLeftKitbot
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50);
                 rearLeftKitbot.encoder
                     .positionConversionFactor(kitBotFactor) // meters
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
-                rearRightKitbot
+                rearLeftKitbot
                     .follow(KitbotDriveConstants.k_frontLeftMotorID, false);
 
                 intakeMotorTop
