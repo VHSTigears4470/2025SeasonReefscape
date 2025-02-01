@@ -319,7 +319,7 @@ public class RobotContainer {
    * Preset for kitbot
    * Does the following: 
    *    Button A : Drive robot forwards 5 meters
-   *    Button B : Make motor move
+   *    Button B : Output Coral (rotates output motor)
    */
   public void controllerPresetTwo() {
         //A

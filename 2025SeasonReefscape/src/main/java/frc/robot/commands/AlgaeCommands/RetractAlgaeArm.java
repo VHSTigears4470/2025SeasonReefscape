@@ -7,6 +7,7 @@ import frc.robot.subsystems.AlgaeSubsystem;
 public class RetractAlgaeArm extends Command {
     private final AlgaeSubsystem m_algaeSub;
         
+        //enabling the user to set the algaeSubsystem, as well as making this the only command that is using the passed algae subsystem
         public RetractAlgaeArm(AlgaeSubsystem algaeSub) {
             m_algaeSub = algaeSub;
             addRequirements(m_algaeSub);
@@ -24,8 +25,7 @@ public class RetractAlgaeArm extends Command {
 
         // Called once the command ends or is interrupted.
         @Override
-        public void end(boolean interrupted) { //Should we stop the retractArm method or algaeSub before .stop? -- Vidur and Jay
-        //I think we just add addRequirements(m_algaeSub) (already added) at the start, and then this just stops the rest -- Kenji
+        public void end(boolean interrupted) { 
             m_algaeSub.stop();
         }
     

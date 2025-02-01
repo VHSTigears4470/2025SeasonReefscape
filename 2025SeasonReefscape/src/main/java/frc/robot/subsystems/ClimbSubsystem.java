@@ -37,6 +37,7 @@ public class ClimbSubsystem extends SubsystemBase {
     return d_desiredReferencePosition;
   }
 
+  //If the arm is within its range of movement, adjusts its speed to the paramenter, otherwise makes the arm stop moving
   public void setArmSpeed(double speed){
       if((speed > 0 && getClimbEncoder() >= d_upperLimit) || (speed < 0 && getClimbEncoder() <= d_lowerLimit)){
         speed = 0;
@@ -44,10 +45,12 @@ public class ClimbSubsystem extends SubsystemBase {
       m_climbMotor.set(speed);
   }
 
+  //Sets the encoders to their current position
   public void resetEncoders(){
     m_climbEncoder.setPosition(0);
   }
 
+  //
   public boolean isAtDesiredPosition(){
     return (Math.abs(getClimbEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
   }

@@ -86,7 +86,7 @@ public class CoralSubsystem extends SubsystemBase {
     m_botMotor.setVoltage(CoralConstants.k_fastVoltage);
   }
 
-  public void setArmState(CORAL_ARM_STATE desiredState) {
+  public void setArmState(CORAL_ARM_STATE desiredState) { //changes the position of the arm according to its desired state
     if (desiredState == CORAL_ARM_STATE.FORWARD) {
       d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
     } else if (desiredState == CORAL_ARM_STATE.BACKWARD) {

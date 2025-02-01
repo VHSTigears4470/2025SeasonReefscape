@@ -60,6 +60,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder.setPosition(0);
   }
 
+  
   public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; raised, centered,
     if (desiredState == ALGAE_ARM_STATE.RAISED) {
       d_desiredReferencePosition = Constants.AlgaeConstants.k_raisedArmPos;
