@@ -79,10 +79,12 @@ public class RobotContainer {
                 m_kitbotDriveSub = null;
         } else if(OperatingConstants.k_usingKitbotDrive) { // else if because we should only have one drive at once
                 m_kitbotDriveSub = new KitbotDriveSubsystem();
-                m_kitbotDriveSub.setDefaultCommand(new ArcadeDrive(
-                        m_kitbotDriveSub,
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisX),
-                        () -> m_driverController.getRawAxis(OIConstants.k_driverAxisY))
+                m_kitbotDriveSub.setDefaultCommand(
+                        new ArcadeDrive(
+                                m_kitbotDriveSub,
+                                () -> OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), OIConstants.k_DriveDeadband),
+                                () -> OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), OIConstants.k_DriveDeadband)
+                        )
                 );
                 m_driveSub = null;
         } else {
@@ -331,9 +333,9 @@ public class RobotContainer {
    */
   public void controllerPresetTwo() {
         //A
-        if(OperatingConstants.k_usingKitbotDrive) {
-                m_driverController.a().whileTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
-        }
+        // if(OperatingConstants.k_usingKitbotDrive) {
+        //         m_driverController.a().whileTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
+        // }
 
         //B
         if(OperatingConstants.k_usingKitbotCoral){

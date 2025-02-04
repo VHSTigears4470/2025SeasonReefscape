@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ArcadeDrive extends Command {
   private final KitbotDriveSubsystem m_kitbotSub;
   private final DoubleSupplier m_xSpeed, m_zRotation;
-  private final double multiplier = 0.7;
+  private final double multiplier = 0.5;
 
   /**
    * Creates a new arcade drive command.
