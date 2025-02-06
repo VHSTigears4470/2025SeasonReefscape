@@ -112,7 +112,7 @@ public class RobotContainer {
 
         if(OperatingConstants.k_usingKitbotCoral) {
             m_kitbotcoralSub = new KitbotCoralSubsystem();
-            m_kitbotcoralSub.setDefaultCommand(new KitbotCoralSpeed(m_kitbotcoralSub, () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot)));
+        //     m_kitbotcoralSub.setDefaultCommand(new KitbotCoralSpeed(m_kitbotcoralSub, () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot)));
       } else {
                   m_coralSub = null;
       }
