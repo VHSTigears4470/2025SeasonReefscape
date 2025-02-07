@@ -112,7 +112,6 @@ public class RobotContainer {
 
         if(OperatingConstants.k_usingKitbotCoral) {
             m_kitbotcoralSub = new KitbotCoralSubsystem();
-        //     m_kitbotcoralSub.setDefaultCommand(new KitbotCoralSpeed(m_kitbotcoralSub, () -> m_driverController.getRawAxis(OIConstants.k_driverAxisRot)));
       } else {
                   m_coralSub = null;
       }
@@ -128,7 +127,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    int preset = 2;
+    int preset = 1;
     switch (preset) {
             case 0: 
                     controllerPresetMain(); // Competition Configs
@@ -224,9 +223,6 @@ public class RobotContainer {
    *    Button A : Stops All Swerve Modules
    *    Button X : Make Wheels Straight
    *    Right Trigger : Hold + Joystick w/o being field orientated
-   *    Right Bumper : Hold to go forward relative to robot
-   *    Left Trigger : Rotate Clckwise
-   *    Left Bumper : Rotate Counter Clockwise
    */
   public void controllerPresetOne() {
         if(OperatingConstants.k_usingSwerveDrive) {
@@ -274,50 +270,8 @@ public class RobotContainer {
                                         OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), OIConstants.k_DriveDeadband), 
                                         OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), OIConstants.k_DriveDeadband), 
                                         OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), OIConstants.k_DriveDeadband), 
-                                        true,
+                                        false,
                                         "Robot Orientated"
-                                ), 
-                                m_driveSub
-                        )
-                );
-
-                // drive forward only
-                m_driverController.rightBumper().whileTrue(
-                        new RunCommand(
-                                () -> m_driveSub.drive(
-                                        0.4, 
-                                        0.0, 
-                                        0.0, 
-                                        false,
-                                        "Forward"
-                                ), 
-                                m_driveSub
-                        )
-                );
-
-                // rotate clockwise with joystick input
-                m_driverController.leftBumper().whileTrue(
-                        new RunCommand(
-                                () -> m_driveSub.drive(
-                                        0.0, 
-                                        0.0, 
-                                        0.4, 
-                                        false,
-                                        "Rotate ClockWise"
-                                ), 
-                                m_driveSub
-                        )
-                );
-
-                // rotate counter clockwise with joystick input
-                m_driverController.leftTrigger().whileTrue(
-                        new RunCommand(
-                                () -> m_driveSub.drive(
-                                        0.0, 
-                                        0.0, 
-                                        -0.4, 
-                                        false,
-                                        "Rotate CounterClockWise"
                                 ), 
                                 m_driveSub
                         )
@@ -333,9 +287,9 @@ public class RobotContainer {
    */
   public void controllerPresetTwo() {
         //A
-        // if(OperatingConstants.k_usingKitbotDrive) {
-        //         m_driverController.a().whileTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
-        // }
+        if(OperatingConstants.k_usingKitbotDrive) {
+                m_driverController.a().whileTrue(new MoveDistance(m_kitbotDriveSub, 5, true));
+        }
 
         //B
         if(OperatingConstants.k_usingKitbotCoral){
