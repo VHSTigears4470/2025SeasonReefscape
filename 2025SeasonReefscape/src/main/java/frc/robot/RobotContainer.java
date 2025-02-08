@@ -263,11 +263,19 @@ public class RobotContainer {
                         )
                 );
 
-                // Straighten Wheels
+                // Make Wheels X
                 m_driverController.y().whileTrue(
                         new RunCommand(
-                                () -> m_driveSub.setX()
+                                () -> m_driveSub.setX(),
+                                m_driveSub
                         )
+                );
+
+                m_driverController.leftTrigger().whileTrue(
+                        new RunCommand(
+                                () -> m_driveSub.resetEncoders(),
+                                m_driveSub
+                        )      
                 );
 
                 // drive with Robot Orientation
