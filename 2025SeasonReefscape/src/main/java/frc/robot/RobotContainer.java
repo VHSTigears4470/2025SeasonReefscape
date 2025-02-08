@@ -222,6 +222,7 @@ public class RobotContainer {
    *    Button B : Reset Swerve's Odometer 
    *    Button A : Stops All Swerve Modules
    *    Button X : Make Wheels Straight
+   *    Button Y : Make Wheels X
    *    Right Trigger : Hold + Joystick w/o being field orientated
    */
   public void controllerPresetOne() {
@@ -262,6 +263,12 @@ public class RobotContainer {
                         )
                 );
 
+                // Straighten Wheels
+                m_driverController.y().whileTrue(
+                        new RunCommand(
+                                () -> m_driveSub.setX()
+                        )
+                );
 
                 // drive with Robot Orientation
                 m_driverController.rightTrigger().whileTrue(
