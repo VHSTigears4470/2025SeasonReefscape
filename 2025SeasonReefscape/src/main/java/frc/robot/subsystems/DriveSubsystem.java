@@ -28,6 +28,7 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.units.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Configs;
 import frc.robot.Constants.DebuggingConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.TeleConstants;
@@ -42,6 +43,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_FrontLeftTurningCanId,
       DriveConstants.k_FrontLeftChassisAngularOffset,
       DriveConstants.k_FrontLeftInverted,
+      Configs.MAXSwerveModule.frontLeftDrivingConfig,
       MotorLocation.FRONT_LEFT);
   
   private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
@@ -49,6 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_FrontRightTurningCanId,
       DriveConstants.k_FrontRightChassisAngularOffset,
       DriveConstants.k_FrontRightInverted,
+      Configs.MAXSwerveModule.frontRightDrivingConfig,
       MotorLocation.FRONT_RIGHT);
 
   private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
@@ -56,6 +59,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_RearLeftTurningCanId,
       DriveConstants.k_BackLeftChassisAngularOffset,
       DriveConstants.k_RearLeftftInverted,
+      Configs.MAXSwerveModule.rearLeftDrivingConfig,
       MotorLocation.REAR_LEFT);
 
   private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
@@ -63,6 +67,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_RearRightTurningCanId,
       DriveConstants.k_BackRightChassisAngularOffset,
       DriveConstants.k_RearRightInverted,
+      Configs.MAXSwerveModule.rearRightDrivingConfig,
       MotorLocation.REAR_RIGHT);
 
   // The gyro sensor

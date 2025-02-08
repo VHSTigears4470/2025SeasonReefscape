@@ -15,6 +15,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
@@ -43,7 +44,7 @@ public class MAXSwerveModule {
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
    */
-  public MAXSwerveModule(int p_drivingCANId, int p_turningCANId, double p_chassisAngularOffset, boolean p_driveEncoderInverted, MotorLocation p_motorLocation) {
+  public MAXSwerveModule(int p_drivingCANId, int p_turningCANId, double p_chassisAngularOffset, boolean p_driveEncoderInverted, SparkMaxConfig drivingConfig, MotorLocation p_motorLocation) {
 
     m_driveMotor = new SparkMax(p_drivingCANId, MotorType.kBrushless);
     m_turnMotor = new SparkMax(p_turningCANId, MotorType.kBrushless);
@@ -59,7 +60,7 @@ public class MAXSwerveModule {
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
-    m_driveMotor.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
+    m_driveMotor.configure(drivingConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     m_turnMotor.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
