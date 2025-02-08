@@ -59,10 +59,10 @@ public final class Constants {
     public static final int k_FrontRightTurningCanId = 14;
     public static final int k_RearRightTurningCanId = 16;
 
-    public static final boolean k_FrontLeftInverted = false;
+    public static final boolean k_FrontLeftInverted = true;
     public static final boolean k_RearLeftftInverted = true;
     public static final boolean k_FrontRightInverted = true;
-    public static final boolean k_RearRightInverted = true;
+    public static final boolean k_RearRightInverted = false;
 
     // Motor Names
     public enum MotorLocation {

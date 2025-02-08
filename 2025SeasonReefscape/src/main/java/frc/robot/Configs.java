@@ -41,8 +41,8 @@ public final class Configs {
 
             drivingConfig
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50)
-                    .inverted(true);
+                    .smartCurrentLimit(50);
+                    // .inverted(true);
             drivingConfig.encoder
                     .positionConversionFactor(drivingFactor) // meters
                     .velocityConversionFactor(drivingFactor / 60.0);
