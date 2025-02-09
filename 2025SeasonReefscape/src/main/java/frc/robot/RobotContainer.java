@@ -27,11 +27,15 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.KitbotCoralSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -150,7 +154,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
         if(OperatingConstants.k_usingSwerveDrive) {
-                return new PathPlannerAuto("Straight Auto");
+                // return new PathPlannerAuto("Straight Auto");
+                try {
+                        return AutoBuilder.followPath(PathPlannerPath.fromPathFile("Demo Path 1"));
+                } catch(Exception e) {
+                        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+                }
         }
         return null;
   }
