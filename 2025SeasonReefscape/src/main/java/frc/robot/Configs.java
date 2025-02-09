@@ -11,14 +11,18 @@ import frc.robot.Constants.ModuleConstants;
 public final class Configs {
     public static final class MAXSwerveModule {
         // Swerve
-        public static final SparkMaxConfig drivingConfig = new SparkMaxConfig(); // Template for rest of driving configs to use
+        private static final SparkMaxConfig drivingConfig = new SparkMaxConfig(); // Template for rest of driving configs to use
+        private static final SparkMaxConfig turningConfig = new SparkMaxConfig(); // Template for rest of turning configs
 
         public static final SparkMaxConfig frontRightDrivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig frontLeftDrivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig rearRightDrivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig rearLeftDrivingConfig = new SparkMaxConfig();
 
-        public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig frontRightTurningConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig frontLeftTurningConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig rearRightTurningConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig rearLeftTurningConfig = new SparkMaxConfig();
 
         // Kitbot Drive
         public static final SparkMaxConfig frontRightKitbot = new SparkMaxConfig();
@@ -58,19 +62,7 @@ public final class Configs {
                     .pid(0.04, 0, 0)
                     .velocityFF(drivingVelocityFeedForward)
                     .outputRange(-1, 1);
-
-            frontRightDrivingConfig.apply(drivingConfig);
-            frontRightDrivingConfig.inverted(true);
-
-            frontLeftDrivingConfig.apply(drivingConfig);
-            frontLeftDrivingConfig.inverted(true);
-
-            rearRightDrivingConfig.apply(drivingConfig);
-            rearRightDrivingConfig.inverted(true);
-
-            rearLeftDrivingConfig.apply(drivingConfig);
-            rearLeftDrivingConfig.inverted(false);
-
+            
             turningConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(20);
@@ -91,6 +83,23 @@ public final class Configs {
                     // longer route.
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, turningFactor);
+
+            frontRightDrivingConfig.apply(drivingConfig);
+            frontRightDrivingConfig.inverted(true);
+
+            frontLeftDrivingConfig.apply(drivingConfig);
+            frontLeftDrivingConfig.inverted(true);
+
+            rearRightDrivingConfig.apply(drivingConfig);
+            rearRightDrivingConfig.inverted(true);
+
+            rearLeftDrivingConfig.apply(drivingConfig);
+            rearLeftDrivingConfig.inverted(false);
+
+            frontRightTurningConfig.apply(turningConfig);
+            frontLeftTurningConfig.apply(turningConfig);
+            rearRightTurningConfig.apply(turningConfig);
+            rearLeftTurningConfig.apply(turningConfig);
 
 
                 double kitBotFactor = 1 / ( 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius * KitbotDriveConstants.k_kitbotGearRatio);
