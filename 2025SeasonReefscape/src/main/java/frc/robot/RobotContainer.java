@@ -33,6 +33,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -156,7 +157,12 @@ public class RobotContainer {
         if(OperatingConstants.k_usingSwerveDrive) {
                 // return new PathPlannerAuto("Straight Auto");
                 try {
-                        return AutoBuilder.followPath(PathPlannerPath.fromPathFile("Demo Path 1"));
+                        m_driveSub.resetEncoders();
+                        m_driveSub.zeroHeading();
+                        m_driveSub.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+                        Command path = AutoBuilder.followPath(PathPlannerPath.fromPathFile("Demo Path 1"));
+                        m_driveSub.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+                        return path;
                 } catch(Exception e) {
                         DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 }

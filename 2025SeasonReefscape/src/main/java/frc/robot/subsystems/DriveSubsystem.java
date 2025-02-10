@@ -71,7 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
       MotorLocation.REAR_RIGHT);
 
   // The gyro sensor
-  private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id);
+  private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id, "rio");
 
   private SwerveModuleState m_desiredModuleStates[] = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
   private StructArrayPublisher<SwerveModuleState> publisherDesiredStates = NetworkTableInstance.getDefault().getStructArrayTopic("MyDesiredStates", SwerveModuleState.struct).publish();
@@ -80,7 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.k_DriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
+      getRotation2d(),
+      // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
       getSwerveModulePosition());
 
   /** Creates a new DriveSubsystem. */
@@ -103,7 +104,7 @@ public class DriveSubsystem extends SubsystemBase {
             (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
                     new PIDConstants(0.04, 0, 0), // Translation PID constants
-                    new PIDConstants(0.04, 0, 0) // Rotation PID constants
+                    new PIDConstants(1, 0, 0) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -119,16 +120,28 @@ public class DriveSubsystem extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
     );
+    // new Thread(() -> {
+    //   try{
+    //     Thread.sleep(1000);
+    //     zeroHeading();
+    //     resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+    //   } catch(Exception e) {
+
+    //   }
+
+    // }).start();
+    // m_gyro.getRotation2d();
   }
 
     
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds) 
     {
-        SwerveModuleState[] desiredStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        m_frontLeft.setDesiredState(desiredStates[0]);
-        m_frontRight.setDesiredState(desiredStates[1]);
-        m_rearLeft.setDesiredState(desiredStates[2]);
-        m_rearRight.setDesiredState(desiredStates[3]);
+      drive(chassisSpeeds.vyMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, chassisSpeeds.vxMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond/DriveConstants.k_MaxAngularSpeed, true, "AutoBuilder");
+        // SwerveModuleState[] desiredStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        // m_frontLeft.setDesiredState(desiredStates[0]);
+        // m_frontRight.setDesiredState(desiredStates[1]);
+        // m_rearLeft.setDesiredState(desiredStates[2]);
+        // m_rearRight.setDesiredState(desiredStates[3]);
     }
     /**
      * Gets a list of Swerve Module States
@@ -156,7 +169,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
+      getRotation2d(),
+        // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
         getSwerveModulePosition());
 
         if(DebuggingConstants.k_swerveDriveDebug) {
@@ -178,7 +192,7 @@ public class DriveSubsystem extends SubsystemBase {
      * Updates general robot data to SmartDasboard such as heading or pose
      */
     public void updateSmartDashboard() {
-        SmartDashboard.putNumber("Robot Heading (Yaw)", getHeading());
+        SmartDashboard.putNumber("Robot Heading (Yaw)", getRotation2d().getDegrees());
         SmartDashboard.putNumber("Roll", m_gyro.getRoll().getValue().in(Units.Degree));
         SmartDashboard.putNumber("Pitch", m_gyro.getPitch().getValue().in(Units.Degree));
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
@@ -267,7 +281,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
+        getRotation2d(),
+        // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
         getSwerveModulePosition(),
         pose);
   }
@@ -290,7 +305,8 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)))
+            getRotation2d())
+                // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.k_MaxSpeedMetersPerSecond);
@@ -351,16 +367,8 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return m_gyro.getYaw().getValue().in(Units.Degree);
-  }
-
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
   public Rotation2d getRotation2d() {
+    // return new Rotation2d(0);
     return new Rotation2d(m_gyro.getYaw().getValue());
   }
 
