@@ -44,7 +44,6 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_FrontLeftChassisAngularOffset,
       DriveConstants.k_FrontLeftInverted,
       Configs.MAXSwerveModule.frontLeftDrivingConfig,
-      Configs.MAXSwerveModule.frontLeftDrivingConfig,
       MotorLocation.FRONT_LEFT);
   
   private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
@@ -53,7 +52,6 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_FrontRightChassisAngularOffset,
       DriveConstants.k_FrontRightInverted,
       Configs.MAXSwerveModule.frontRightDrivingConfig,
-      Configs.MAXSwerveModule.frontRightTurningConfig,
       MotorLocation.FRONT_RIGHT);
 
   private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
@@ -62,7 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_BackLeftChassisAngularOffset,
       DriveConstants.k_RearLeftftInverted,
       Configs.MAXSwerveModule.rearLeftDrivingConfig,
-      Configs.MAXSwerveModule.rearLeftTurningConfig,
       MotorLocation.REAR_LEFT);
 
   private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
@@ -71,7 +68,6 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.k_BackRightChassisAngularOffset,
       DriveConstants.k_RearRightInverted,
       Configs.MAXSwerveModule.rearRightDrivingConfig,
-      Configs.MAXSwerveModule.rearRightTurningConfig,
       MotorLocation.REAR_RIGHT);
 
   // The gyro sensor
