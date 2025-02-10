@@ -11,7 +11,7 @@ import frc.robot.Constants.ModuleConstants;
 public final class Configs {
     public static final class MAXSwerveModule {
         // Swerve
-        public static final SparkMaxConfig drivingConfig = new SparkMaxConfig(); // Template for rest of driving configs to use
+        // public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
 
         public static final SparkMaxConfig frontRightDrivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig frontLeftDrivingConfig = new SparkMaxConfig();
@@ -45,31 +45,75 @@ public final class Configs {
             double turningFactor = 2 * Math.PI;
             double drivingVelocityFeedForward = 1 / ModuleConstants.k_DriveWheelFreeSpeedRps;
 
-            drivingConfig
+            // drivingConfig
+            //         .idleMode(IdleMode.kBrake)
+            //         .smartCurrentLimit(50)
+            //         .inverted(true);
+            // drivingConfig.encoder
+            //         .positionConversionFactor(drivingFactor) // meters
+            //         .velocityConversionFactor(drivingFactor / 60.0);
+            // drivingConfig.closedLoop
+            //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            //         // These are example gains you may need to them for your own robot!
+            //         .pid(0.04, 0, 0)
+            //         .velocityFF(drivingVelocityFeedForward)
+            //         .outputRange(-1, 1);
+
+            frontRightDrivingConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50)
                     .inverted(true);
-            drivingConfig.encoder
+            frontRightDrivingConfig.encoder
                     .positionConversionFactor(drivingFactor) // meters
                     .velocityConversionFactor(drivingFactor / 60.0);
-            drivingConfig.closedLoop
+            frontRightDrivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(0.04, 0, 0)
                     .velocityFF(drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
-            frontRightDrivingConfig.apply(drivingConfig);
-            frontRightDrivingConfig.inverted(true);
+            frontLeftDrivingConfig
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50)
+                    .inverted(true);
+            frontLeftDrivingConfig.encoder
+                    .positionConversionFactor(drivingFactor) // meters
+                    .velocityConversionFactor(drivingFactor / 60.0);
+            frontLeftDrivingConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    // These are example gains you may need to them for your own robot!
+                    .pid(0.04, 0, 0)
+                    .velocityFF(drivingVelocityFeedForward)
+                    .outputRange(-1, 1);
 
-            frontLeftDrivingConfig.apply(drivingConfig);
-            frontLeftDrivingConfig.inverted(true);
+            rearRightDrivingConfig
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50)
+                    .inverted(true);
+            rearRightDrivingConfig.encoder
+                    .positionConversionFactor(drivingFactor) // meters
+                    .velocityConversionFactor(drivingFactor / 60.0);
+            rearRightDrivingConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    // These are example gains you may need to them for your own robot!
+                    .pid(0.04, 0, 0)
+                    .velocityFF(drivingVelocityFeedForward)
+                    .outputRange(-1, 1);
 
-            rearRightDrivingConfig.apply(drivingConfig);
-            rearRightDrivingConfig.inverted(true);
-
-            rearLeftDrivingConfig.apply(drivingConfig);
-            rearLeftDrivingConfig.inverted(false);
+            rearLeftDrivingConfig
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50)
+                    .inverted(false);
+            rearLeftDrivingConfig.encoder
+                    .positionConversionFactor(drivingFactor) // meters
+                    .velocityConversionFactor(drivingFactor / 60.0);
+            rearLeftDrivingConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    // These are example gains you may need to them for your own robot!
+                    .pid(0.04, 0, 0)
+                    .velocityFF(drivingVelocityFeedForward)
+                    .outputRange(-1, 1);
 
             turningConfig
                     .idleMode(IdleMode.kBrake)
