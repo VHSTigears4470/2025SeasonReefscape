@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatingConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
@@ -27,19 +28,28 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.KitbotCoralSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -155,14 +165,49 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
         if(OperatingConstants.k_usingSwerveDrive) {
+                // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+                //         3, 3);
+                // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+                //         new Pose2d(0, 0, new Rotation2d(0)), 
+                //         List.of(),
+                //         new Pose2d(1, 0, new Rotation2d(0)),
+                //         trajectoryConfig
+                // );
+                // PIDController xController = new PIDController(1, 0, 0);
+                // PIDController yController = new PIDController(1, 0, 0);
+                // ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0, 
+                //         new TrapezoidProfile.Constraints(3, 3)
+                // );
+                // thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+                // SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+                //         trajectory,
+                //         m_driveSub::getPose,
+                //         DriveConstants.k_DriveKinematics,
+                //         xController,
+                //         yController,
+                //         thetaController,
+                //         m_driveSub::setModuleStates,
+                //         m_driveSub
+                // );
+                // return new SequentialCommandGroup(
+                //         new InstantCommand(
+                //                 () -> m_driveSub.resetOdometry(trajectory.getInitialPose())
+                //         ),
+                //         swerveControllerCommand,
+                //         new InstantCommand(
+                //                 () -> m_driveSub.stopModules()
+                //         )
+                // );
                 // return new PathPlannerAuto("Straight Auto");
+                
                 try {
                         m_driveSub.resetEncoders();
                         m_driveSub.zeroHeading();
-                        m_driveSub.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
-                        Command path = AutoBuilder.followPath(PathPlannerPath.fromPathFile("Demo Path 1"));
-                        m_driveSub.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
-                        return path;
+                        PathPlannerAuto autoPath = new PathPlannerAuto("Demo Auto");
+                        m_driveSub.resetOdometry(autoPath.getStartingPose());
+                        
+                        return autoPath;
                 } catch(Exception e) {
                         DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 }
