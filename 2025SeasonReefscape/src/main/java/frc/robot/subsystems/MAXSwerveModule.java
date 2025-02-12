@@ -178,6 +178,7 @@ public class MAXSwerveModule {
     public void updateSmartDashboard() {
         // Position of Drive and Turn Motors
         SmartDashboard.putNumber(m_motorLocation + " driver encoder", m_driveEncoderInverted * m_driveEncoder.getPosition());
+        SmartDashboard.putNumber(m_motorLocation + " driver velocity", getDriveVelocity());
         SmartDashboard.putNumber(m_motorLocation + " turn encoder", m_turnEncoder.getPosition());
     }
 }
