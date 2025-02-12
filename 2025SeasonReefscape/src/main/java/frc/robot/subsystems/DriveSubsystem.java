@@ -14,6 +14,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,7 +27,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.units.*;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Configs;
@@ -72,6 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id, "rio");
+  // private final AHRS m_NAVXGyro = new AHRS(NavXComType.kMXP_SPI);
 
   private SwerveModuleState m_desiredModuleStates[] = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
   private StructArrayPublisher<SwerveModuleState> publisherDesiredStates = NetworkTableInstance.getDefault().getStructArrayTopic("MyDesiredStates", SwerveModuleState.struct).publish();
@@ -81,14 +84,14 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.k_DriveKinematics,
       getRotation2d(),
-      // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
       getSwerveModulePosition());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
-     RobotConfig config;
+    RobotConfig config;
+    
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
@@ -130,7 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
     //   }
 
     // }).start();
-    // m_gyro.getRotation2d();
   }
 
     
@@ -170,7 +172,6 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
     m_odometry.update(
       getRotation2d(),
-        // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
         getSwerveModulePosition());
 
         if(DebuggingConstants.k_swerveDriveDebug) {
@@ -282,7 +283,6 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
         getRotation2d(),
-        // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)),
         getSwerveModulePosition(),
         pose);
   }
@@ -306,7 +306,6 @@ public class DriveSubsystem extends SubsystemBase {
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
             getRotation2d())
-                // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Units.Degree)))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.k_MaxSpeedMetersPerSecond);
@@ -369,17 +368,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Rotation2d getRotation2d() {
     // return new Rotation2d(0);
+    // return new Rotation2d(edu.wpi.first.math.util.Units.degreesToRadians(0)); // This way to avoid import issues
     return new Rotation2d(m_gyro.getYaw().getValue());
-  }
-
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  public double getTurnRate() {
-    // Degrees per second
-    return m_gyro.getAngularVelocityZWorld().getValue().in(Units.DegreesPerSecond) * (DriveConstants.k_GyroReversed ? -1.0 : 1.0);
   }
 
   public void stopModules() {
