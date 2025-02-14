@@ -84,8 +84,16 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModuleState(
-      m_driveEncoderInverted * m_driveEncoder.getVelocity(),
+      getDriveVelocity(),
         new Rotation2d(m_turnEncoder.getPosition() - m_chassisAngularOffset));
+  }
+
+  /**
+     * Gets the encoder position of the turn motor in radians
+     * @return double of turn motor's encoder value converted
+     */
+    public double getDrivePosition() {
+      return m_driveEncoderInverted * m_driveEncoder.getPosition();
   }
 
   /**
@@ -121,7 +129,7 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModulePosition(
-      m_driveEncoderInverted * m_driveEncoder.getPosition(),
+      getDrivePosition(),
         new Rotation2d(m_turnEncoder.getPosition() - m_chassisAngularOffset));
   }
 
@@ -177,7 +185,7 @@ public class MAXSwerveModule {
      */
     public void updateSmartDashboard() {
         // Position of Drive and Turn Motors
-        SmartDashboard.putNumber(m_motorLocation + " driver encoder", m_driveEncoderInverted * m_driveEncoder.getPosition());
+        SmartDashboard.putNumber(m_motorLocation + " driver encoder", getDrivePosition());
         SmartDashboard.putNumber(m_motorLocation + " driver velocity", getDriveVelocity());
         SmartDashboard.putNumber(m_motorLocation + " turn encoder", m_turnEncoder.getPosition());
     }
