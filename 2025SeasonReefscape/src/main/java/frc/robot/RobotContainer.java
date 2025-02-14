@@ -281,9 +281,10 @@ public class RobotContainer {
    * Does the following: 
    *    Button B : Reset Swerve's Odometer 
    *    Button A : Stops All Swerve Modules
-   *    Button X : Make Wheels Straight
+   *    Button X : Drive Forwards
    *    Button Y : Make Wheels X
    *    Right Trigger : Hold + Joystick w/o being field orientated
+   *    Right Trigger : Hold + X = Drive Left 
    */
   public void controllerPresetOne() {
         if(OperatingConstants.k_usingSwerveDrive) {
@@ -309,15 +310,29 @@ public class RobotContainer {
                         )
                 );
 
-                // Straighten Wheels
-                m_driverController.x().whileTrue(
+                // Drives Forward
+                m_driverController.x().and(m_driverController.rightTrigger().negate()).whileTrue(
                         new RunCommand(
                                 () -> m_driveSub.drive(
-                                        0.0, 
+                                        1.0, 
                                         0.0, 
                                         0.0, 
                                         false,
-                                        "Wheels Straight"
+                                        "Drive Forwards"
+                                ), 
+                                m_driveSub
+                        )
+                );
+
+                // Drives Forward
+                m_driverController.x().and(m_driverController.rightTrigger()).whileTrue(
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        0.0, 
+                                        1.0, 
+                                        0.0, 
+                                        false,
+                                        "Drive Left"
                                 ), 
                                 m_driveSub
                         )
