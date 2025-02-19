@@ -152,6 +152,7 @@ public class RobotContainer {
                     break;
             case 2:
                         controllerPresetTwo(); // Kitbot
+                        break;
             default:
                     controllerPresetMain();
                     break;
