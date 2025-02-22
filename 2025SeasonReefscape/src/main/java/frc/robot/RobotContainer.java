@@ -257,7 +257,7 @@ public class RobotContainer {
         }
         //D-Pad 
         if(OperatingConstants.k_usingCoral){
-        m_driverController.povUp().whileTrue(new ShootCoralFast(m_coralSub));//chack validity later
+        m_driverController.povUp().whileTrue(new ShootCoralFast(m_coralSub));// TODO chack validity later
         }
   }
 

@@ -88,6 +88,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer); //make sure in radians
   }
 
+  public void testArmMotors(double speed) {
+    m_algaeArmMotor.set(speed);
+  }
+
   // Dashboard methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
