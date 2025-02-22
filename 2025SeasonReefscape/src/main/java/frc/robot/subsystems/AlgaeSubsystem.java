@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -49,7 +51,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
   
   public double getAlgaeArmEncoder() {
-    return (m_algaeArmEncoder.getPosition() * Math.PI) / 21;
+    return m_algaeArmEncoder.getPosition(); //
   }
 
   public ALGAE_ARM_STATE getArmState(){
@@ -66,7 +68,7 @@ public class AlgaeSubsystem extends SubsystemBase {
       d_desiredReferencePosition = Constants.AlgaeConstants.k_raisedArmPos;
     } else if (desiredState == ALGAE_ARM_STATE.CENTERED) {
       d_desiredReferencePosition = Constants.AlgaeConstants.k_centeredArmPos;
-    } else if (desiredState == ALGAE_ARM_STATE.LOWERED) {
+    } else /*if (desiredState == ALGAE_ARM_STATE.LOWERED)*/ {
       d_desiredReferencePosition = Constants.AlgaeConstants.k_loweredArmPos;
     }
     e_armState = desiredState;
@@ -109,11 +111,12 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(getAlgaeArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
+    if(Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) > Constants.k_positionBuffer)
       m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
-    else if (getAlgaeArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
+    else if (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < -Constants.k_positionBuffer)
       m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
-      
+    else
+      m_algaeArmMotor.set(0);
     setSmartDashboard();
   }
 
