@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner14;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -56,10 +54,6 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public ALGAE_ARM_STATE getArmState(){
     return e_armState;
-  }
-
-  public void resetAlgaeEncoders() {
-    m_algaeArmEncoder.setPosition(0);
   }
 
   
