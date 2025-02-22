@@ -40,11 +40,15 @@ public final class Configs {
 
         static {
             // Use module constants to calculate conversion factors and feed forward gain.
-            double drivingFactor = ModuleConstants.k_WheelDiameterMeters * Math.PI
+            double d_drivingFactor = ModuleConstants.k_WheelDiameterMeters * Math.PI
                     / ModuleConstants.k_DrivingMotorReduction;
-            double turningFactor = 2 * Math.PI;
-            double drivingVelocityFeedForward = 1 / ModuleConstants.k_DriveWheelFreeSpeedRps;
-
+            double d_turningFactor = 2 * Math.PI;
+            double d_drivingVelocityFeedForward = 1 / ModuleConstants.k_DriveWheelFreeSpeedRps;
+               //Encoder Conversion factor
+            double d_coralFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
+            double d_algaeFactor = 0; //TODO: Double Check
+            double d_climbFactor = 0; //TODO: Double Check
+            
             // drivingConfig
             //         .idleMode(IdleMode.kBrake)
             //         .smartCurrentLimit(50)
@@ -64,13 +68,13 @@ public final class Configs {
                     .smartCurrentLimit(50)
                     .inverted(true);
             frontRightDrivingConfig.encoder
-                    .positionConversionFactor(drivingFactor) // meters
-                    .velocityConversionFactor(drivingFactor / 60.0);
+                    .positionConversionFactor(d_drivingFactor) // meters
+                    .velocityConversionFactor(d_drivingFactor / 60.0);
             frontRightDrivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                    // These are example gains you may need to them for your own robot!
+                    // These are example gains you may need to (change?) them for your own robot!
                     .pid(0.04, 0, 0)
-                    .velocityFF(drivingVelocityFeedForward)
+                    .velocityFF(d_drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
             frontLeftDrivingConfig
@@ -78,13 +82,13 @@ public final class Configs {
                     .smartCurrentLimit(50)
                     .inverted(true);
             frontLeftDrivingConfig.encoder
-                    .positionConversionFactor(drivingFactor) // meters
-                    .velocityConversionFactor(drivingFactor / 60.0);
+                    .positionConversionFactor(d_drivingFactor) // meters
+                    .velocityConversionFactor(d_drivingFactor / 60.0);
             frontLeftDrivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(0.04, 0, 0)
-                    .velocityFF(drivingVelocityFeedForward)
+                    .velocityFF(d_drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
             rearRightDrivingConfig
@@ -92,13 +96,13 @@ public final class Configs {
                     .smartCurrentLimit(50)
                     .inverted(true);
             rearRightDrivingConfig.encoder
-                    .positionConversionFactor(drivingFactor) // meters
-                    .velocityConversionFactor(drivingFactor / 60.0);
+                    .positionConversionFactor(d_drivingFactor) // meters
+                    .velocityConversionFactor(d_drivingFactor / 60.0);
             rearRightDrivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(0.04, 0, 0)
-                    .velocityFF(drivingVelocityFeedForward)
+                    .velocityFF(d_drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
             rearLeftDrivingConfig
@@ -106,13 +110,13 @@ public final class Configs {
                     .smartCurrentLimit(50)
                     .inverted(false);
             rearLeftDrivingConfig.encoder
-                    .positionConversionFactor(drivingFactor) // meters
-                    .velocityConversionFactor(drivingFactor / 60.0);
+                    .positionConversionFactor(d_drivingFactor) // meters
+                    .velocityConversionFactor(d_drivingFactor / 60.0);
             rearLeftDrivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(0.04, 0, 0)
-                    .velocityFF(drivingVelocityFeedForward)
+                    .velocityFF(d_drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
             turningConfig
@@ -122,8 +126,8 @@ public final class Configs {
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering motor in the MAXSwerve Module.
                     .inverted(true)
-                    .positionConversionFactor(turningFactor) // radians
-                    .velocityConversionFactor(turningFactor / 60.0); // radians per second
+                    .positionConversionFactor(d_turningFactor) // radians
+                    .velocityConversionFactor(d_turningFactor / 60.0); // radians per second
             turningConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                     // These are example gains you may need to them for your own robot!
@@ -134,7 +138,7 @@ public final class Configs {
                     // to 10 degrees will go through 0 rather than the other direction which is a
                     // longer route.
                     .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(0, turningFactor);
+                    .positionWrappingInputRange(0, d_turningFactor);
 
 
                 double kitBotFactor = 1 / ( 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius * KitbotDriveConstants.k_kitbotGearRatio);
@@ -181,52 +185,39 @@ public final class Configs {
                 intakeMotorTop
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO
-                intakeMotorTop.encoder
-                    .positionConversionFactor(drivingFactor) //TODO
-                    .velocityConversionFactor(drivingFactor / 60.0); 
                 intakeMotorTop
-                    .follow(CoralConstants.k_topID, false);
+                    .follow(CoralConstants.k_botID, false);
 
                 intakeMotorBottom
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO
-                intakeMotorBottom.encoder
-                    .positionConversionFactor(drivingFactor) //TODO
-                    .velocityConversionFactor(drivingFactor / 60.0); 
+                    .smartCurrentLimit(50); //TODO 
 
                 intakeMotorArm
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO
                 intakeMotorArm.encoder
-                    .positionConversionFactor(drivingFactor) //TODO
-                    .velocityConversionFactor(drivingFactor / 60.0); 
+                    .positionConversionFactor(d_coralFactor) //degrees
+                    .velocityConversionFactor(d_coralFactor / 60.0); 
 
 
                 algaeTopMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO
-                algaeTopMotor.encoder
-                    .positionConversionFactor(drivingFactor) //TODO
-                    .velocityConversionFactor(drivingFactor / 60.0); 
 
                 algaeArmMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO
                 algaeArmMotor.encoder
-                    .positionConversionFactor(drivingFactor) //TODO
-                    .velocityConversionFactor(drivingFactor / 60.0); 
+                    .positionConversionFactor(d_algaeFactor) //degrees
+                    .velocityConversionFactor(d_algaeFactor / 60.0); 
                     
 
                 climbMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO
                 climbMotor.encoder
-                    .positionConversionFactor(drivingFactor) //TODO
-                    .velocityConversionFactor(drivingFactor / 60.0); 
-
-                
-
-                
+                    .positionConversionFactor(d_climbFactor) //degrees
+                    .velocityConversionFactor(d_climbFactor / 60.0); 
         }
     }
 }

@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -79,12 +82,15 @@ public final class Constants {
   }
 
   public static final class CoralConstants {
+    public static PIDController k_armPID = new PIDController(0,0,0);
+    public static final ArmFeedforward k_armFeedForward = new ArmFeedforward(0,0,0);
+   
     //Change IDS
     public static final int k_topID = 0;
     public static final int k_botID = 1;
     public static final int k_armID = 2;
 
-    //Find correct values
+    //Find correct values; radians
     public static final double k_forwardArmPos = 0;
     public static final double k_backwardArmPos = 0;
     
@@ -117,7 +123,7 @@ public static final class AlgaeConstants {
     public static final int k_algaeTopID = 0;
     public static final int k_algaeArmID = 1;
 
-    //Find correct values
+    //Find correct values; radians
     public static final double k_loweredArmPos = 0;
     public static final double k_centeredArmPos = 5;
     public static final double k_raisedArmPos = 20;
@@ -145,7 +151,8 @@ public static final class AlgaeConstants {
     //TODO: Change IDS
     public static final int k_climbMotorID = 0;
 
-    //Find correct values
+
+    //Find correct values; radians
     public static final double k_forwardClimbPos = 90;
     public static final double k_backClimbPos = 45;
 

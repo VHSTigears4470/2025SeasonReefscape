@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -13,6 +15,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs;
 import frc.robot.Constants;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
@@ -22,8 +25,7 @@ public class CoralSubsystem extends SubsystemBase {
   private final SparkMax m_botMotor;
   private final SparkMax m_topMotor;
   private final SparkMax m_armMotor;
-  private final RelativeEncoder m_topEncoder;
-  private final RelativeEncoder m_botEncoder;
+
   private final RelativeEncoder m_armEncoder;
   private final SparkClosedLoopController m_armClosedLoopController;
   private double d_desiredReferencePosition;
@@ -31,26 +33,23 @@ public class CoralSubsystem extends SubsystemBase {
   //add sensor if necessary
   public CoralSubsystem() {
     m_botMotor = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
-    m_topMotor = new SparkMax(CoralConstants.k_topID, MotorType.kBrushless);
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
-    m_topEncoder = m_topMotor.getEncoder();
-    m_botEncoder = m_botMotor.getEncoder();
+    m_topMotor = new SparkMax(CoralConstants.k_topID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
-    resetEncoders();
     m_armClosedLoopController = m_armMotor.getClosedLoopController();
+    
+    m_botMotor.configure(Configs.MAXSwerveModule.intakeMotorBottom, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    m_topMotor.configure(Configs.MAXSwerveModule.intakeMotorTop, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    m_armMotor.configure(Configs.MAXSwerveModule.intakeMotorArm, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    
+    resetEncoders();
     setArmState(CORAL_ARM_STATE.FORWARD);
   }
 
   //All get___Encoder methods return value in radians
-  public double getTopEncoder() {
-    return (m_topEncoder.getPosition() * Math.PI) / 21;
-  }
-  
-  //Returns the position of the bot encoder
-  public double getBotEncoder() {
-    return (m_botEncoder.getPosition() * Math.PI) / 21;
-  }
-
 //Returns the position of the arm encoder
   public double getArmEncoder() {
     return (m_armEncoder.getPosition() * Math.PI) / 21;
@@ -58,8 +57,6 @@ public class CoralSubsystem extends SubsystemBase {
 
 //Resets the encoder
   public void resetEncoders(){
-    m_topEncoder.setPosition(0);
-    m_botEncoder.setPosition(0);
     m_armEncoder.setPosition(0);
   }
 
@@ -94,7 +91,8 @@ public class CoralSubsystem extends SubsystemBase {
       d_desiredReferencePosition = Constants.CoralConstants.k_backwardArmPos;
     }
     e_armState = desiredState;
-    m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
+    //m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
+    m_armMotor.setVoltage(CoralConstants.k_armPID.calculate(m_armEncoder.getPosition() * (Math.PI / 180), d_desiredReferencePosition) + CoralConstants.k_armFeedForward.getKv());//ad fd);  
   }
 
 
@@ -105,8 +103,7 @@ public class CoralSubsystem extends SubsystemBase {
 //sets the encoders to default values
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
-    SmartDashboard.putNumber("TopEncoder", getTopEncoder() * 180 / Math.PI);
-    SmartDashboard.putNumber("BottomEncoder", getBotEncoder() * 180 / Math.PI);
+
     SmartDashboard.putNumber("ArmEncoder", getArmEncoder() * 180 / Math.PI);
   }
 
@@ -120,10 +117,6 @@ public class CoralSubsystem extends SubsystemBase {
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
-    // if(getArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
-    //   m_armMotor.set(-Constants.CoralConstants.k_coralArmSpeed);
-    // else if (getArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
-    //   m_armMotor.set(Constants.CoralConstants.k_coralArmSpeed);
     setSmartDashboard();
   }
 

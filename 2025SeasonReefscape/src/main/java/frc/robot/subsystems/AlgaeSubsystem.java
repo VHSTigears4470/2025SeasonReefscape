@@ -7,11 +7,14 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs;
 import frc.robot.Constants;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
@@ -21,7 +24,6 @@ public class AlgaeSubsystem extends SubsystemBase {
   /** Algae Subsystem */
    private final SparkMax m_algaeTopMotor; /* Variables for algae motors */
    private final SparkMax m_algaeArmMotor;
-   private final RelativeEncoder m_algaeTopEncoder; /** Variables for algae encoders */
    private final RelativeEncoder m_algaeArmEncoder;
    private final SparkClosedLoopController m_algaeClosedLoopController;
    
@@ -33,18 +35,17 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeTopMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless); // motor controller
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
 
-    m_algaeTopEncoder = m_algaeTopMotor.getEncoder(); //recieving the encoder value
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
     resetEncoders();
+
+    m_algaeTopMotor.configure(Configs.MAXSwerveModule.algaeTopMotor, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    m_algaeArmMotor.configure(Configs.MAXSwerveModule.algaeArmMotor, ResetMode.kResetSafeParameters,
+      PersistMode.kPersistParameters);
 
     m_algaeClosedLoopController = m_algaeArmMotor.getClosedLoopController();
 
     setArmState(ALGAE_ARM_STATE.RAISED);
-  }
-
-  //All get___AlgaeEncoder methods return value in radians
-  public double getAlgaeTopEncoder() {
-    return (m_algaeTopEncoder.getPosition() * Math.PI) / 21;
   }
   
   public double getAlgaeArmEncoder() {
@@ -56,7 +57,6 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void resetAlgaeEncoders() {
-    m_algaeTopEncoder.setPosition(0); // reset the algae encoder ticks
     m_algaeArmEncoder.setPosition(0);
   }
 
@@ -85,7 +85,6 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   // Resets the encoders
   public void resetEncoders(){
-    m_algaeTopEncoder.setPosition(0);
     m_algaeArmEncoder.setPosition(0);
   }
 
@@ -96,7 +95,6 @@ public class AlgaeSubsystem extends SubsystemBase {
   // Dashboard methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
-    SmartDashboard.putNumber("AlgaeTopEncoder in Degrees", getAlgaeTopEncoder() * 180 / Math.PI);
     SmartDashboard.putNumber("AlgaeArmEncoder in Degrees", getAlgaeArmEncoder() * 180 / Math.PI);
   }
   
@@ -111,10 +109,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // if(getAlgaeArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
-    //   m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
-    // else if (getAlgaeArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
-    //   m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
+    if(getAlgaeArmEncoder() - d_desiredReferencePosition > Constants.k_positionBuffer)
+      m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
+    else if (getAlgaeArmEncoder() - d_desiredReferencePosition < -Constants.k_positionBuffer)
+      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
+      
     setSmartDashboard();
   }
 
