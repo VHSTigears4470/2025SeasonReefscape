@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -89,6 +88,12 @@ public final class Constants {
     public static final int k_topID = 0;
     public static final int k_botID = 1;
     public static final int k_armID = 2;
+
+    // Arm Max Velocity
+    public static final double k_maxVelocity = 0; // TODO
+    public static final double k_maxAcceleration = 0; // TODO
+    public static final TrapezoidProfile trapezoidProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(CoralConstants.k_maxVelocity, CoralConstants.k_maxAcceleration));
+    
 
     //Find correct values; radians
     public static final double k_forwardArmPos = 0;

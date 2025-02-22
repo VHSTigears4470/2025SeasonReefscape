@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -92,7 +93,15 @@ public class CoralSubsystem extends SubsystemBase {
     }
     e_armState = desiredState;
     //m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
-    m_armMotor.setVoltage(CoralConstants.k_armPID.calculate(m_armEncoder.getPosition() * (Math.PI / 180), d_desiredReferencePosition) + CoralConstants.k_armFeedForward.getKv());//ad fd);  
+    
+    TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
+    TrapezoidProfile.State desriedState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
+    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desriedState);
+
+    double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
+    voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
+    
+    m_armMotor.setVoltage(voltageOutput);  
   }
 
 
@@ -118,6 +127,15 @@ public class CoralSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     setSmartDashboard();
+    
+    TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
+    TrapezoidProfile.State desriedState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
+    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desriedState);
+
+    double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
+    voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
+    
+    m_armMotor.setVoltage(voltageOutput);  
   }
 
   @Override
