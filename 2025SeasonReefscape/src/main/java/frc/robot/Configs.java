@@ -28,7 +28,7 @@ public final class Configs {
 
         //Coral Subsystem
         public static final SparkMaxConfig intakeMotorTop = new SparkMaxConfig();
-        public static final SparkMaxConfig intakeMotorBottom = new SparkMaxConfig();
+        public static final SparkMaxConfig intakeMotor = new SparkMaxConfig();
         public static final SparkMaxConfig intakeMotorArm= new SparkMaxConfig();
 
         //AlgaeSubsystem
@@ -182,13 +182,7 @@ public final class Configs {
                 rearLeftKitbot
                     .follow(KitbotDriveConstants.k_frontLeftMotorID, false);
 
-                intakeMotorTop
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO
-                intakeMotorTop
-                    .follow(CoralConstants.k_botID, false);
-
-                intakeMotorBottom
+                intakeMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO 
 

@@ -23,25 +23,21 @@ import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 
 public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
-  private final SparkMax m_botMotor;
-  private final SparkMax m_topMotor;
+  private final SparkMax m_intake;
   private final SparkMax m_armMotor;
-
   private final RelativeEncoder m_armEncoder;
   private final SparkClosedLoopController m_armClosedLoopController;
   private double d_desiredReferencePosition;
   private CORAL_ARM_STATE e_armState;
   //add sensor if necessary
+
   public CoralSubsystem() {
-    m_botMotor = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
+    m_intake = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
-    m_topMotor = new SparkMax(CoralConstants.k_topID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
     m_armClosedLoopController = m_armMotor.getClosedLoopController();
     
-    m_botMotor.configure(Configs.MAXSwerveModule.intakeMotorBottom, ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
-    m_topMotor.configure(Configs.MAXSwerveModule.intakeMotorTop, ResetMode.kResetSafeParameters,
+    m_intake.configure(Configs.MAXSwerveModule.intakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     m_armMotor.configure(Configs.MAXSwerveModule.intakeMotorArm, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -68,20 +64,17 @@ public class CoralSubsystem extends SubsystemBase {
 
   //takes the coral in
   public void intake() {
-    m_topMotor.setVoltage(-CoralConstants.k_fastVoltage);
-    m_botMotor.setVoltage(-CoralConstants.k_fastVoltage);
+    m_intake.setVoltage(-CoralConstants.k_fastVoltage);
   }
 
 //Shoots slow by decreasing the voltage of the top and bottom motors
   public void shootSlow() {
-    m_topMotor.setVoltage(CoralConstants.k_slowVoltage);
-    m_botMotor.setVoltage(CoralConstants.k_slowVoltage);
+    m_intake.setVoltage(CoralConstants.k_slowVoltage);
   }
 
 //Shoots fast by increasing the voltage of the top and bottom motors
   public void shootFast() {
-    m_topMotor.setVoltage(CoralConstants.k_fastVoltage);
-    m_botMotor.setVoltage(CoralConstants.k_fastVoltage);
+    m_intake.setVoltage(CoralConstants.k_fastVoltage);
   }
 
   
@@ -93,15 +86,6 @@ public class CoralSubsystem extends SubsystemBase {
     }
     e_armState = desiredState;
     //m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
-    
-    TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
-    TrapezoidProfile.State desriedState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
-    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desriedState);
-
-    double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
-    voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
-    
-    m_armMotor.setVoltage(voltageOutput);  
   }
 
 
@@ -118,8 +102,7 @@ public class CoralSubsystem extends SubsystemBase {
 
   //stops all the motors
   public void stop(){
-    m_topMotor.stopMotor();
-    m_botMotor.stopMotor();
+    m_intake.stopMotor();
     m_armMotor.stopMotor();
   }
   
@@ -127,16 +110,15 @@ public class CoralSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     setSmartDashboard();
-    
     TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
-    TrapezoidProfile.State desriedState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
-    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desriedState);
+    TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
+    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
 
     double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
     voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
     
-    m_armMotor.setVoltage(voltageOutput);  
-  }
+    m_armMotor.setVoltage(voltageOutput);   
+   }
 
   @Override
   public void simulationPeriodic() {
