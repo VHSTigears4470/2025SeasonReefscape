@@ -95,8 +95,18 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
   
   // This method stops the motors
-  public void stop(){
+  public void stopAllMotors(){
     m_algaeTopMotor.stopMotor();
+    m_algaeArmMotor.stopMotor();
+  }
+
+  // This method stops the motors
+  public void stopIntakeMotor(){
+    m_algaeTopMotor.stopMotor();
+  }
+
+  // This method stops the motors
+  public void stopArmMotor(){
     m_algaeArmMotor.stopMotor();
   }
 
@@ -106,11 +116,20 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if(Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) > Constants.k_positionBuffer)
-      m_algaeArmMotor.set(-Constants.AlgaeConstants.k_algaeArmSpeed);
-    else if (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < -Constants.k_positionBuffer)
-      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
+    {
+      if(getAlgaeArmEncoder() < d_desiredReferencePosition) {
+        // If encoder is before desired
+        m_algaeArmMotor.set(-1 * Constants.AlgaeConstants.k_algaeArmSpeed);
+      } else {
+        // If encoder is too after desired
+        m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
+      }
+    }
     else
-      m_algaeArmMotor.set(0);
+    {
+      // Algae Hold Speed
+      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmHoldSpeed);
+    }
     setSmartDashboard();
   }
 

@@ -12,7 +12,6 @@ import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.ClimbCommands.ExtendClimbArm;
 import frc.robot.commands.ClimbCommands.RetractClimbArm;
 import frc.robot.commands.CommandGroups.IntakeExtendAlgae;
-import frc.robot.commands.CoralCommands.IntakeCoral;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
@@ -258,7 +257,7 @@ public class RobotContainer {
         }
         //D-Pad 
         if(OperatingConstants.k_usingCoral){
-        m_driverController.povUp().whileTrue(new IntakeCoral(m_coralSub));//chack validity later
+        m_driverController.povUp().whileTrue(new ShootCoralFast(m_coralSub));//chack validity later
         }
   }
 

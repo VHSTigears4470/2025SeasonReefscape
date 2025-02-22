@@ -25,7 +25,7 @@ public class IntakeAlgae extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_algaeSub.stop();
+        m_algaeSub.stopIntakeMotor();
     }
 
     // Returns true when the command should end.

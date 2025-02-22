@@ -27,7 +27,7 @@ public class ShootCoralFast extends Command {
     @Override
     public void end(boolean interrupted) {
         //Stops the coral subsystem
-        m_coralSub.stop();
+        m_coralSub.stopIntakeMotor();
     }
 
     // Returns true when the command should end. (never happens)

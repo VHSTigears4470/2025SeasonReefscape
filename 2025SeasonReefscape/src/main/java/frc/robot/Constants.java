@@ -139,6 +139,7 @@ public static final class AlgaeConstants {
     
     //Algae Arm Speed
     public static final double k_algaeArmSpeed = 0.2;
+    public static final double k_algaeArmHoldSpeed = 0; // Speed for holding arm position // TODO
 
     public static enum ALGAE_ARM_STATE {
       RAISED,

@@ -58,11 +58,6 @@ public class CoralSubsystem extends SubsystemBase {
     return e_armState;
   }
 
-  //takes the coral in
-  public void intake() {
-    m_intake.setVoltage(-CoralConstants.k_fastVoltage);
-  }
-
 //Shoots slow by decreasing the voltage of the top and bottom motors
   public void shootSlow() {
     m_intake.setVoltage(CoralConstants.k_slowVoltage);
@@ -96,8 +91,18 @@ public class CoralSubsystem extends SubsystemBase {
   }
 
   //stops all the motors
-  public void stop(){
+  public void stopAllMotors(){
     m_intake.stopMotor();
+    m_armMotor.stopMotor();
+  }
+
+  //stops the motors
+  public void stopIntakeMotor(){
+    m_intake.stopMotor();
+  }
+
+  //stops the motors
+  public void stopArmMotor(){
     m_armMotor.stopMotor();
   }
   
