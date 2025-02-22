@@ -156,6 +156,9 @@ public static final class AlgaeConstants {
   public static final class ClimbConstants {
     //TODO: Change IDS
     public static final int k_climbMotorID = 0;
+    
+    public static final double k_climbHoldDefault = 0; // Speed For Robot Resting While Robot On Ground TODO
+    public static final double k_climbHoldRobot = 0; // Speed For Robot Resting While Robot In The Air TODO
 
 
     //Find correct values; radians

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
+import frc.robot.Constants.ClimbConstants;
 
 /** CLimb Subsystem */
 public class ClimbSubsystem extends SubsystemBase {
@@ -23,6 +24,7 @@ public class ClimbSubsystem extends SubsystemBase {
    private double d_desiredReferencePosition;
    private double d_upperLimit = 1;//change later to actual value
    private double d_lowerLimit = -1;//subject to change
+   private double holdingSpeed;
 
    // Constructor:
   public ClimbSubsystem() {
@@ -31,12 +33,13 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbMotor.configure(Configs.MAXSwerveModule.climbMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
+    holdingSpeed = ClimbConstants.k_climbHoldDefault;
     resetEncoders();
   }
     
   //All get___Encoder methods return value in radians
   public double getClimbEncoder(){
-    return (m_climbEncoder.getPosition() * Math.PI) / 21;
+    return m_climbEncoder.getPosition();
   }
 
   public double getDesiredPos(){
@@ -46,7 +49,7 @@ public class ClimbSubsystem extends SubsystemBase {
   //If the arm is within its range of movement, adjusts its speed to the paramenter, otherwise makes the arm stop moving
   public void setArmSpeed(double speed){
       if((speed > 0 && getClimbEncoder() >= d_upperLimit) || (speed < 0 && getClimbEncoder() <= d_lowerLimit)){
-        speed = 0;
+        speed = holdingSpeed;
       }
       m_climbMotor.set(speed);
   }
@@ -54,6 +57,14 @@ public class ClimbSubsystem extends SubsystemBase {
   //Sets the current position 0
   public void resetEncoders(){
     m_climbEncoder.setPosition(0);
+  }
+
+  public void setOnGround(boolean isOnGround) {
+    if(isOnGround) {
+      holdingSpeed = ClimbConstants.k_climbHoldDefault;
+    } else {
+      holdingSpeed = ClimbConstants.k_climbHoldRobot;
+    }
   }
 
   //
