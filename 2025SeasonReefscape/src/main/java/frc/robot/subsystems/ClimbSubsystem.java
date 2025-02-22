@@ -51,7 +51,7 @@ public class ClimbSubsystem extends SubsystemBase {
       m_climbMotor.set(speed);
   }
 
-  //Sets the encoders to their current position
+  //Sets the current position 0
   public void resetEncoders(){
     m_climbEncoder.setPosition(0);
   }
@@ -69,11 +69,6 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void stop(){
     m_climbMotor.stopMotor();
-  }
-  
-  // Resets the encoders
-  public void resetAlgaeEncoder() {
-    m_climbEncoder.setPosition(0);
   }
 
   @Override

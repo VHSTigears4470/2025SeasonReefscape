@@ -26,7 +26,6 @@ public class CoralSubsystem extends SubsystemBase {
   private final SparkMax m_intake;
   private final SparkMax m_armMotor;
   private final RelativeEncoder m_armEncoder;
-  private final SparkClosedLoopController m_armClosedLoopController;
   private double d_desiredReferencePosition;
   private CORAL_ARM_STATE e_armState;
   //add sensor if necessary
@@ -35,7 +34,6 @@ public class CoralSubsystem extends SubsystemBase {
     m_intake = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
-    m_armClosedLoopController = m_armMotor.getClosedLoopController();
     
     m_intake.configure(Configs.MAXSwerveModule.intakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -49,7 +47,7 @@ public class CoralSubsystem extends SubsystemBase {
   //All get___Encoder methods return value in radians
 //Returns the position of the arm encoder
   public double getArmEncoder() {
-    return (m_armEncoder.getPosition() * Math.PI) / 21;
+    return m_armEncoder.getPosition();
   }
 
 //Resets the encoder
@@ -85,7 +83,6 @@ public class CoralSubsystem extends SubsystemBase {
       d_desiredReferencePosition = Constants.CoralConstants.k_backwardArmPos;
     }
     e_armState = desiredState;
-    //m_armClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition);
   }
 
 
@@ -97,7 +94,7 @@ public class CoralSubsystem extends SubsystemBase {
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
 
-    SmartDashboard.putNumber("ArmEncoder", getArmEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("ArmEncoder (Degrees)", getArmEncoder() * 180 / Math.PI);
   }
 
   //stops all the motors
@@ -109,7 +106,9 @@ public class CoralSubsystem extends SubsystemBase {
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
+    
     setSmartDashboard();
+
     TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
     TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
     TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
