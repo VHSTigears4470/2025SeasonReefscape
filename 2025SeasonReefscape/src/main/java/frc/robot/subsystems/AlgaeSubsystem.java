@@ -119,20 +119,20 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) > Constants.k_positionBuffer)
+    if(isAtDesiredPosition())
     {
-      if(getAlgaeArmEncoder() < d_desiredReferencePosition) {
-        // If encoder is before desired
-        m_algaeArmMotor.set(-1 * Constants.AlgaeConstants.k_algaeArmSpeed);
-      } else {
-        // If encoder is too after desired
-        m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
-      }
+      // Algae Hold Speed
+      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmHoldSpeed); 
     }
     else
     {
-      // Algae Hold Speed
-      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmHoldSpeed);
+      if(getAlgaeArmEncoder() < d_desiredReferencePosition) {
+        // If encoder value means we still need to increase our angle
+        m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
+      } else {
+        // If encoder value means we still need to decrease our angle
+        m_algaeArmMotor.set(-1 * Constants.AlgaeConstants.k_algaeArmSpeed);
+      }
     }
     setSmartDashboard();
   }
