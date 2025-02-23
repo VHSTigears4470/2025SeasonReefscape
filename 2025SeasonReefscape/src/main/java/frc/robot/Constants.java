@@ -24,8 +24,6 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final double k_sparkMaxConversionFactor = 0; //TODO: Update
-  public static final double k_positionBuffer = 1; //TODO: Update
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -84,10 +82,11 @@ public final class Constants {
     public static PIDController k_armPID = new PIDController(0,0,0); //TODO
     public static final ArmFeedforward k_armFeedForward = new ArmFeedforward(0,0,0); //TODO
    
+    public static final double k_positionBufferCoral = 1; //TODO: Update
     //Change IDS
-    public static final int k_topID = 0;
-    public static final int k_botID = 1;
-    public static final int k_armID = 2;
+    public static final int k_topID = 0; // TODO
+    public static final int k_botID = 1; // TODO
+    public static final int k_armID = 2; // TODO
 
     // Arm Max Velocity
     public static final double k_maxVelocity = 0; // TODO
@@ -96,16 +95,16 @@ public final class Constants {
     
 
     //Find correct values; radians
-    public static final double k_forwardArmPos = 0;
-    public static final double k_backwardArmPos = 0;
+    public static final double k_forwardArmPos = 0; // TODO
+    public static final double k_backwardArmPos = 0; // TODO
+    public static final double k_startingArmPos = 0; // TODO
     
-    //Changes arm states
     //Change voltages
-    public static final double k_fastVoltage = 4.0; 
-    public static final double k_slowVoltage = 1.5; 
+    public static final double k_fastVoltage = 4.0; // TODO
+    public static final double k_slowVoltage = 1.5; // TODO
 
     //Set arm speed
-    public static final double k_coralArmSpeed = 0.2;
+    public static final double k_coralArmSpeed = 0.2; // TODO
     
     public static enum CORAL_ARM_STATE {
       FORWARD,
@@ -125,20 +124,22 @@ public final class Constants {
 
 public static final class AlgaeConstants {
     //Change IDS
-    public static final int k_algaeTopID = 0;
-    public static final int k_algaeArmID = 1;
+    public static final int k_algaeTopID = 0; // TODO
+    public static final int k_algaeArmID = 1; // TODO
+
+    public static final double k_positionBufferAlgae = 1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_loweredArmPos = 0;
-    public static final double k_centeredArmPos = 5;
-    public static final double k_raisedArmPos = 20;
+    public static final double k_loweredArmPos = 0; // TODO
+    public static final double k_centeredArmPos = 5; // TODO
+    public static final double k_raisedArmPos = 20; // TODO
     
     //Find correct voltages
-    public static final double k_intakeVoltage = -1; 
-    public static final double k_dispenseVoltage = 1;
+    public static final double k_intakeVoltage = -1; // TODO
+    public static final double k_dispenseVoltage = 1; // TODO
     
     //Algae Arm Speed
-    public static final double k_algaeArmSpeed = 0.2;
+    public static final double k_algaeArmSpeed = 0.2; // TODO
     public static final double k_algaeArmHoldSpeed = 0; // Speed for holding arm position // TODO
 
     public static enum ALGAE_ARM_STATE {
@@ -154,18 +155,13 @@ public static final class AlgaeConstants {
   }
 
   public static final class ClimbConstants {
-    //TODO: Change IDS
-    public static final int k_climbMotorID = 0;
+    public static final int k_climbMotorID = 0; // TODO
 
+    public static final double k_positionBufferClimb = 1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_forwardClimbPos = 90;
-    public static final double k_backClimbPos = 45;
-
-    public static enum CLIMB_STATE {
-      FORWARD,
-      BACK;
-    }
+    public static final double k_forwardClimbPos = 90; // TODO
+    public static final double k_backClimbPos = 45; // TODO
   }
 
   public static final class ModuleConstants {

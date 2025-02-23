@@ -85,7 +85,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public boolean isAtDesiredPosition(){
-    return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer); //make sure in radians
+    return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < AlgaeConstants.k_positionBufferAlgae); //make sure in radians
   }
 
   public void testArmMotors(double speed) {

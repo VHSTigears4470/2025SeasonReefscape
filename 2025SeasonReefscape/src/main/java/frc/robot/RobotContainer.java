@@ -10,6 +10,7 @@ import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 import frc.robot.commands.AlgaeCommands.RetractAlgaeArm;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.ClimbCommands.ExtendClimbArm;
+import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
 import frc.robot.commands.ClimbCommands.RetractClimbArm;
 import frc.robot.commands.CommandGroups.IntakeExtendAlgae;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
@@ -30,6 +31,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -60,6 +62,7 @@ public class RobotContainer {
      initSubsystems();    
     // Configure the trigger bindings
     configureBindings();
+    configureSmartDashboard();
   }
 
   private void initSubsystems() {
@@ -141,6 +144,12 @@ public class RobotContainer {
                     controllerPresetMain();
                     break;
     }
+  }
+
+  private void configureSmartDashboard() {
+        SmartDashboard.putData("Increase Climb", new OverrideSpedClimbArm(m_climbSub, 0.1));
+        SmartDashboard.putData("Decrease Climb", new OverrideSpedClimbArm(m_climbSub, -0.1));
+        SmartDashboard.putData("Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
   }
 
   /**

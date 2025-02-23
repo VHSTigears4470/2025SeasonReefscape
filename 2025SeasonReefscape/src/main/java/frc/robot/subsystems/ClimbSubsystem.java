@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
+import frc.robot.Constants.ClimbConstants;
 
 /** CLimb Subsystem */
 public class ClimbSubsystem extends SubsystemBase {
@@ -51,6 +52,15 @@ public class ClimbSubsystem extends SubsystemBase {
       m_climbMotor.set(speed);
   }
 
+  /**
+   * Ignores upper and lower limits and sets speed
+   * Should ONLY be used for calibrating robot
+   * @param speed set motors to
+   */
+  public void setArmSpeedOverride(double speed) {
+    m_climbMotor.set(speed);
+  }
+
   //Sets the current position 0
   public void resetEncoders(){
     m_climbEncoder.setPosition(0);
@@ -58,7 +68,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   //
   public boolean isAtDesiredPosition(){
-    return (Math.abs(getClimbEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
+    return (Math.abs(getClimbEncoder() - d_desiredReferencePosition) < ClimbConstants.k_positionBufferClimb);
   }
 
   // Dashboard Methods

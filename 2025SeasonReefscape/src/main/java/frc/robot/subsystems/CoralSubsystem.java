@@ -38,7 +38,7 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor.configure(Configs.MAXSwerveModule.intakeMotorArm, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     
-    resetEncoders();
+    m_armEncoder.setPosition(CoralConstants.k_startingArmPos);
     setArmState(CORAL_ARM_STATE.FORWARD);
   }
 
@@ -83,7 +83,7 @@ public class CoralSubsystem extends SubsystemBase {
   }
 
    public boolean isAtDesiredPosition(){
-    return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < Constants.k_positionBuffer);
+    return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < CoralConstants.k_positionBufferCoral);
   } 
 
 //sets the encoders to default values
