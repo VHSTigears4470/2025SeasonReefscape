@@ -11,7 +11,6 @@ public class ToggleCoralArm extends Command {
         public ToggleCoralArm(CoralSubsystem coralSub, CORAL_ARM_STATE armState) {
             m_coralSub = coralSub;
             m_coralArmState = armState;
-            addRequirements(m_coralSub);
         }
 
         // Called when the command is initially scheduled.
