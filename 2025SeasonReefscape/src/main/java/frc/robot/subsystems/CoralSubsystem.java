@@ -42,7 +42,7 @@ public class CoralSubsystem extends SubsystemBase {
     setArmState(CORAL_ARM_STATE.FORWARD);
   }
 
-  //All get___Encoder methods return value in radians
+  //All get___Encoder methods return ____Encoder values in radians
 //Returns the position of the arm encoder
   public double getArmEncoder() {
     return m_armEncoder.getPosition();

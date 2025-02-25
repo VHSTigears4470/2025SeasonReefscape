@@ -5,7 +5,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 
 public class ExtendClimbArm extends Command {
     private final ClimbSubsystem m_climbSub;
-        
+          
     public ExtendClimbArm(ClimbSubsystem climbSub) {
         m_climbSub = climbSub;
         addRequirements(m_climbSub);
