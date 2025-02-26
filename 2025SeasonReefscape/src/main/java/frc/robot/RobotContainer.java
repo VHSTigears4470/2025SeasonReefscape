@@ -147,9 +147,11 @@ public class RobotContainer {
   }
 
   private void configureSmartDashboard() {
-        SmartDashboard.putData("Increase Climb", new OverrideSpedClimbArm(m_climbSub, 0.1));
-        SmartDashboard.putData("Decrease Climb", new OverrideSpedClimbArm(m_climbSub, -0.1));
-        SmartDashboard.putData("Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
+        if(OperatingConstants.k_usingClimb) {
+                SmartDashboard.putData("Increase Climb", new OverrideSpedClimbArm(m_climbSub, 0.1));
+                SmartDashboard.putData("Decrease Climb", new OverrideSpedClimbArm(m_climbSub, -0.1));
+                SmartDashboard.putData("Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
+        }
   }
 
   /**
