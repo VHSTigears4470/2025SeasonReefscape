@@ -10,7 +10,6 @@ public class IntakeAlgae extends Command {
         m_algaeSub = algaeSub;
         addRequirements(algaeSub);
     }
-    
 
     // Called when the command is initially scheduled.
     @Override

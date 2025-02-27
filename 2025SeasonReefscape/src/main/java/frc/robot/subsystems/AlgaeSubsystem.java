@@ -49,22 +49,21 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
   
   public double getAlgaeArmEncoder() {
-    return m_algaeArmEncoder.getPosition(); //
+    return m_algaeArmEncoder.getPosition(); 
   }
 
   public ALGAE_ARM_STATE getArmState(){
     return e_armState;
   }
 
-  
   public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; raised, centered,
-    if (desiredState == ALGAE_ARM_STATE.RAISED) {
+    if (desiredState == ALGAE_ARM_STATE.RAISED) 
       d_desiredReferencePosition = Constants.AlgaeConstants.k_raisedArmPos;
-    } else if (desiredState == ALGAE_ARM_STATE.CENTERED) {
+    else if (desiredState == ALGAE_ARM_STATE.CENTERED) 
       d_desiredReferencePosition = Constants.AlgaeConstants.k_centeredArmPos;
-    } else /*if (desiredState == ALGAE_ARM_STATE.LOWERED)*/ {
+    else 
       d_desiredReferencePosition = Constants.AlgaeConstants.k_loweredArmPos;
-    }
+    
     e_armState = desiredState;
     m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
   }
@@ -72,6 +71,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   // This method takes in the algae
   public void intake() {
     m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
+    //m_algaeTopMotor
   }
 
 
@@ -82,10 +82,6 @@ public class AlgaeSubsystem extends SubsystemBase {
   // Resets the encoders
   public void resetEncoders(){
     m_algaeArmEncoder.setPosition(0);
-  }
-
-  public boolean isAtDesiredPosition(){
-    return (Math.abs(getAlgaeArmEncoder() - d_desiredReferencePosition) < AlgaeConstants.k_positionBufferAlgae); //make sure in radians
   }
 
   public void testArmMotors(double speed) {
@@ -116,24 +112,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   //Still need to apply other methods
 
-  @Override
+@Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    if(isAtDesiredPosition())
-    {
-      // Algae Hold Speed
-      m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmHoldSpeed); 
-    }
-    else
-    {
-      if(getAlgaeArmEncoder() < d_desiredReferencePosition) {
-        // If encoder value means we still need to increase our angle
-        m_algaeArmMotor.set(Constants.AlgaeConstants.k_algaeArmSpeed);
-      } else {
-        // If encoder value means we still need to decrease our angle
-        m_algaeArmMotor.set(-1 * Constants.AlgaeConstants.k_algaeArmSpeed);
-      }
-    }
+    if (e_armState == ALGAE_ARM_STATE.CENTERED)
+      m_algaeTopMotor.set(0); //TODO: Update
     setSmartDashboard();
   }
 
