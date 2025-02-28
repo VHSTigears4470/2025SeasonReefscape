@@ -92,6 +92,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmMotor.set(speed);
   }
 
+  public void testIntakeMotors(double speed) {
+    m_algaeIntakeMotor.set(speed);
+  }
+
   public void setStowArmWhenIdle(boolean stowWhenIdle) {
     b_stowArmWhenIdle = stowWhenIdle;
   }

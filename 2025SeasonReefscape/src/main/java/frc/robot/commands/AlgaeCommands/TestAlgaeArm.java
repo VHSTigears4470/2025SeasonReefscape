@@ -1,14 +1,15 @@
 package frc.robot.commands.AlgaeCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 import frc.robot.subsystems.AlgaeSubsystem;
 
-public class IdleAlgae extends Command {
+public class TestAlgaeArm extends Command {
     private AlgaeSubsystem m_algaeSub;
+    private final double m_speed;
         
-        public IdleAlgae(AlgaeSubsystem algaeSub) {
+        public TestAlgaeArm(AlgaeSubsystem algaeSub, double speed) {
             m_algaeSub = algaeSub;
+            m_speed = speed;
             addRequirements(m_algaeSub);
         }
 
@@ -19,23 +20,18 @@ public class IdleAlgae extends Command {
         // Called every time the scheduler runs while the command is scheduled.
         @Override
         public void execute(){
-              if(m_algaeSub.getStowArmWhenIdle()) {
-                m_algaeSub.setArmState(ALGAE_ARM_STATE.STOWED);
-                m_algaeSub.stopIntakeMotor();
-              } else {
-                m_algaeSub.setArmState(ALGAE_ARM_STATE.HOLDING);
-                m_algaeSub.hold();
-              }
-              
+            m_algaeSub.testArmMotors(m_speed);
         }
 
         // Called once the command ends or is interrupted.
         @Override
-        public void end(boolean interrupted){}
+        public void end(boolean interrupted){
+            m_algaeSub.stopArmMotor();
+        }
 
         // Returns true when the command should end.
         @Override
         public boolean isFinished(){
-          return false;
+            return false;
         }
 }

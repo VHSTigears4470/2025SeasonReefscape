@@ -82,6 +82,10 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor.set(speed);
   }
 
+  public void testIntakeMotors(double speed) {
+    m_armMotor.set(speed);
+  }
+
    public boolean isAtDesiredPosition(){
     return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < CoralConstants.k_positionBufferCoral);
   } 
