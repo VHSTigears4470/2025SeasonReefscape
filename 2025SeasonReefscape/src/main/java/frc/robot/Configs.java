@@ -19,23 +19,6 @@ public final class Configs {
 
         public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
 
-        // Kitbot Drive
-        public static final SparkMaxConfig frontRightKitbot = new SparkMaxConfig();
-        public static final SparkMaxConfig frontLeftKitbot = new SparkMaxConfig();
-        public static final SparkMaxConfig rearRightKitbot = new SparkMaxConfig();
-        public static final SparkMaxConfig rearLeftKitbot = new SparkMaxConfig();
-
-        //Coral Subsystem
-        public static final SparkMaxConfig intakeMotorTop = new SparkMaxConfig();
-        public static final SparkMaxConfig intakeMotor = new SparkMaxConfig();
-        public static final SparkMaxConfig intakeMotorArm= new SparkMaxConfig();
-
-        //AlgaeSubsystem
-        public static final SparkMaxConfig algaeTopMotor = new SparkMaxConfig();
-        public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
-
-        //ClimbSubsystem
-        public static final SparkMaxConfig climbMotor = new SparkMaxConfig();
 
         static {
             // Use module constants to calculate conversion factors and feed forward gain.
@@ -43,10 +26,6 @@ public final class Configs {
                     / ModuleConstants.k_DrivingMotorReduction;
             double d_turningFactor = 2 * Math.PI;
             double d_drivingVelocityFeedForward = 1 / ModuleConstants.k_DriveWheelFreeSpeedRps;
-               //Encoder Conversion factor
-            double d_coralFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
-            double d_algaeFactor = 0 * 2 * Math.PI; //TODO: Double Check
-            double d_climbFactor = 0 * 2 * Math.PI; //TODO: Double Check
             
             // drivingConfig
             //         .idleMode(IdleMode.kBrake)
@@ -137,10 +116,19 @@ public final class Configs {
                     // to 10 degrees will go through 0 rather than the other direction which is a
                     // longer route.
                     .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(0, d_turningFactor);
+                    .positionWrappingInputRange(0, d_turningFactor); 
+        }
+    }
+    
+    public static final class KitbotConfigs {
+        // Kitbot Drive
+        public static final SparkMaxConfig frontRightKitbot = new SparkMaxConfig();
+        public static final SparkMaxConfig frontLeftKitbot = new SparkMaxConfig();
+        public static final SparkMaxConfig rearRightKitbot = new SparkMaxConfig();
+        public static final SparkMaxConfig rearLeftKitbot = new SparkMaxConfig();
 
-
-                double kitBotFactor = 1 / ( 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius * KitbotDriveConstants.k_kitbotGearRatio);
+        static {
+            double kitBotFactor = 1 / ( 2 * Math.PI * KitbotDriveConstants.k_kitbotWheelRadius * KitbotDriveConstants.k_kitbotGearRatio);
 
                 //right motor no invert sets encoder, limits, and brakes
                 frontRightKitbot
@@ -180,37 +168,68 @@ public final class Configs {
                     .velocityConversionFactor(kitBotFactor / 60.0); // meters per second
                 rearLeftKitbot
                     .follow(KitbotDriveConstants.k_frontLeftMotorID, false);
-
-                intakeMotor
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO 
-
-                intakeMotorArm
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO
-                intakeMotorArm.encoder
-                    .positionConversionFactor(d_coralFactor) //degrees
-                    .velocityConversionFactor(d_coralFactor / 60.0); 
-
-
-                algaeTopMotor
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO
-
-                algaeArmMotor
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO
-                algaeArmMotor.encoder
-                    .positionConversionFactor(d_algaeFactor) //degrees
-                    .velocityConversionFactor(d_algaeFactor / 60.0); 
-                    
-
-                climbMotor
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50); //TODO
-                climbMotor.encoder
-                    .positionConversionFactor(d_climbFactor) //degrees
-                    .velocityConversionFactor(d_climbFactor / 60.0); 
         }
     }
+
+    public static final class AlgaeConfigs {
+
+        //AlgaeSubsystem
+        public static final SparkMaxConfig algaeTopMotor = new SparkMaxConfig();
+        public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
+
+        static {
+            double d_algaeFactor = 0 * 2 * Math.PI; //TODO: Double Check
+
+            algaeTopMotor
+            .idleMode(IdleMode.kBrake)
+            .smartCurrentLimit(50); //TODO
+
+            algaeArmMotor
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50); //TODO
+            algaeArmMotor.encoder
+                .positionConversionFactor(d_algaeFactor) //degrees
+                .velocityConversionFactor(d_algaeFactor / 60.0); 
+        }
+
+    }
+    
+    public static final class ClimbConfigs {
+
+        //ClimbSubsystem
+        public static final SparkMaxConfig climbMotor = new SparkMaxConfig();
+
+        static {
+            double d_climbFactor = 0 * 2 * Math.PI; //TODO: Double Check
+            climbMotor
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO
+            climbMotor.encoder
+                .positionConversionFactor(d_climbFactor) //degrees
+                .velocityConversionFactor(d_climbFactor / 60.0); 
+        }
+    }
+
+    public static final class CoralConfigs {
+
+        //Coral Subsystem
+        public static final SparkMaxConfig intakeMotorTop = new SparkMaxConfig();
+        public static final SparkMaxConfig intakeMotor = new SparkMaxConfig();
+        public static final SparkMaxConfig intakeMotorArm = new SparkMaxConfig();
+
+        static {
+            double d_coralFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
+
+            intakeMotor
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(50); //TODO 
+            intakeMotorArm
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50); //TODO
+            intakeMotorArm.encoder
+                .positionConversionFactor(d_coralFactor) //degrees
+                .velocityConversionFactor(d_coralFactor / 60.0); 
+        }
+    }
+
 }

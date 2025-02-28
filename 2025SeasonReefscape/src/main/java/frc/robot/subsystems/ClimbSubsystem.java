@@ -29,7 +29,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public ClimbSubsystem() {
     m_climbMotor = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
     m_climbEncoder = m_climbMotor.getEncoder();
-    m_climbMotor.configure(Configs.MAXSwerveModule.climbMotor, ResetMode.kResetSafeParameters,
+    m_climbMotor.configure(Configs.ClimbConfigs.climbMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
     resetEncoders();

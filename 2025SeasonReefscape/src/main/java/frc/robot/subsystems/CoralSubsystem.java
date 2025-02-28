@@ -33,9 +33,9 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor = new SparkMax(CoralConstants.k_coralArmID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
     
-    m_intake.configure(Configs.MAXSwerveModule.intakeMotor, ResetMode.kResetSafeParameters,
+    m_intake.configure(Configs.CoralConfigs.intakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-    m_armMotor.configure(Configs.MAXSwerveModule.intakeMotorArm, ResetMode.kResetSafeParameters,
+    m_armMotor.configure(Configs.CoralConfigs.intakeMotorArm, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     
     m_armEncoder.setPosition(CoralConstants.k_startingArmPos);

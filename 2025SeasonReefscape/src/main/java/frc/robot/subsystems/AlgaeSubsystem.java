@@ -38,9 +38,9 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
     resetEncoders();
 
-    m_algaeIntakeMotor.configure(Configs.MAXSwerveModule.algaeTopMotor, ResetMode.kResetSafeParameters,
+    m_algaeIntakeMotor.configure(Configs.AlgaeConfigs.algaeTopMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-    m_algaeArmMotor.configure(Configs.MAXSwerveModule.algaeArmMotor, ResetMode.kResetSafeParameters,
+    m_algaeArmMotor.configure(Configs.AlgaeConfigs.algaeArmMotor, ResetMode.kResetSafeParameters,
       PersistMode.kPersistParameters);
 
     m_algaeClosedLoopController = m_algaeArmMotor.getClosedLoopController();

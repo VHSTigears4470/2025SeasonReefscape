@@ -37,13 +37,13 @@ public class KitbotDriveSubsystem extends SubsystemBase {
         m_rearRightMotor = new SparkMax(KitbotDriveConstants.k_rearRightMotorID, MotorType.kBrushless);
         m_rearLeftMotor = new SparkMax(KitbotDriveConstants.k_rearLeftMotorID, MotorType.kBrushless);
 
-        m_frontRightMotor.configure(Configs.MAXSwerveModule.frontRightKitbot, ResetMode.kResetSafeParameters,
+        m_frontRightMotor.configure(Configs.KitbotConfigs.frontRightKitbot, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-        m_frontLeftMotor.configure(Configs.MAXSwerveModule.frontLeftKitbot, ResetMode.kResetSafeParameters,
+        m_frontLeftMotor.configure(Configs.KitbotConfigs.frontLeftKitbot, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-        m_rearRightMotor.configure(Configs.MAXSwerveModule.rearRightKitbot, ResetMode.kResetSafeParameters,
+        m_rearRightMotor.configure(Configs.KitbotConfigs.rearRightKitbot, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-        m_rearLeftMotor.configure(Configs.MAXSwerveModule.rearLeftKitbot, ResetMode.kResetSafeParameters,
+        m_rearLeftMotor.configure(Configs.KitbotConfigs.rearLeftKitbot, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
         m_frontRightEncoder = m_frontRightMotor.getEncoder();
