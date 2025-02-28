@@ -29,6 +29,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    
    private ALGAE_ARM_STATE e_armState;
    private double d_desiredReferencePosition;
+   private boolean b_stowArmWhenIdle;
 
 
   public AlgaeSubsystem(){
@@ -36,16 +37,17 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
 
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
-    resetEncoders();
 
-    m_algaeIntakeMotor.configure(Configs.AlgaeConfigs.algaeTopMotor, ResetMode.kResetSafeParameters,
+    m_algaeIntakeMotor.configure(Configs.AlgaeConfigs.algaeIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     m_algaeArmMotor.configure(Configs.AlgaeConfigs.algaeArmMotor, ResetMode.kResetSafeParameters,
       PersistMode.kPersistParameters);
 
     m_algaeClosedLoopController = m_algaeArmMotor.getClosedLoopController();
 
-    setArmState(ALGAE_ARM_STATE.RAISED);
+    b_stowArmWhenIdle = true;
+    setArmState(ALGAE_ARM_STATE.DOWN); // TODO
+    m_algaeArmEncoder.setPosition(0); // TODO
   }
   
   public double getAlgaeArmEncoder() {
@@ -57,12 +59,12 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; raised, centered,
-    if (desiredState == ALGAE_ARM_STATE.RAISED) 
-      d_desiredReferencePosition = Constants.AlgaeConstants.k_raisedArmPos;
-    else if (desiredState == ALGAE_ARM_STATE.CENTERED) 
-      d_desiredReferencePosition = Constants.AlgaeConstants.k_centeredArmPos;
-    else 
-      d_desiredReferencePosition = Constants.AlgaeConstants.k_loweredArmPos;
+    if (desiredState == ALGAE_ARM_STATE.DOWN) 
+      d_desiredReferencePosition = Constants.AlgaeConstants.k_downArmPos;
+    else if (desiredState == ALGAE_ARM_STATE.HOLDING) 
+      d_desiredReferencePosition = Constants.AlgaeConstants.k_holdingArmPos;
+    else  // ALGAE_ARM_STATE.STOWED
+      d_desiredReferencePosition = Constants.AlgaeConstants.k_stowedArmPos;
     
     e_armState = desiredState;
     m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
@@ -71,12 +73,14 @@ public class AlgaeSubsystem extends SubsystemBase {
   // This method takes in the algae
   public void intake() {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
-    //m_algaeTopMotor
   }
-
 
   public void dispense() {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
+  }
+
+  public void hold() {
+    m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_holdVoltage);
   }
 
   // Resets the encoders
@@ -86,6 +90,14 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void testArmMotors(double speed) {
     m_algaeArmMotor.set(speed);
+  }
+
+  public void setStowArmWhenIdle(boolean stowWhenIdle) {
+    b_stowArmWhenIdle = stowWhenIdle;
+  }
+
+  public boolean getStowArmWhenIdle() {
+    return b_stowArmWhenIdle;
   }
 
   // Dashboard methods
@@ -110,12 +122,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmMotor.stopMotor();
   }
 
-  //Still need to apply other methods
-
 @Override
   public void periodic() {
-    if (e_armState == ALGAE_ARM_STATE.CENTERED)
-      m_algaeIntakeMotor.set(0); //TODO: Update
     setSmartDashboard();
   }
 

@@ -7,12 +7,12 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatingConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
-import frc.robot.commands.AlgaeCommands.RetractAlgaeArm;
+import frc.robot.commands.AlgaeCommands.IdleAlgae;
+import frc.robot.commands.AlgaeCommands.IntakeAlgae;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.ClimbCommands.ExtendClimbArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
 import frc.robot.commands.ClimbCommands.RetractClimbArm;
-import frc.robot.commands.CommandGroups.IntakeExtendAlgae;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
@@ -96,6 +96,7 @@ public class RobotContainer {
 
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub = new AlgaeSubsystem();
+                m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
         } else {
                 m_algaeSub = null;
         }
@@ -235,12 +236,12 @@ public class RobotContainer {
         //Right Joystick
         
         //Y-button
-        if(OperatingConstants.k_usingAlgae){
-        m_driverController.y().onTrue(new IntakeExtendAlgae(m_algaeSub));
-        }
+        // if(OperatingConstants.k_usingAlgae){
+        // m_driverController.y().onTrue(new IntakeAlgae(m_algaeSub));
+        // }
         //B-Button
         if(OperatingConstants.k_usingAlgae){
-        m_driverController.b().whileTrue(new RetractAlgaeArm(m_algaeSub));
+        m_driverController.b().whileTrue(new IntakeAlgae(m_algaeSub));
         }
         //X-Button
         if(OperatingConstants.k_usingCoral){

@@ -131,22 +131,19 @@ public static final class AlgaeConstants {
     public static final double k_positionBufferAlgae = 1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_loweredArmPos = 0; // TODO
-    public static final double k_centeredArmPos = 5; // TODO
-    public static final double k_raisedArmPos = 20; // TODO
+    public static final double k_downArmPos = 0; // TODO
+    public static final double k_holdingArmPos = 5; // TODO
+    public static final double k_stowedArmPos = 20; // TODO
     
     //Find correct voltages
     public static final double k_intakeVoltage = -1; // TODO
     public static final double k_dispenseVoltage = 1; // TODO
-    
-    //Algae Arm Speed
-    public static final double k_algaeArmSpeed = 0.2; // TODO
-    public static final double k_algaeArmHoldSpeed = 0; // Speed for holding arm position // TODO
+    public static final double k_holdVoltage = 1; // TODO
 
     public static enum ALGAE_ARM_STATE {
-      RAISED,
-      LOWERED,
-      CENTERED;
+      STOWED,
+      HOLDING,
+      DOWN;
     }    
   }
 

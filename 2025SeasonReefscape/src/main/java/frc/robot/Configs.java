@@ -174,13 +174,13 @@ public final class Configs {
     public static final class AlgaeConfigs {
 
         //AlgaeSubsystem
-        public static final SparkMaxConfig algaeTopMotor = new SparkMaxConfig();
+        public static final SparkMaxConfig algaeIntakeMotor = new SparkMaxConfig();
         public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
 
         static {
             double d_algaeFactor = 0 * 2 * Math.PI; //TODO: Double Check
 
-            algaeTopMotor
+            algaeIntakeMotor
             .idleMode(IdleMode.kBrake)
             .smartCurrentLimit(50); //TODO
 
@@ -190,6 +190,11 @@ public final class Configs {
             algaeArmMotor.encoder
                 .positionConversionFactor(d_algaeFactor) //degrees
                 .velocityConversionFactor(d_algaeFactor / 60.0); 
+                algaeArmMotor.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to (change?) them for your own robot!
+                .pid(0.1, 0, 0)
+                .outputRange(-0.5, 0.5);
         }
 
     }
@@ -213,20 +218,19 @@ public final class Configs {
     public static final class CoralConfigs {
 
         //Coral Subsystem
-        public static final SparkMaxConfig intakeMotorTop = new SparkMaxConfig();
-        public static final SparkMaxConfig intakeMotor = new SparkMaxConfig();
-        public static final SparkMaxConfig intakeMotorArm = new SparkMaxConfig();
+        public static final SparkMaxConfig coralIntakeMotor = new SparkMaxConfig();
+        public static final SparkMaxConfig coralArmMotor = new SparkMaxConfig();
 
         static {
             double d_coralFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
 
-            intakeMotor
+            coralIntakeMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO 
-            intakeMotorArm
+            coralArmMotor
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50); //TODO
-            intakeMotorArm.encoder
+            coralArmMotor.encoder
                 .positionConversionFactor(d_coralFactor) //degrees
                 .velocityConversionFactor(d_coralFactor / 60.0); 
         }

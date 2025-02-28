@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 import frc.robot.subsystems.AlgaeSubsystem;
 
-public class ExtendAlgaeArm extends Command {
+public class IdleAlgae extends Command {
     private AlgaeSubsystem m_algaeSub;
         
-        public ExtendAlgaeArm(AlgaeSubsystem algaeSub) {
+        public IdleAlgae(AlgaeSubsystem algaeSub) {
             m_algaeSub = algaeSub;
             addRequirements(m_algaeSub);
         }
@@ -19,7 +19,13 @@ public class ExtendAlgaeArm extends Command {
         // Called every time the scheduler runs while the command is scheduled.
         @Override
         public void execute(){
-              m_algaeSub.setArmState(ALGAE_ARM_STATE.LOWERED);
+              if(m_algaeSub.getStowArmWhenIdle()) {
+                m_algaeSub.setArmState(ALGAE_ARM_STATE.STOWED);
+                m_algaeSub.stopIntakeMotor();
+              } else {
+                m_algaeSub.setArmState(ALGAE_ARM_STATE.HOLDING);
+                m_algaeSub.hold();
+              }
               
         }
 
