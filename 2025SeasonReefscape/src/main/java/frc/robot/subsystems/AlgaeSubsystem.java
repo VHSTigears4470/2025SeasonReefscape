@@ -22,7 +22,7 @@ import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 /** Algae Subsystem */
 public class AlgaeSubsystem extends SubsystemBase {
   /** Algae Subsystem */
-   private final SparkMax m_algaeTopMotor; /* Variables for algae motors */
+   private final SparkMax m_algaeIntakeMotor; /* Variables for algae motors */
    private final SparkMax m_algaeArmMotor;
    private final RelativeEncoder m_algaeArmEncoder;
    private final SparkClosedLoopController m_algaeClosedLoopController;
@@ -32,13 +32,13 @@ public class AlgaeSubsystem extends SubsystemBase {
 
 
   public AlgaeSubsystem(){
-    m_algaeTopMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless); // motor controller
+    m_algaeIntakeMotor = new SparkMax(Constants.AlgaeConstants.k_algaeIntakeID, MotorType.kBrushless); // motor controller
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
 
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
     resetEncoders();
 
-    m_algaeTopMotor.configure(Configs.MAXSwerveModule.algaeTopMotor, ResetMode.kResetSafeParameters,
+    m_algaeIntakeMotor.configure(Configs.MAXSwerveModule.algaeTopMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     m_algaeArmMotor.configure(Configs.MAXSwerveModule.algaeArmMotor, ResetMode.kResetSafeParameters,
       PersistMode.kPersistParameters);
@@ -49,7 +49,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
   
   public double getAlgaeArmEncoder() {
-    return m_algaeArmEncoder.getPosition(); 
+    return AlgaeConstants.k_algaeArmEncoderReversed * m_algaeArmEncoder.getPosition(); 
   }
 
   public ALGAE_ARM_STATE getArmState(){
@@ -70,13 +70,13 @@ public class AlgaeSubsystem extends SubsystemBase {
   
   // This method takes in the algae
   public void intake() {
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
+    m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
     //m_algaeTopMotor
   }
 
 
   public void dispense() {
-    m_algaeTopMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
+    m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
   }
 
   // Resets the encoders
@@ -91,18 +91,18 @@ public class AlgaeSubsystem extends SubsystemBase {
   // Dashboard methods
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
-    SmartDashboard.putNumber("AlgaeArmEncoder in Degrees", getAlgaeArmEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("Algae Arm Encoder (Radians)", getAlgaeArmEncoder());
   }
   
   // This method stops the motors
   public void stopAllMotors(){
-    m_algaeTopMotor.stopMotor();
+    m_algaeIntakeMotor.stopMotor();
     m_algaeArmMotor.stopMotor();
   }
 
   // This method stops the motors
   public void stopIntakeMotor(){
-    m_algaeTopMotor.stopMotor();
+    m_algaeIntakeMotor.stopMotor();
   }
 
   // This method stops the motors
@@ -115,7 +115,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 @Override
   public void periodic() {
     if (e_armState == ALGAE_ARM_STATE.CENTERED)
-      m_algaeTopMotor.set(0); //TODO: Update
+      m_algaeIntakeMotor.set(0); //TODO: Update
     setSmartDashboard();
   }
 

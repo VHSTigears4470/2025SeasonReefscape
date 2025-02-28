@@ -45,8 +45,8 @@ public final class Configs {
             double d_drivingVelocityFeedForward = 1 / ModuleConstants.k_DriveWheelFreeSpeedRps;
                //Encoder Conversion factor
             double d_coralFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
-            double d_algaeFactor = 0; //TODO: Double Check
-            double d_climbFactor = 0; //TODO: Double Check
+            double d_algaeFactor = 0 * 2 * Math.PI; //TODO: Double Check
+            double d_climbFactor = 0 * 2 * Math.PI; //TODO: Double Check
             
             // drivingConfig
             //         .idleMode(IdleMode.kBrake)

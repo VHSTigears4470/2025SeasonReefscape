@@ -29,8 +29,8 @@ public class CoralSubsystem extends SubsystemBase {
   //add sensor if necessary
 
   public CoralSubsystem() {
-    m_intake = new SparkMax(CoralConstants.k_botID, MotorType.kBrushless);
-    m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
+    m_intake = new SparkMax(CoralConstants.k_coralIntakeID, MotorType.kBrushless);
+    m_armMotor = new SparkMax(CoralConstants.k_coralArmID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
     
     m_intake.configure(Configs.MAXSwerveModule.intakeMotor, ResetMode.kResetSafeParameters,
@@ -45,7 +45,7 @@ public class CoralSubsystem extends SubsystemBase {
   //All get___Encoder methods return ____Encoder values in radians
 //Returns the position of the arm encoder
   public double getArmEncoder() {
-    return m_armEncoder.getPosition();
+    return CoralConstants.k_coralArmEncoderReversed * m_armEncoder.getPosition();
   }
 
 //Resets the encoder
@@ -88,9 +88,7 @@ public class CoralSubsystem extends SubsystemBase {
 
 //sets the encoders to default values
   public void setSmartDashboard() {
-    //Encoder values in degrees - subject to change 
-
-    SmartDashboard.putNumber("ArmEncoder (Degrees)", getArmEncoder() * 180 / Math.PI);
+    SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
   }
 
   //stops all the motors

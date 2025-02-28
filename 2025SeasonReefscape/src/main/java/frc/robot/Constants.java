@@ -84,9 +84,9 @@ public final class Constants {
    
     public static final double k_positionBufferCoral = 1; //TODO: Update
     //Change IDS
-    public static final int k_topID = 0; // TODO
-    public static final int k_botID = 1; // TODO
-    public static final int k_armID = 2; // TODO
+    public static final int k_coralIntakeID = 1; // TODO
+    public static final int k_coralArmID = 2; // TODO
+    public static final int k_coralArmEncoderReversed = 1; // TODO
 
     // Arm Max Velocity
     public static final double k_maxVelocity = 0; // TODO
@@ -124,8 +124,9 @@ public final class Constants {
 
 public static final class AlgaeConstants {
     //Change IDS
-    public static final int k_algaeTopID = 0; // TODO
+    public static final int k_algaeIntakeID = 0; // TODO
     public static final int k_algaeArmID = 1; // TODO
+    public static final int k_algaeArmEncoderReversed = 1; // TODO
 
     public static final double k_positionBufferAlgae = 1; //TODO: Update
 
@@ -156,6 +157,7 @@ public static final class AlgaeConstants {
 
   public static final class ClimbConstants {
     public static final int k_climbMotorID = 0; // TODO
+    public static final int k_climbEncoderReversed = 1; // TODO
 
     public static final double k_positionBufferClimb = 1; //TODO: Update
 
