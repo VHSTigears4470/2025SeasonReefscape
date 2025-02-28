@@ -39,7 +39,7 @@ public class CoralSubsystem extends SubsystemBase {
         PersistMode.kPersistParameters);
     
     m_armEncoder.setPosition(CoralConstants.k_startingArmPos);
-    setArmState(CORAL_ARM_STATE.FORWARD);
+    setArmState(CoralConstants.k_startingArmState);
   }
 
   //All get___Encoder methods return ____Encoder values in radians

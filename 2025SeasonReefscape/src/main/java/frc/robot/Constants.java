@@ -98,7 +98,8 @@ public final class Constants {
     public static final double k_forwardArmPos = 0; // TODO
     public static final double k_backwardArmPos = 0; // TODO
     public static final double k_startingArmPos = 0; // TODO
-    
+    public static final CORAL_ARM_STATE k_startingArmState = CORAL_ARM_STATE.FORWARD; // TODO
+
     //Change voltages
     public static final double k_fastVoltage = 4.0; // TODO
     public static final double k_slowVoltage = 1.5; // TODO
@@ -126,9 +127,12 @@ public static final class AlgaeConstants {
     //Change IDS
     public static final int k_algaeIntakeID = 0; // TODO
     public static final int k_algaeArmID = 1; // TODO
-    public static final int k_algaeArmEncoderReversed = 1; // TODO
 
+    public static final int k_algaeArmEncoderReversed = 1; // TODO
     public static final double k_positionBufferAlgae = 1; //TODO: Update
+
+    public static final double k_startingArmPos = 0; // TODO
+    public static final ALGAE_ARM_STATE k_startingArmState = ALGAE_ARM_STATE.DOWN; // TODO
 
     //Find correct values; radians
     public static final double k_downArmPos = 0; // TODO
