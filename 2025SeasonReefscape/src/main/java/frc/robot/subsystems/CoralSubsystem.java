@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,6 +24,7 @@ public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
   private final SparkMax m_intake;
   private final SparkMax m_armMotor;
+  private final DigitalInput m_limitSwitch;
   private final RelativeEncoder m_armEncoder;
   private double d_desiredReferencePosition;
   private CORAL_ARM_STATE e_armState;
@@ -32,6 +34,8 @@ public class CoralSubsystem extends SubsystemBase {
     m_intake = new SparkMax(CoralConstants.k_intakeID, MotorType.kBrushless);
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
+
+    m_limitSwitch = new DigitalInput(CoralConstants.k_limitSwitchID);
     
     m_intake.configure(Configs.CoralConfigs.coralIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -82,6 +86,10 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor.set(speed);
   }
 
+  public void testArmMotorsVoltage(double voltage) {
+    m_armMotor.setVoltage(voltage);
+  }
+
   public void testIntakeMotors(double speed) {
     m_armMotor.set(speed);
   }
@@ -93,6 +101,7 @@ public class CoralSubsystem extends SubsystemBase {
 //sets the encoders to default values
   public void setSmartDashboard() {
     SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
+    SmartDashboard.putBoolean("Coral Limit Switch", m_limitSwitch.get());
   }
 
   //stops all the motors
@@ -117,15 +126,23 @@ public class CoralSubsystem extends SubsystemBase {
     
     setSmartDashboard();
 
-    TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
-    TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
-    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
+    if(m_limitSwitch.get()) {
+      TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
+      TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
+      TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
 
-    double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
-    voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
-    
-    m_armMotor.setVoltage(voltageOutput);   
-   }
+      double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
+      voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
+      
+      m_armMotor.setVoltage(voltageOutput);   
+    } else {
+      m_armEncoder.setPosition(CoralConstants.k_resetPosition);
+      if(m_armMotor.getBusVoltage() <= 0) { // If arm motor is going backwards and going to hit ground
+        // TODO 
+        m_armMotor.setVoltage(0);
+      }
+    }
+  }
 
   @Override
   public void simulationPeriodic() {
