@@ -88,6 +88,10 @@ public final class Constants {
     public static final int k_intakeID = 18;
     public static final int k_armID = 19;
 
+    // Limit Switch
+    public static final int k_limitSwitchID = 0;
+    public static final double k_resetPosition = -10; // Position for when the hard limit switch is hit // TODO
+
 
     // Arm Max Velocity
     public static final double k_maxVelocity = 0; // TODO
