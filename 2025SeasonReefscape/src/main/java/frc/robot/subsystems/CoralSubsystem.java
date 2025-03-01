@@ -46,33 +46,50 @@ public class CoralSubsystem extends SubsystemBase {
     setArmState(CoralConstants.CORAL_ARM_STATE.FORWARD);
   }
 
-  //All get___Encoder methods return ____Encoder values in radians
-//Returns the position of the arm encoder
+  /**
+   * Gets the arm encoder
+   * @return Arm encoder in radians
+   */
   public double getArmEncoder() {
     return CoralConstants.k_coralArmEncoderReversed * m_armEncoder.getPosition();
   }
 
-//Resets the encoder
+
+  /**
+   * Resets the arm encoder to 0
+   */
   public void resetEncoders(){
     m_armEncoder.setPosition(0);
   }
 
-//Returning the arm state
+  /**
+   * Gets the arm state that the robot has been set to 
+   * (DOES NOT MEAN THAT THE ARM IS AT THAT POSITION)
+   * @return Arm State of the robot
+   */
   public CORAL_ARM_STATE getArmState() {
     return e_armState;
   }
 
-//Shoots slow by decreasing the voltage of the top and bottom motors
+  /**
+   * Shoots the coral out slow
+   */
   public void shootSlow() {
     m_intake.setVoltage(CoralConstants.k_slowVoltage);
   }
 
-//Shoots fast by increasing the voltage of the top and bottom motors
+
+  /**
+   * Shoots the coral out fast
+   */
   public void shootFast() {
     m_intake.setVoltage(CoralConstants.k_fastVoltage);
   }
 
-  
+  /**
+   * Sets the desired position of the coral arm
+   * @param desiredState Position that the coral arm should be in
+   */
   public void setArmState(CORAL_ARM_STATE desiredState) { //changes the position of the arm according to its desired state
     if (desiredState == CORAL_ARM_STATE.FORWARD) {
       d_desiredReferencePosition = Constants.CoralConstants.k_forwardArmPos;
@@ -82,40 +99,67 @@ public class CoralSubsystem extends SubsystemBase {
     e_armState = desiredState;
   }
 
+  /**
+   * Testing function to move the arm motor
+   * @param speed of the arm motor
+   */
   public void testArmMotors(double speed) {
-    m_armMotor.set(speed);
+    m_armMotor.set(Math.max(Math.min(speed, 1), -1));
   }
 
+  /**
+   * Testing function to move the arm  motor
+   * @param voltage of the arm motor
+   */
   public void testArmMotorsVoltage(double voltage) {
-    m_armMotor.setVoltage(voltage);
+    // Clamps the motor from -12 to 12
+    m_armMotor.setVoltage(Math.max(Math.min(voltage, 12), -12));
   }
 
+  /**
+   * Testing function to move the intake motor
+   * @param speed of the intake motor
+   */
   public void testIntakeMotors(double speed) {
-    m_armMotor.set(speed);
+    // Clamps the motor from -1 to 1
+    m_intake.set(Math.max(Math.min(speed, 1), -1));
   }
 
-   public boolean isAtDesiredPosition(){
+  /**
+   * Function to determine if the arm is at the correct position
+   * @return true if the robot is at the desired position
+   */
+  public boolean isAtDesiredPosition(){
     return (Math.abs(getArmEncoder() - d_desiredReferencePosition) < CoralConstants.k_positionBufferCoral);
   } 
 
-//sets the encoders to default values
+
+  /**
+   * Displays Values onto SmartDashboard (Encoder & Limit Switches)
+   */
   public void setSmartDashboard() {
     SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
     SmartDashboard.putBoolean("Coral Limit Switch", m_limitSwitch.get());
   }
 
-  //stops all the motors
+  /**
+   * Stops both the intake and arm motor
+   */
   public void stopAllMotors(){
     m_intake.stopMotor();
     m_armMotor.stopMotor();
   }
 
-  //stops the motors
+  /**
+   * Stops only the intake motor
+   */
   public void stopIntakeMotor(){
     m_intake.stopMotor();
   }
 
-  //stops the motors
+  /**
+   * Stops only the arm motor
+   */
   public void stopArmMotor(){
     m_armMotor.stopMotor();
   }
@@ -126,21 +170,33 @@ public class CoralSubsystem extends SubsystemBase {
     
     setSmartDashboard();
 
-    if(m_limitSwitch.get()) {
+    if(m_limitSwitch.get()) { // If limit switch is toggled on
+
+      // Reset Position
+      m_armEncoder.setPosition(CoralConstants.k_resetPosition);
+      
+      // If arm motor is going backwards and going to hit ground
+      if(m_armMotor.getBusVoltage() <= 0) { 
+        m_armMotor.setVoltage(0); // TODO 
+      }
+    } else { // If limit switch is off
+
+      // Calculates proper state to be in 0.02 seconds
       TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
       TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
       TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
 
+      // Calculate the proper voltage output
       double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
       voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
       
-      m_armMotor.setVoltage(voltageOutput);   
-    } else {
-      m_armEncoder.setPosition(CoralConstants.k_resetPosition);
-      if(m_armMotor.getBusVoltage() <= 0) { // If arm motor is going backwards and going to hit ground
-        // TODO 
-        m_armMotor.setVoltage(0);
+      // Clamps voltage between -12 and 12
+      if(Math.abs(voltageOutput) >= 12) {
+        voltageOutput = Math.signum(voltageOutput) * 12;
       }
+
+      // Sets the voltage
+      m_armMotor.setVoltage(voltageOutput);
     }
   }
 
