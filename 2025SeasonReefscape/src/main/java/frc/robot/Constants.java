@@ -81,12 +81,13 @@ public final class Constants {
   public static final class CoralConstants {
     public static PIDController k_armPID = new PIDController(0,0,0); //TODO
     public static final ArmFeedforward k_armFeedForward = new ArmFeedforward(0,0,0); //TODO
-   
+
+    public static final int k_coralArmEncoderReversed = 1; //TODO
     public static final double k_positionBufferCoral = 1; //TODO: Update
     //Change IDS
-    public static final int k_coralIntakeID = 1; // TODO
-    public static final int k_coralArmID = 2; // TODO
-    public static final int k_coralArmEncoderReversed = 1; // TODO
+    public static final int k_intakeID = 18;
+    public static final int k_armID = 19;
+
 
     // Arm Max Velocity
     public static final double k_maxVelocity = 0; // TODO
@@ -98,8 +99,7 @@ public final class Constants {
     public static final double k_forwardArmPos = 0; // TODO
     public static final double k_backwardArmPos = 0; // TODO
     public static final double k_startingArmPos = 0; // TODO
-    public static final CORAL_ARM_STATE k_startingArmState = CORAL_ARM_STATE.FORWARD; // TODO
-
+    
     //Change voltages
     public static final double k_fastVoltage = 4.0; // TODO
     public static final double k_slowVoltage = 1.5; // TODO
@@ -125,29 +125,30 @@ public final class Constants {
 
 public static final class AlgaeConstants {
     //Change IDS
-    public static final int k_algaeIntakeID = 0; // TODO
-    public static final int k_algaeArmID = 1; // TODO
+    public static final int k_algaeTopID = 20;
+    public static final int k_algaeArmID = 21; 
 
-    public static final int k_algaeArmEncoderReversed = 1; // TODO
     public static final double k_positionBufferAlgae = 1; //TODO: Update
 
-    public static final double k_startingArmPos = 0; // TODO
-    public static final ALGAE_ARM_STATE k_startingArmState = ALGAE_ARM_STATE.DOWN; // TODO
-
     //Find correct values; radians
-    public static final double k_downArmPos = 0; // TODO
+    public static final double k_downArmPos = 0; // TODO; Radians
     public static final double k_holdingArmPos = 5; // TODO
     public static final double k_stowedArmPos = 20; // TODO
     
     //Find correct voltages
-    public static final double k_intakeVoltage = -1; // TODO
-    public static final double k_dispenseVoltage = 1; // TODO
-    public static final double k_holdVoltage = 1; // TODO
+    public static final double k_intakeVoltage = -0.7; // TODO
+    public static final double k_dispenseVoltage = 0.7; // TODO
+    public static final double k_holdVoltage = 0.1; //TODO
+    
+    //Algae Arm Speed
+    public static final double k_algaeArmSpeed = 0.3; // TODO
+
+    public static final int k_algaeArmEncoderReversed = 1; //TODO
 
     public static enum ALGAE_ARM_STATE {
-      STOWED,
+      DOWN,
       HOLDING,
-      DOWN;
+      STOWED;
     }    
   }
 
@@ -157,14 +158,15 @@ public static final class AlgaeConstants {
   }
 
   public static final class ClimbConstants {
-    public static final int k_climbMotorID = 0; // TODO
-    public static final int k_climbEncoderReversed = 1; // TODO
+    public static final int k_climbMotorID = 9; 
 
     public static final double k_positionBufferClimb = 1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_forwardClimbPos = 90; // TODO
-    public static final double k_backClimbPos = 45; // TODO
+    public static final double k_retractedClimbPos = 90; // TODO; Radians
+    public static final double k_extendedClimbPos = 45; // TODO
+
+    public static final double k_climbEncoderReversed = 1; //TODO
   }
 
   public static final class ModuleConstants {

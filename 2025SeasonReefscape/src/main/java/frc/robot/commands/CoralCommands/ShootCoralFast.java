@@ -6,11 +6,11 @@ import frc.robot.subsystems.CoralSubsystem;
 public class ShootCoralFast extends Command {
     private final CoralSubsystem m_coralSub;
 
+    //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.
     public ShootCoralFast(CoralSubsystem coralSub) {
         m_coralSub = coralSub;
         addRequirements(m_coralSub);
     }
-    
 
     // Called when the command is initially scheduled.
     @Override

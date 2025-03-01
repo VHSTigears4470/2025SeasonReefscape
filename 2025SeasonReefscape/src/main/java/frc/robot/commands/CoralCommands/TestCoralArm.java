@@ -7,12 +7,12 @@ public class TestCoralArm extends Command {
     private final CoralSubsystem m_coralSub;
     private final double m_speed;
 
+    //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.    
     public TestCoralArm(CoralSubsystem coralSub, double speed) {
         m_coralSub = coralSub;
         m_speed = speed;
         addRequirements(m_coralSub);
     }
-    
 
     // Called when the command is initially scheduled.
     @Override

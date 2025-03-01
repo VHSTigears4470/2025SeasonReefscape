@@ -7,7 +7,7 @@ import frc.robot.subsystems.AlgaeSubsystem;
 public class ShootAlgae extends Command {
     private final AlgaeSubsystem m_algaeSub;
 
-    //Constructor
+    //Constructor for ShootAlgae, also adds requirments so that this is the only command using algaeSub.
     public ShootAlgae(AlgaeSubsystem algaeSub) {
         m_algaeSub = algaeSub;
         addRequirements(algaeSub);

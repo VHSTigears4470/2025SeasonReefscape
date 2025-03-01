@@ -22,8 +22,6 @@ public class ClimbSubsystem extends SubsystemBase {
    private final SparkMax m_climbMotor; 
    private final RelativeEncoder m_climbEncoder;
    private double d_desiredReferencePosition;
-   private double d_pullingUpLimit = 1;//change later to actual value
-   private double d_loweringLimit = -1;//subject to change
 
    // Constructor:
   public ClimbSubsystem() {
@@ -37,17 +35,17 @@ public class ClimbSubsystem extends SubsystemBase {
     
   //All get___Encoder methods return value in radians
   public double getClimbEncoder(){
-    return ClimbConstants.k_climbEncoderReversed * m_climbEncoder.getPosition();
+    return (m_climbEncoder.getPosition() * Math.PI) / 21;
   }
-
+  // Returns the reference position
   public double getDesiredPos(){
     return d_desiredReferencePosition;
   }
 
   //If the arm is within its range of movement, adjusts its speed to the paramenter, otherwise makes the arm stop moving
   public void setArmSpeed(double speed){
-      if((speed > 0 && getClimbEncoder() >= d_pullingUpLimit) || (speed < 0 && getClimbEncoder() <= d_loweringLimit)){
-        speed = 0;
+      if((speed > 0 && getClimbEncoder() >= ClimbConstants.k_retractedClimbPos) ||
+         (speed < 0 && getClimbEncoder() <= ClimbConstants.k_extendedClimbPos)){        
       }
       m_climbMotor.set(speed);
   }
@@ -66,16 +64,18 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbEncoder.setPosition(0);
   }
 
-  //
+  // Returns the desired possition (maybe?)
   public boolean isAtDesiredPosition(){
     return (Math.abs(getClimbEncoder() - d_desiredReferencePosition) < ClimbConstants.k_positionBufferClimb);
   }
 
   // Dashboard Methods
   public void setSmartDashboard() {
-    SmartDashboard.putNumber("Climb Encoder (Radians)", getClimbEncoder());
+    //Encoder values in degrees - subject to change 
+    SmartDashboard.putNumber("ClimbEncoder", getClimbEncoder() * 180 / Math.PI);
   }
-
+  
+  // Stops the motor  
   public void stop(){
     m_climbMotor.stopMotor();
   }

@@ -178,7 +178,7 @@ public final class Configs {
         public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
 
         static {
-            double d_algaeFactor = 0 * 2 * Math.PI; //TODO: Double Check
+            double d_algaeFactor = 1 / 45 * 2 * Math.PI; //TODO: Double Check
 
             algaeIntakeMotor
             .idleMode(IdleMode.kBrake)
@@ -205,7 +205,7 @@ public final class Configs {
         public static final SparkMaxConfig climbMotor = new SparkMaxConfig();
 
         static {
-            double d_climbFactor = 0 * 2 * Math.PI; //TODO: Double Check
+            double d_climbFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
             climbMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO
@@ -222,7 +222,7 @@ public final class Configs {
         public static final SparkMaxConfig coralArmMotor = new SparkMaxConfig();
 
         static {
-            double d_coralFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
+            double d_coralFactor = 1 / 20 * 2 * Math.PI; //TODO: Double Check
 
             coralIntakeMotor
                     .idleMode(IdleMode.kBrake)

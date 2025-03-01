@@ -29,8 +29,8 @@ public class CoralSubsystem extends SubsystemBase {
   //add sensor if necessary
 
   public CoralSubsystem() {
-    m_intake = new SparkMax(CoralConstants.k_coralIntakeID, MotorType.kBrushless);
-    m_armMotor = new SparkMax(CoralConstants.k_coralArmID, MotorType.kBrushless);
+    m_intake = new SparkMax(CoralConstants.k_intakeID, MotorType.kBrushless);
+    m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
     
     m_intake.configure(Configs.CoralConfigs.coralIntakeMotor, ResetMode.kResetSafeParameters,
@@ -39,7 +39,7 @@ public class CoralSubsystem extends SubsystemBase {
         PersistMode.kPersistParameters);
     
     m_armEncoder.setPosition(CoralConstants.k_startingArmPos);
-    setArmState(CoralConstants.k_startingArmState);
+    setArmState(CoralConstants.CORAL_ARM_STATE.FORWARD);
   }
 
   //All get___Encoder methods return ____Encoder values in radians

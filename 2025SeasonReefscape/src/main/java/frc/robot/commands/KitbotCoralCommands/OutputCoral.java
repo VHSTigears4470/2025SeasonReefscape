@@ -6,6 +6,7 @@ import frc.robot.subsystems.KitbotCoralSubsystem;
 public class OutputCoral extends Command {
     private final KitbotCoralSubsystem m_kitbotcoralSub;
 
+    //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.
     public OutputCoral(KitbotCoralSubsystem kitbotcoralSub) {
         m_kitbotcoralSub = kitbotcoralSub;
         addRequirements(kitbotcoralSub);

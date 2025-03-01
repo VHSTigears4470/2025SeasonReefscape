@@ -9,12 +9,12 @@ public class KitbotCoralSpeed extends Command {
     private final KitbotCoralSubsystem m_kitbotcoralSub;
     private final DoubleSupplier m_speed;
 
+    //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.
     public KitbotCoralSpeed(KitbotCoralSubsystem kitbotcoralSub, DoubleSupplier speed) {
         m_kitbotcoralSub = kitbotcoralSub;
         m_speed = speed;
         addRequirements(kitbotcoralSub);
     }
-    
 
     // Called when the command is initially scheduled.
     @Override
