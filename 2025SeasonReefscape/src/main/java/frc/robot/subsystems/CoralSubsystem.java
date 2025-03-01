@@ -24,7 +24,8 @@ public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
   private final SparkMax m_intake;
   private final SparkMax m_armMotor;
-  private final DigitalInput m_limitSwitch;
+  private final DigitalInput m_startLimitSwitch;
+  private final DigitalInput m_endLimitSwitch;
   private final RelativeEncoder m_armEncoder;
   private double d_desiredReferencePosition;
   private CORAL_ARM_STATE e_armState;
@@ -35,7 +36,8 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
     m_armEncoder = m_armMotor.getEncoder();
 
-    m_limitSwitch = new DigitalInput(CoralConstants.k_limitSwitchID);
+    m_startLimitSwitch = new DigitalInput(CoralConstants.k_startLimitSwitchID);
+    m_endLimitSwitch = new DigitalInput(CoralConstants.k_endLimitSwitchID);
     
     m_intake.configure(Configs.CoralConfigs.coralIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -139,7 +141,8 @@ public class CoralSubsystem extends SubsystemBase {
    */
   public void setSmartDashboard() {
     SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
-    SmartDashboard.putBoolean("Coral Limit Switch", m_limitSwitch.get());
+    SmartDashboard.putBoolean("Coral Start Limit Switch", m_startLimitSwitch.get());
+    SmartDashboard.putBoolean("Coral End Limit Switch", m_endLimitSwitch.get());
   }
 
   /**
@@ -170,34 +173,38 @@ public class CoralSubsystem extends SubsystemBase {
     
     setSmartDashboard();
 
-    if(m_limitSwitch.get()) { // If limit switch is toggled on
+    double voltageOutput;
+    // Calculates proper state to be in 0.02 seconds
+    TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
+    TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
+    TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
+
+    // Calculate the proper voltage output
+    voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
+    voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
+    
+
+    if(m_startLimitSwitch.get()) { // If starting limit switch is toggled on
 
       // Reset Position
-      m_armEncoder.setPosition(CoralConstants.k_resetPosition);
+      m_armEncoder.setPosition(CoralConstants.k_startResetPosition);
       
-      // If arm motor is going backwards and going to hit ground
+      // If arm motor is going backwards and going to cause problems
       if(m_armMotor.getBusVoltage() <= 0) { 
-        m_armMotor.setVoltage(0); // TODO 
+        voltageOutput = 0;
       }
-    } else { // If limit switch is off
-
-      // Calculates proper state to be in 0.02 seconds
-      TrapezoidProfile.State currentState = new TrapezoidProfile.State(m_armEncoder.getPosition(), m_armEncoder.getVelocity());
-      TrapezoidProfile.State desiredState = new TrapezoidProfile.State(d_desiredReferencePosition, 0);
-      TrapezoidProfile.State calculatedState = CoralConstants.trapezoidProfile.calculate(0.02, currentState, desiredState);
-
-      // Calculate the proper voltage output
-      double voltageOutput = CoralConstants.k_armPID.calculate(calculatedState.position, calculatedState.velocity);
-      voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
+    } else if(m_endLimitSwitch.get()) { // If ending limit switch is toggled on
+      // Reset Position
+      m_armEncoder.setPosition(CoralConstants.k_endResetPosition);
       
-      // Clamps voltage between -12 and 12
-      if(Math.abs(voltageOutput) >= 12) {
-        voltageOutput = Math.signum(voltageOutput) * 12;
+      // If arm motor is going forwards and going to cause problems
+      if(m_armMotor.getBusVoltage() >= 0) { 
+        voltageOutput = 0;
       }
-
-      // Sets the voltage
-      m_armMotor.setVoltage(voltageOutput);
     }
+    
+      // Sets the voltage
+      m_armMotor.setVoltage(Math.max(Math.min(voltageOutput, 12), -12));
   }
 
   @Override

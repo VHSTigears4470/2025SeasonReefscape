@@ -89,8 +89,10 @@ public final class Constants {
     public static final int k_armID = 19;
 
     // Limit Switch
-    public static final int k_limitSwitchID = 0;
-    public static final double k_resetPosition = 0; // Position for when the hard limit switch is hit // TODO
+    public static final int k_startLimitSwitchID = 0; // TODO
+    public static final int k_endLimitSwitchID = 1; // TODO
+    public static final double k_startResetPosition = 0; // Position for when the hard limit switch is hit // TODO
+    public static final double k_endResetPosition = 0; // TODO
 
 
     // Arm Max Velocity
@@ -131,6 +133,8 @@ public static final class AlgaeConstants {
     //Change IDS
     public static final int k_algaeTopID = 20;
     public static final int k_algaeArmID = 21; 
+    
+    public static final int k_downLimitSwitchID = 2; // TODO
 
     public static final double k_positionBufferAlgae = 1; //TODO: Update
 

@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
@@ -25,6 +26,8 @@ public class AlgaeSubsystem extends SubsystemBase {
    private final SparkMax m_algaeIntakeMotor; /* Variables for algae motors */
    private final SparkMax m_algaeArmMotor;
    private final RelativeEncoder m_algaeArmEncoder;
+   private final DigitalInput m_downLimitSwitch;
+
    private final SparkClosedLoopController m_algaeClosedLoopController;
    
    private ALGAE_ARM_STATE e_armState;
@@ -36,6 +39,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeIntakeMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless); // motor controller
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
+
+    m_downLimitSwitch = new DigitalInput(AlgaeConstants.k_downLimitSwitchID);
 
     m_algaeIntakeMotor.configure(Configs.AlgaeConfigs.algaeIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -148,6 +153,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("Algae Arm Encoder (Radians)", getAlgaeArmEncoder());
+    SmartDashboard.putBoolean("Algae Down Limit Switch", m_downLimitSwitch.get());
   }
   
   /**
@@ -175,6 +181,11 @@ public class AlgaeSubsystem extends SubsystemBase {
 @Override
   public void periodic() {
     setSmartDashboard();
+    if(m_downLimitSwitch.get()) {
+      if(m_algaeArmMotor.getBusVoltage() <= 0) { // If limit switch is down and voltage is going down then stop motor
+        m_algaeArmMotor.setVoltage(0);
+      }
+    }
   }
 
   @Override
