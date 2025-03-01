@@ -48,14 +48,27 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder.setPosition(0); // 'DOWN' is at 0
   }
   
+  /**
+   * Gets the algae arm encoder
+   * @return algae arm encoder
+   */
   public double getAlgaeArmEncoder() {
     return AlgaeConstants.k_algaeArmEncoderReversed * m_algaeArmEncoder.getPosition(); 
   }
 
+  /**
+   * Returns the desired arm state
+   * @return The current desired arm state
+   */
   public ALGAE_ARM_STATE getArmState(){
     return e_armState;
   }
 
+  /**
+   * Sets the arm state 
+   * (DOES NOT MEAN THE ARM IS ALREADY THERE, IT JUST MEANS THAT IT IS GOING THERE)
+   * @param desiredState
+   */
   public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; DOWN, HOLDING, STOWED
     e_armState = desiredState;
     if (desiredState == ALGAE_ARM_STATE.DOWN) 
@@ -68,58 +81,93 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
   }
   
-  // This method takes in the algae
+  /**
+   * Sets the voltage for the intake motor to intake the algae
+   */
   public void intake() {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
   }
 
+  
+  /**
+   * This methods
+   */
   public void dispense() {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
   }
 
+  /**
+   * Sets voltage for intake motor to hold the alage
+   */
   public void hold() {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_holdVoltage);
   }
 
-  // Resets the encoders
+  /**
+   * Resets the arm encoders to 0
+   */
   public void resetEncoders(){
     m_algaeArmEncoder.setPosition(0);
   }
 
+  /**
+   * Sets the speed of the arm motor
+   * @param speed of the arm motor
+   */
   public void testArmMotors(double speed) {
     m_algaeArmMotor.set(speed);
   }
 
+  /**
+   * Sets the speed of the intake
+   * @param speed of the intake motor
+   */
   public void testIntakeMotors(double speed) {
     m_algaeIntakeMotor.set(speed);
   }
 
+  /**
+   * Sets if the arm should be in stow while idle
+   * @param stowWhenIdle True is the robot should be in stow when idle
+   */
   public void setStowArmWhenIdle(boolean stowWhenIdle) {
     b_stowArmWhenIdle = stowWhenIdle;
   }
 
+  /**
+   * Whether the robot is commanded to stow arm when idle
+   * @return Whether the robot is commanded to stow arm when idle
+   */
   public boolean getStowArmWhenIdle() {
     return b_stowArmWhenIdle;
   }
 
-  // Dashboard methods
+  /**
+   * Sets the SmartDashboard for the Algae Arm 
+   */
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("Algae Arm Encoder (Radians)", getAlgaeArmEncoder());
   }
   
-  // This method stops the motors
+  /**
+   * Stops both the arm and intake motor
+   */
   public void stopAllMotors(){
     m_algaeIntakeMotor.stopMotor();
     m_algaeArmMotor.stopMotor();
   }
 
-  // This method stops the motors
+  /**
+   * Stops only the intake motor
+   */
   public void stopIntakeMotor(){
     m_algaeIntakeMotor.stopMotor();
   }
 
-  // This method stops the motors
+  /**
+   * Stops only the arm motor
+   */
   public void stopArmMotor(){
     m_algaeArmMotor.stopMotor();
   }

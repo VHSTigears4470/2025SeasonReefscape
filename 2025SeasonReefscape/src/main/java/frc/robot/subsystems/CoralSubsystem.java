@@ -64,7 +64,7 @@ public class CoralSubsystem extends SubsystemBase {
 
   /**
    * Gets the arm state that the robot has been set to 
-   * (DOES NOT MEAN THAT THE ARM IS AT THAT POSITION)
+   * (DOES NOT MEAN THAT THE ARM IS AT THAT POSITION, USE isAtDesiredPosition FOR THAT)
    * @return Arm State of the robot
    */
   public CORAL_ARM_STATE getArmState() {

@@ -150,7 +150,7 @@ public class RobotContainer {
                     break;
     }
   }
-
+// Smart Dashboard input data
   private void configureSmartDashboard() {
         if(OperatingConstants.k_usingAlgae) {
                SmartDashboard.putData("Algae Arm Positive Speed", new TestAlgaeArm(m_algaeSub, 0.2)); 
@@ -215,7 +215,8 @@ public class RobotContainer {
                 //         )
                 // );
                 // return new PathPlannerAuto("Straight Auto");
-                
+        
+        //        
                 try {
                         m_driveSub.resetEncoders();
                         m_driveSub.zeroHeading();

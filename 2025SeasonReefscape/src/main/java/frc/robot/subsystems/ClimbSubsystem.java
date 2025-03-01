@@ -21,7 +21,6 @@ public class ClimbSubsystem extends SubsystemBase {
   /** CLimb Subsystem */
    private final SparkMax m_climbMotor; 
    private final RelativeEncoder m_climbEncoder;
-   private double d_desiredReferencePosition;
 
    // Constructor:
   public ClimbSubsystem() {
@@ -33,17 +32,20 @@ public class ClimbSubsystem extends SubsystemBase {
     resetEncoders();
   }
     
-  //All get___Encoder methods return value in radians
+  /**
+   * Gets the encoder for the climb
+   * @return Gets teh encoder for the climb
+   */
   public double getClimbEncoder(){
     return ClimbConstants.k_climbEncoderReversed * m_climbEncoder.getPosition();
   }
-  // Returns the reference position
-  public double getDesiredPos(){
-    return d_desiredReferencePosition;
-  }
 
-  //If the arm is within its range of movement, adjusts its speed to the paramenter, otherwise makes the arm stop moving
+  /**
+   * Sets the climb speed, will stop after it reaches a soft limit 
+   * @param speed
+   */
   public void setArmSpeed(double speed){
+    // TODO
       if((speed > 0 && getClimbEncoder() >= ClimbConstants.k_retractedClimbPos) ||
          (speed < 0 && getClimbEncoder() <= ClimbConstants.k_extendedClimbPos)){        
       }
@@ -59,23 +61,24 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbMotor.set(speed);
   }
 
-  //Sets the current position 0
+  /**
+   * Resets the climb encoders 0
+   */
   public void resetEncoders(){
     m_climbEncoder.setPosition(0);
   }
 
-  // Returns the desired possition (maybe?)
-  public boolean isAtDesiredPosition(){
-    return (Math.abs(getClimbEncoder() - d_desiredReferencePosition) < ClimbConstants.k_positionBufferClimb);
-  }
-
-  // Dashboard Methods
+  /**
+   * Puts values into SmartDashboard (Encoder)
+   */
   public void setSmartDashboard() {
     //Encoder values in radians - subject to change 
     SmartDashboard.putNumber("Climb Encoder (Radians)", getClimbEncoder());
   }
   
-  // Stops the motor  
+  /** 
+   * Stops the climb motor
+   */  
   public void stop(){
     m_climbMotor.stopMotor();
   }
