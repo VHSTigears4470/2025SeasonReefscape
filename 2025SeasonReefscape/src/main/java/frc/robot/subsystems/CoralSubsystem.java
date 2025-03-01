@@ -82,6 +82,10 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor.set(speed);
   }
 
+  public void testArmMotorsVoltage(double voltage) {
+    m_armMotor.setVoltage(voltage);
+  }
+
   public void testIntakeMotors(double speed) {
     m_armMotor.set(speed);
   }

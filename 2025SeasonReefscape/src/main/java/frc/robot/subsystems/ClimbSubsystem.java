@@ -35,7 +35,7 @@ public class ClimbSubsystem extends SubsystemBase {
     
   //All get___Encoder methods return value in radians
   public double getClimbEncoder(){
-    return (m_climbEncoder.getPosition() * Math.PI) / 21;
+    return ClimbConstants.k_climbEncoderReversed * m_climbEncoder.getPosition();
   }
   // Returns the reference position
   public double getDesiredPos(){
@@ -71,8 +71,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
   // Dashboard Methods
   public void setSmartDashboard() {
-    //Encoder values in degrees - subject to change 
-    SmartDashboard.putNumber("ClimbEncoder", getClimbEncoder() * 180 / Math.PI);
+    //Encoder values in radians - subject to change 
+    SmartDashboard.putNumber("Climb Encoder (Radians)", getClimbEncoder());
   }
   
   // Stops the motor  

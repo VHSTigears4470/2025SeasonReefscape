@@ -18,6 +18,7 @@ import frc.robot.commands.ClimbCommands.RetractClimbArm;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.TestCoralArm;
+import frc.robot.commands.CoralCommands.TestCoralArmVoltage;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
 import frc.robot.commands.KitbotCoralCommands.OutputCoral;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
@@ -167,6 +168,8 @@ public class RobotContainer {
                 SmartDashboard.putData("Coral Arm Negative Speed", new TestCoralArm(m_coralSub, -0.2));
                 SmartDashboard.putData("Coral Intake Positive Speed", new TestCoralArm(m_coralSub, 0.2));
                 SmartDashboard.putData("Coral Intake Negative Speed", new TestCoralArm(m_coralSub, -0.2));
+                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralArmVoltage(m_coralSub, 1, "Positive Voltage Set"));
+                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralArmVoltage(m_coralSub, -1, "Negative Voltage Set"));
         }
   }
 
