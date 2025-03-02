@@ -12,9 +12,9 @@ import frc.robot.commands.AlgaeCommands.IntakeAlgae;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.AlgaeCommands.TestAlgaeArm;
 import frc.robot.commands.AlgaeCommands.TestAlgaeIntake;
-import frc.robot.commands.ClimbCommands.ExtendClimbArm;
+import frc.robot.commands.ClimbCommands.PullUpArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
-import frc.robot.commands.ClimbCommands.RetractClimbArm;
+import frc.robot.commands.ClimbCommands.ReleaseDownArm;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.TestCoralArm;
@@ -153,23 +153,23 @@ public class RobotContainer {
 // Smart Dashboard input data
   private void configureSmartDashboard() {
         if(OperatingConstants.k_usingAlgae) {
-               SmartDashboard.putData("Algae Arm Positive Speed", new TestAlgaeArm(m_algaeSub, 0.2)); 
-               SmartDashboard.putData("Algae Arm Negative Speed", new TestAlgaeArm(m_algaeSub, -0.2)); 
-               SmartDashboard.putData("Algae Intake Positive Speed", new TestAlgaeIntake(m_algaeSub, 0.2)); 
-               SmartDashboard.putData("Algae Dispense Negative Speed", new TestAlgaeIntake(m_algaeSub, 0.2)); 
+               SmartDashboard.putData("Algae Arm Positive Speed", new TestAlgaeArm(m_algaeSub, 0.1)); 
+               SmartDashboard.putData("Algae Arm Negative Speed", new TestAlgaeArm(m_algaeSub, -0.1)); 
+               SmartDashboard.putData("Algae Intake Positive Speed", new TestAlgaeIntake(m_algaeSub, 0.1)); 
+               SmartDashboard.putData("Algae Dispense Negative Speed", new TestAlgaeIntake(m_algaeSub, 0.1)); 
         }
         if(OperatingConstants.k_usingClimb) {
-                SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0.2));
-                SmartDashboard.putData("Climb Negative Speed", new OverrideSpedClimbArm(m_climbSub, -0.2));
+                SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0.1));
+                SmartDashboard.putData("Climb Negative Speed", new OverrideSpedClimbArm(m_climbSub, -0.1));
                 SmartDashboard.putData("Climb Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
         }
         if(OperatingConstants.k_usingCoral) {
-                SmartDashboard.putData("Coral Arm Positive Speed", new TestCoralArm(m_coralSub, 0.2));
-                SmartDashboard.putData("Coral Arm Negative Speed", new TestCoralArm(m_coralSub, -0.2));
-                SmartDashboard.putData("Coral Intake Positive Speed", new TestCoralArm(m_coralSub, 0.2));
-                SmartDashboard.putData("Coral Intake Negative Speed", new TestCoralArm(m_coralSub, -0.2));
-                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralArmVoltage(m_coralSub, 1, "Positive Voltage Set"));
-                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralArmVoltage(m_coralSub, -1, "Negative Voltage Set"));
+                SmartDashboard.putData("Coral Arm Positive Speed", new TestCoralArm(m_coralSub, 0.1));
+                SmartDashboard.putData("Coral Arm Negative Speed", new TestCoralArm(m_coralSub, -0.1));
+                SmartDashboard.putData("Coral Intake Positive Speed", new TestCoralArm(m_coralSub, 0.1));
+                SmartDashboard.putData("Coral Intake Negative Speed", new TestCoralArm(m_coralSub, -0.1));
+                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralArmVoltage(m_coralSub, 0.1, "Positive Voltage Set"));
+                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralArmVoltage(m_coralSub, -0.1, "Negative Voltage Set"));
         }
   }
 
@@ -280,11 +280,11 @@ public class RobotContainer {
         }
         //RB
         if(OperatingConstants.k_usingClimb){
-        m_driverController.rightBumper().whileTrue(new ExtendClimbArm(m_climbSub));
+        m_driverController.rightBumper().whileTrue(new PullUpArm(m_climbSub));
         }
         //RT
         if(OperatingConstants.k_usingClimb){
-        m_driverController.rightTrigger().whileTrue(new RetractClimbArm(m_climbSub));
+        m_driverController.rightTrigger().whileTrue(new ReleaseDownArm(m_climbSub));
         }
         //D-Pad 
         if(OperatingConstants.k_usingCoral){

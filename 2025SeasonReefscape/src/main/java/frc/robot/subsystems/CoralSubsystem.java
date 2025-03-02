@@ -189,21 +189,17 @@ public class CoralSubsystem extends SubsystemBase {
       // Reset Position
       m_armEncoder.setPosition(CoralConstants.k_startResetPosition);
       
-      // If arm motor is going backwards and going to cause problems
-      if(m_armMotor.getBusVoltage() <= 0) { 
-        voltageOutput = 0;
-      }
+      // If arm motor is going forwards and going to cause problems
+      voltageOutput = Math.min(voltageOutput, 0);
     } else if(m_endLimitSwitch.get()) { // If ending limit switch is toggled on
       // Reset Position
       m_armEncoder.setPosition(CoralConstants.k_endResetPosition);
       
-      // If arm motor is going forwards and going to cause problems
-      if(m_armMotor.getBusVoltage() >= 0) { 
-        voltageOutput = 0;
-      }
+      // If arm motor is going backwards and going to cause problems
+      voltageOutput = Math.max(voltageOutput, 0);
     }
     
-      // Sets the voltage
+      // Sets the voltage with from [-12 to 12]
       m_armMotor.setVoltage(Math.max(Math.min(voltageOutput, 12), -12));
   }
 

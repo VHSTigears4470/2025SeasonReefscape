@@ -4,6 +4,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
  
@@ -190,11 +191,11 @@ public final class Configs {
             algaeArmMotor.encoder
                 .positionConversionFactor(d_algaeFactor) //degrees
                 .velocityConversionFactor(d_algaeFactor / 60.0); 
-                algaeArmMotor.closedLoop
+            algaeArmMotor.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to (change?) them for your own robot!
-                .pid(0.1, 0, 0)
-                .outputRange(-0.5, 0.5);
+                .pid(0.0, 0, 0)
+                .outputRange(AlgaeConstants.k_algaeArmMinOutput, AlgaeConstants.k_algaeArmMaxOutput); // TODO, FIND RELEASTIC VALUES
         }
 
     }

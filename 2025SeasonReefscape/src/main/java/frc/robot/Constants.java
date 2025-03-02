@@ -107,8 +107,8 @@ public final class Constants {
     public static final double k_startingArmPos = 0; // TODO
     
     //Change voltages
-    public static final double k_fastVoltage = 4.0; // TODO
-    public static final double k_slowVoltage = 1.5; // TODO
+    public static final double k_fastVoltage = 0.1; //4.0; // TODO
+    public static final double k_slowVoltage = 0.1; //1.5; // TODO
 
     //Set arm speed
     public static final double k_coralArmSpeed = 0.2; // TODO
@@ -133,6 +133,9 @@ public static final class AlgaeConstants {
     //Change IDS
     public static final int k_algaeTopID = 20;
     public static final int k_algaeArmID = 21; 
+
+    public static final double k_algaeArmMaxOutput = 0.1;
+    public static final double k_algaeArmMinOutput = 0.1;
     
     public static final int k_downLimitSwitchID = 2; // TODO
 
@@ -144,8 +147,8 @@ public static final class AlgaeConstants {
     public static final double k_stowedArmPos = 20; // TODO
     
     //Find correct voltages
-    public static final double k_intakeVoltage = -0.7; // TODO
-    public static final double k_dispenseVoltage = 0.7; // TODO
+    public static final double k_intakeVoltage = 0.1; //-0.7; // TODO
+    public static final double k_dispenseVoltage = 0.1; //0.7; // TODO
     public static final double k_holdVoltage = 0.1; //TODO
     
     //Algae Arm Speed
@@ -171,10 +174,13 @@ public static final class AlgaeConstants {
     public static final double k_positionBufferClimb = 1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_retractedClimbPos = 90; // TODO; Radians
-    public static final double k_extendedClimbPos = 45; // TODO
+    public static final double k_pullUpClimbPos = 90; // TODO; Radians
+    public static final double k_releaseDownClimbPos = 45; // TODO
 
     public static final double k_climbEncoderReversed = 1; //TODO
+
+    public static final double k_climbPullSpeed = 0.1;
+    public static final double k_climbReleaseSpeed = -0.1;
   }
 
   public static final class ModuleConstants {

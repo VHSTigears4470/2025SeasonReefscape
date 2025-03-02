@@ -90,7 +90,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    * Sets the voltage for the intake motor to intake the algae
    */
   public void intake() {
-    m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_intakeVoltage);
+    m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_intakeVoltage); 
   }
 
   
@@ -182,7 +182,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void periodic() {
     setSmartDashboard();
     if(m_downLimitSwitch.get()) {
-      if(m_algaeArmMotor.getBusVoltage() <= 0) { // If limit switch is down and voltage is going down then stop motor
+      if(m_algaeArmMotor.getBusVoltage() >= 0) { // If hitting the down limit switch and voltage is wants to go further
         m_algaeArmMotor.setVoltage(0);
       }
     }

@@ -46,10 +46,16 @@ public class ClimbSubsystem extends SubsystemBase {
    */
   public void setArmSpeed(double speed){
     // TODO
-      if((speed > 0 && getClimbEncoder() >= ClimbConstants.k_retractedClimbPos) ||
-         (speed < 0 && getClimbEncoder() <= ClimbConstants.k_extendedClimbPos)){        
+      if(speed > 0 && getClimbEncoder() <= ClimbConstants.k_pullUpClimbPos) { 
+        // robot pulling up and can still go 
+        m_climbMotor.set(speed);
+      } else if(speed < 0 && getClimbEncoder() >= ClimbConstants.k_releaseDownClimbPos){
+        // robot going down and can still go
+        m_climbMotor.set(speed);     
+      } else {
+        // robots already at limits
+        m_climbMotor.set(0);
       }
-      m_climbMotor.set(speed);
   }
 
   /**
