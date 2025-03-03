@@ -14,18 +14,24 @@ public class TestCoralArmVoltage extends Command {
         m_coralSub = coralSub;
         m_voltage = voltage;
         m_stringMessage = message;
+        SmartDashboard.putNumber(m_stringMessage, m_voltage);
         addRequirements(m_coralSub);
     }
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        SmartDashboard.putString("Commanding Coral Subsystem", m_stringMessage);
+    }
 
     // Called every time he scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        SmartDashboard.putNumber(m_stringMessage, m_voltage);
         m_voltage = SmartDashboard.getNumber(m_stringMessage, m_voltage);
+        if(Math.abs(m_voltage) > 12) {
+            m_voltage = Math.signum(m_voltage) * 12;
+            SmartDashboard.putNumber(m_stringMessage, m_voltage);
+        }
         //Shoots the coral fast
         m_coralSub.testArmMotorsVoltage(m_voltage);
     } 
@@ -33,6 +39,7 @@ public class TestCoralArmVoltage extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        SmartDashboard.putString("Commanding Algae Subsystem", "None");
         //Stops the coral subsystem
         m_coralSub.stopArmMotor();
     }

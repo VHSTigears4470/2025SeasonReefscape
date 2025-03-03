@@ -11,14 +11,14 @@ import frc.robot.commands.AlgaeCommands.IdleAlgae;
 import frc.robot.commands.AlgaeCommands.IntakeAlgae;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.AlgaeCommands.TestAlgaeArm;
-import frc.robot.commands.AlgaeCommands.TestAlgaeIntake;
+import frc.robot.commands.AlgaeCommands.TestAlgaeIntakeVoltage;
 import frc.robot.commands.ClimbCommands.PullUpArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
 import frc.robot.commands.ClimbCommands.ReleaseDownArm;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
-import frc.robot.commands.CoralCommands.TestCoralArm;
 import frc.robot.commands.CoralCommands.TestCoralArmVoltage;
+import frc.robot.commands.CoralCommands.TestCoralIntakeVoltage;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
 import frc.robot.commands.KitbotCoralCommands.OutputCoral;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
@@ -153,23 +153,21 @@ public class RobotContainer {
 // Smart Dashboard input data
   private void configureSmartDashboard() {
         if(OperatingConstants.k_usingAlgae) {
-               SmartDashboard.putData("Algae Arm Positive Speed", new TestAlgaeArm(m_algaeSub, 0.1)); 
-               SmartDashboard.putData("Algae Arm Negative Speed", new TestAlgaeArm(m_algaeSub, -0.1)); 
-               SmartDashboard.putData("Algae Intake Positive Speed", new TestAlgaeIntake(m_algaeSub, 0.1)); 
-               SmartDashboard.putData("Algae Dispense Negative Speed", new TestAlgaeIntake(m_algaeSub, 0.1)); 
+               SmartDashboard.putData("Algae Arm Positive Speed", new TestAlgaeArm(m_algaeSub, 0, "Set Algae Arm Positive Speed")); 
+               SmartDashboard.putData("Algae Arm Negative Speed", new TestAlgaeArm(m_algaeSub, 0, "Set Algae Arm Negative Speed")); 
+               SmartDashboard.putData("Algae Intake Positive Speed", new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Positive Voltage")); 
+               SmartDashboard.putData("Algae Dispense Negative Speed", new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Negative Voltage")); 
         }
         if(OperatingConstants.k_usingClimb) {
-                SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0.1));
-                SmartDashboard.putData("Climb Negative Speed", new OverrideSpedClimbArm(m_climbSub, -0.1));
+                SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0, "Set Coral Intake Positive Speed"));
+                SmartDashboard.putData("Climb Negative Speed", new OverrideSpedClimbArm(m_climbSub, 0, "Set Climb Intake Negative Speed"));
                 SmartDashboard.putData("Climb Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
         }
         if(OperatingConstants.k_usingCoral) {
-                SmartDashboard.putData("Coral Arm Positive Speed", new TestCoralArm(m_coralSub, 0.1));
-                SmartDashboard.putData("Coral Arm Negative Speed", new TestCoralArm(m_coralSub, -0.1));
-                SmartDashboard.putData("Coral Intake Positive Speed", new TestCoralArm(m_coralSub, 0.1));
-                SmartDashboard.putData("Coral Intake Negative Speed", new TestCoralArm(m_coralSub, -0.1));
-                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralArmVoltage(m_coralSub, 0.1, "Positive Voltage Set"));
-                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralArmVoltage(m_coralSub, -0.1, "Negative Voltage Set"));
+                SmartDashboard.putData("Coral Intake Positive Speed", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Positive Voltage"));
+                SmartDashboard.putData("Coral Intake Negative Speed", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Negative Voltage"));
+                SmartDashboard.putData("Coral Arm Positive Voltage", new TestCoralArmVoltage(m_coralSub,0, "Set Coral Arm Positive Voltage"));
+                SmartDashboard.putData("Coral Arm Negative Voltage", new TestCoralArmVoltage(m_coralSub, 0, "Set Coral Arm Negative Voltage"));
         }
   }
 

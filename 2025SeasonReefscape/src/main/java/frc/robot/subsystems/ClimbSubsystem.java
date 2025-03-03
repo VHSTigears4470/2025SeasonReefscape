@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
@@ -21,11 +22,13 @@ public class ClimbSubsystem extends SubsystemBase {
   /** CLimb Subsystem */
    private final SparkMax m_climbMotor; 
    private final RelativeEncoder m_climbEncoder;
+   private final DigitalInput m_maxLimitSwitch;
 
    // Constructor:
   public ClimbSubsystem() {
     m_climbMotor = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
     m_climbEncoder = m_climbMotor.getEncoder();
+    m_maxLimitSwitch = new DigitalInput(ClimbConstants.k_maxLimitSwitchID);
     m_climbMotor.configure(Configs.ClimbConfigs.climbMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
@@ -41,29 +44,37 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   /**
-   * Sets the climb speed, will stop after it reaches a soft limit 
+   * Sets the climb speed, will stop after it reaches a soft limit or a hard limit
    * @param speed
    */
   public void setArmSpeed(double speed){
-    // TODO
-      if(speed > 0 && getClimbEncoder() <= ClimbConstants.k_pullUpClimbPos) { 
-        // robot pulling up and can still go 
-        m_climbMotor.set(speed);
-      } else if(speed < 0 && getClimbEncoder() >= ClimbConstants.k_releaseDownClimbPos){
-        // robot going down and can still go
-        m_climbMotor.set(speed);     
-      } else {
-        // robots already at limits
-        m_climbMotor.set(0);
-      }
+    if(m_maxLimitSwitch.get() && speed > 0) {
+      // robot hits the max limit and still wants to pull up
+      speed = 0;
+    }
+    if(getClimbEncoder() >= ClimbConstants.k_pullUpClimbPos && speed > 0) { 
+      // robot already at pulling up soft limit and still wants to pull up
+      speed = 0;
+    }
+    if(getClimbEncoder() <= ClimbConstants.k_releaseDownClimbPos && speed < 0){
+      // robot already at release soft limit and still wants to go down
+      speed = 0;    
+    }
+
+    m_climbMotor.set(speed);
   }
 
   /**
-   * Ignores upper and lower limits and sets speed
+   * Ignores upper and lower soft limits and sets speed
+   * Hard limits still in place
    * Should ONLY be used for calibrating robot
    * @param speed set motors to
    */
   public void setArmSpeedOverride(double speed) {
+    if(m_maxLimitSwitch.get() && speed > 0) {
+      // robot already at max and still wants to pull up
+      speed = 0;
+    }
     m_climbMotor.set(speed);
   }
 

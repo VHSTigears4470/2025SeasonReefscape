@@ -90,7 +90,7 @@ public final class Constants {
 
     // Limit Switch
     public static final int k_startLimitSwitchID = 0; // TODO
-    public static final int k_endLimitSwitchID = 1; // TODO
+    public static final int k_endLimitSwitchID = 0; // TODO
     public static final double k_startResetPosition = 0; // Position for when the hard limit switch is hit // TODO
     public static final double k_endResetPosition = 0; // TODO
 
@@ -107,11 +107,11 @@ public final class Constants {
     public static final double k_startingArmPos = 0; // TODO
     
     //Change voltages
-    public static final double k_fastVoltage = 0.1; //4.0; // TODO
-    public static final double k_slowVoltage = 0.1; //1.5; // TODO
+    public static final double k_fastVoltage = 0.0; //4.0; // TODO
+    public static final double k_slowVoltage = 0.0; //1.5; // TODO
 
     //Set arm speed
-    public static final double k_coralArmSpeed = 0.2; // TODO
+    public static final double k_coralArmSpeed = 0.0; //0.2; // TODO
     
     public static enum CORAL_ARM_STATE {
       FORWARD,
@@ -137,7 +137,11 @@ public static final class AlgaeConstants {
     public static final double k_algaeArmMaxOutput = 0.1;
     public static final double k_algaeArmMinOutput = 0.1;
     
-    public static final int k_downLimitSwitchID = 2; // TODO
+    public static final int k_downLimitSwitchID = 0; // TODO
+    public static final int k_upLimitSwitchID = 0; // TODO
+
+    public static final double k_downLimitSwitchPos = 0; // TODO
+    public static final double k_upLimitSwitchPos = 0; // TODO
 
     public static final double k_positionBufferAlgae = 1; //TODO: Update
 
@@ -147,12 +151,12 @@ public static final class AlgaeConstants {
     public static final double k_stowedArmPos = 20; // TODO
     
     //Find correct voltages
-    public static final double k_intakeVoltage = 0.1; //-0.7; // TODO
-    public static final double k_dispenseVoltage = 0.1; //0.7; // TODO
-    public static final double k_holdVoltage = 0.1; //TODO
+    public static final double k_intakeVoltage = 0.0; //-0.7; // TODO
+    public static final double k_dispenseVoltage = 0.0; //0.7; // TODO
+    public static final double k_holdVoltage = 0.0; //TODO
     
     //Algae Arm Speed
-    public static final double k_algaeArmSpeed = 0.3; // TODO
+    public static final double k_algaeArmSpeed = 0.0; //0.3; // TODO
 
     public static final int k_algaeArmEncoderReversed = 1; //TODO
 
@@ -171,6 +175,8 @@ public static final class AlgaeConstants {
   public static final class ClimbConstants {
     public static final int k_climbMotorID = 9; 
 
+    public static final int k_maxLimitSwitchID = 0;
+
     public static final double k_positionBufferClimb = 1; //TODO: Update
 
     //Find correct values; radians
@@ -179,8 +185,8 @@ public static final class AlgaeConstants {
 
     public static final double k_climbEncoderReversed = 1; //TODO
 
-    public static final double k_climbPullSpeed = 0.1;
-    public static final double k_climbReleaseSpeed = -0.1;
+    public static final double k_climbPullSpeed = 0; //0.1;
+    public static final double k_climbReleaseSpeed = 0 ;//-0.1;
   }
 
   public static final class ModuleConstants {

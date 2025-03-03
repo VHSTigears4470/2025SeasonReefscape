@@ -27,6 +27,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    private final SparkMax m_algaeArmMotor;
    private final RelativeEncoder m_algaeArmEncoder;
    private final DigitalInput m_downLimitSwitch;
+   private final DigitalInput m_upLimitSwitch;
 
    private final SparkClosedLoopController m_algaeClosedLoopController;
    
@@ -41,6 +42,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
 
     m_downLimitSwitch = new DigitalInput(AlgaeConstants.k_downLimitSwitchID);
+    m_upLimitSwitch = new DigitalInput(AlgaeConstants.k_upLimitSwitchID);
 
     m_algaeIntakeMotor.configure(Configs.AlgaeConfigs.algaeIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -120,15 +122,23 @@ public class AlgaeSubsystem extends SubsystemBase {
    * @param speed of the arm motor
    */
   public void testArmMotors(double speed) {
+    if(m_downLimitSwitch.get() && speed > 0) {
+      // if already at down max and still wants to go further
+      speed = 0;
+    }
+    if(m_upLimitSwitch.get() && speed < 0) {
+      // if already at up max and still wants to go further
+      speed = 0;
+    }
     m_algaeArmMotor.set(speed);
   }
 
   /**
-   * Sets the speed of the intake
-   * @param speed of the intake motor
+   * Sets the voltage of the intake
+   * @param voltage of the intake motor
    */
-  public void testIntakeMotors(double speed) {
-    m_algaeIntakeMotor.set(speed);
+  public void testIntakeMotorsVoltage(double voltage) {
+    m_algaeIntakeMotor.setVoltage(voltage);
   }
 
   /**
@@ -182,7 +192,14 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void periodic() {
     setSmartDashboard();
     if(m_downLimitSwitch.get()) {
-      if(m_algaeArmMotor.getBusVoltage() >= 0) { // If hitting the down limit switch and voltage is wants to go further
+      // Prevents Algae Arm From Going Down Further
+      if(m_algaeArmMotor.getBusVoltage() >= 0) {
+        m_algaeArmMotor.setVoltage(0);
+      }
+    }
+    if(m_upLimitSwitch.get()) {
+      // Prevents Algae Arm From Going Up Further
+      if(m_algaeArmMotor.getBusVoltage() <= 0) { 
         m_algaeArmMotor.setVoltage(0);
       }
     }

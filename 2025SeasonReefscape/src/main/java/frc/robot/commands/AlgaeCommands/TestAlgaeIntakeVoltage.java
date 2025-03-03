@@ -4,17 +4,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeSubsystem;
 
-public class TestAlgaeArm extends Command {
+public class TestAlgaeIntakeVoltage extends Command {
     private AlgaeSubsystem m_algaeSub;
-    private double m_speed;
+    private double m_voltage;
     private final String m_stringMessage;
         
-    //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.
-    public TestAlgaeArm(AlgaeSubsystem algaeSub, double speed, String message) {
+    //Constructor for TestAlgaeIntake, also adds requirments so that this is the only command using algaeSub.
+    public TestAlgaeIntakeVoltage(AlgaeSubsystem algaeSub, double voltage, String message) {
         m_algaeSub = algaeSub;
-        m_speed = speed;
+        m_voltage = voltage;
         m_stringMessage = message;
-        SmartDashboard.putNumber(m_stringMessage, m_speed);
+        SmartDashboard.putNumber(m_stringMessage, m_voltage);
         addRequirements(m_algaeSub);
     }
 
@@ -27,19 +27,19 @@ public class TestAlgaeArm extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute(){
-        m_speed = SmartDashboard.getNumber(m_stringMessage, m_speed);
-        if(Math.abs(m_speed) > 1) {
-            m_speed = Math.signum(m_speed);
-            SmartDashboard.putNumber(m_stringMessage, m_speed);
+        m_voltage = SmartDashboard.getNumber(m_stringMessage, m_voltage);
+        if(Math.abs(m_voltage) > 12) {
+            m_voltage = Math.signum(m_voltage) * 12;
+            SmartDashboard.putNumber(m_stringMessage, m_voltage);
         }
-        m_algaeSub.testArmMotors(m_speed);
+        m_algaeSub.testIntakeMotorsVoltage(m_voltage);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted){
         SmartDashboard.putString("Commanding Algae Subsystem", "None");
-        m_algaeSub.stopArmMotor();
+        m_algaeSub.stopIntakeMotor();
     }
 
     // Returns true when the command should end.
