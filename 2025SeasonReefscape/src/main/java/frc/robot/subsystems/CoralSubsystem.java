@@ -106,6 +106,14 @@ public class CoralSubsystem extends SubsystemBase {
    * @param voltage of the arm motor
    */
   public void testArmMotorsVoltage(double voltage) {
+    if(getStartLimitSwitch()) {
+      // If arm at climber side, only allow to go positive / climber side
+      voltage = Math.min(voltage, 0);
+    }
+    if(getEndLimitSwitch()) {
+      // If arm at algae side, only allow to go negative / algae side
+      voltage = Math.max(voltage, 0);
+    }
     // Clamps the motor from -12 to 12
     m_armMotor.setVoltage(Math.max(Math.min(voltage, 12), -12));
   }
@@ -133,8 +141,9 @@ public class CoralSubsystem extends SubsystemBase {
    */
   public void setSmartDashboard() {
     SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
-    SmartDashboard.putBoolean("Coral Start Limit Switch", m_startLimitSwitch.get());
-    SmartDashboard.putBoolean("Coral End Limit Switch", m_endLimitSwitch.get());
+    SmartDashboard.putNumber("Coral Arm Bus Voltage", m_armMotor.getBusVoltage());
+    SmartDashboard.putBoolean("Coral Start Limit Switch", getStartLimitSwitch());
+    SmartDashboard.putBoolean("Coral End Limit Switch", getEndLimitSwitch());
   }
 
   /**
@@ -159,6 +168,23 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor.stopMotor();
   }
   
+  /**
+   * Gets whether or not the start limit switch is hit
+   * @return True when the limit switch is hit
+   */
+  public boolean getStartLimitSwitch() {
+    return m_startLimitSwitch.get();
+  }
+
+  /**
+   * Gets whether or not the end limit switch is hit
+   * @return True when the limit switch is hit
+   */
+  public boolean getEndLimitSwitch() {
+    return m_endLimitSwitch.get();
+  }
+  
+  
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
@@ -177,13 +203,13 @@ public class CoralSubsystem extends SubsystemBase {
     voltageOutput += CoralConstants.k_armFeedForward.calculate(calculatedState.position, calculatedState.velocity);
     
 
-    if(m_startLimitSwitch.get()) { // If starting limit switch is toggled on
+    if(getStartLimitSwitch()) { // If starting limit switch is toggled on / arm on climber side
       m_armEncoder.setPosition(CoralConstants.k_startResetPosition); // Resets Position
-      voltageOutput = Math.min(voltageOutput, 0); // Only allows voltage to be negative
+      voltageOutput = Math.min(voltageOutput, 0); // Only allows voltage to be negative aka go towards algae sub side
 
-    } else if(m_endLimitSwitch.get()) { // If ending limit switch is toggled on
+    } else if(getEndLimitSwitch()) { // If ending limit switch is toggled on / arm on algae side
       m_armEncoder.setPosition(CoralConstants.k_endResetPosition); // Resets Position
-      voltageOutput = Math.max(voltageOutput, 0); // Only allows voltage to be positive
+      voltageOutput = Math.max(voltageOutput, 0); // Only allows voltage to be positive aka go towards climber sub side
     }
     
       // Sets the voltage with from [-12 to 12]

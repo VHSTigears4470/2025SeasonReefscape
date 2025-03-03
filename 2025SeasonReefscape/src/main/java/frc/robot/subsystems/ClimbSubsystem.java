@@ -48,17 +48,17 @@ public class ClimbSubsystem extends SubsystemBase {
    * @param speed
    */
   public void setArmSpeed(double speed){
-    if(m_maxLimitSwitch.get() && speed > 0) {
-      // robot hits the max limit and still wants to pull up
-      speed = 0;
+    if(getMaxLimitSwitch()) {
+      // robot hits the max limit, then only allows robot to go down
+      speed = Math.min(speed, 0);
     }
-    if(getClimbEncoder() >= ClimbConstants.k_pullUpClimbPos && speed > 0) { 
-      // robot already at pulling up soft limit and still wants to pull up
-      speed = 0;
+    if(getClimbEncoder() >= ClimbConstants.k_pullUpClimbPos) { 
+      // robot already at pulling up soft limit, then only allow robot to go down
+      speed = Math.min(speed, 0);
     }
-    if(getClimbEncoder() <= ClimbConstants.k_releaseDownClimbPos && speed < 0){
-      // robot already at release soft limit and still wants to go down
-      speed = 0;    
+    if(getClimbEncoder() <= ClimbConstants.k_releaseDownClimbPos){
+      // robot already at release soft limit, the only allow robot to pull up
+      speed = Math.max(speed, 0);    
     }
 
     m_climbMotor.set(speed);
@@ -71,9 +71,9 @@ public class ClimbSubsystem extends SubsystemBase {
    * @param speed set motors to
    */
   public void setArmSpeedOverride(double speed) {
-    if(m_maxLimitSwitch.get() && speed > 0) {
-      // robot already at max and still wants to pull up
-      speed = 0;
+    if(getMaxLimitSwitch()) {
+      // robot already at max, only allows for release / negative
+      speed = Math.min(speed, 0);
     }
     m_climbMotor.set(speed);
   }
@@ -91,6 +91,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public void setSmartDashboard() {
     //Encoder values in radians - subject to change 
     SmartDashboard.putNumber("Climb Encoder (Radians)", getClimbEncoder());
+    SmartDashboard.putBoolean("Climb Max Limit Switch", getMaxLimitSwitch());
   }
   
   /** 
@@ -98,6 +99,14 @@ public class ClimbSubsystem extends SubsystemBase {
    */  
   public void stop(){
     m_climbMotor.stopMotor();
+  }
+
+  /**
+   * Gets whether or not the max limit switch is hit
+   * @return True when the limit switch is hit
+   */
+  public boolean getMaxLimitSwitch() {
+    return m_maxLimitSwitch.get();
   }
 
   @Override

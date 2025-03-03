@@ -134,8 +134,8 @@ public static final class AlgaeConstants {
     public static final int k_algaeTopID = 20;
     public static final int k_algaeArmID = 21; 
 
-    public static final double k_algaeArmMaxOutput = 0.1;
-    public static final double k_algaeArmMinOutput = 0.1;
+    public static final double k_algaeArmMaxOutput = 0.0; // TODO
+    public static final double k_algaeArmMinOutput = 0.0; // TODO
     
     public static final int k_downLimitSwitchID = 0; // TODO
     public static final int k_upLimitSwitchID = 0; // TODO
@@ -185,8 +185,8 @@ public static final class AlgaeConstants {
 
     public static final double k_climbEncoderReversed = 1; //TODO
 
-    public static final double k_climbPullSpeed = 0; //0.1;
-    public static final double k_climbReleaseSpeed = 0 ;//-0.1;
+    public static final double k_climbPullSpeed = 0; //0.1; // Speed when the robot is pulling itself up
+    public static final double k_climbReleaseSpeed = 0 ;//-0.1; // Speed when the robot is lowering itself down
   }
 
   public static final class ModuleConstants {

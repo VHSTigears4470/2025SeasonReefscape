@@ -155,8 +155,9 @@ public class RobotContainer {
         if(OperatingConstants.k_usingAlgae) {
                SmartDashboard.putData("Algae Arm Positive Speed", new TestAlgaeArm(m_algaeSub, 0, "Set Algae Arm Positive Speed")); 
                SmartDashboard.putData("Algae Arm Negative Speed", new TestAlgaeArm(m_algaeSub, 0, "Set Algae Arm Negative Speed")); 
-               SmartDashboard.putData("Algae Intake Positive Speed", new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Positive Voltage")); 
-               SmartDashboard.putData("Algae Dispense Negative Speed", new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Negative Voltage")); 
+               SmartDashboard.putData("Algae Intake Positive Voltage", new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Positive Voltage")); 
+               SmartDashboard.putData("Algae Dispense Negative Voltage", new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Negative Voltage")); 
+               SmartDashboard.putData("Alage Reset Encoders", new InstantCommand(()->m_algaeSub.resetEncoders(), m_algaeSub));
         }
         if(OperatingConstants.k_usingClimb) {
                 SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0, "Set Coral Intake Positive Speed"));
@@ -164,10 +165,11 @@ public class RobotContainer {
                 SmartDashboard.putData("Climb Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
         }
         if(OperatingConstants.k_usingCoral) {
-                SmartDashboard.putData("Coral Intake Positive Speed", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Positive Voltage"));
-                SmartDashboard.putData("Coral Intake Negative Speed", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Negative Voltage"));
+                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Positive Voltage"));
+                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Negative Voltage"));
                 SmartDashboard.putData("Coral Arm Positive Voltage", new TestCoralArmVoltage(m_coralSub,0, "Set Coral Arm Positive Voltage"));
                 SmartDashboard.putData("Coral Arm Negative Voltage", new TestCoralArmVoltage(m_coralSub, 0, "Set Coral Arm Negative Voltage"));
+                SmartDashboard.putData("Coral Reset Encoders", new InstantCommand(()->m_coralSub.resetEncoders(), m_coralSub));
         }
   }
 
