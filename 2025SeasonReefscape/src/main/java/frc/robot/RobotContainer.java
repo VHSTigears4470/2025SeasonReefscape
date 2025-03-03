@@ -145,6 +145,9 @@ public class RobotContainer {
             case 2:
                         controllerPresetTwo(); // Kitbot
                         break;
+            case 3:
+                        controllerPresetThree(); // For Debugging
+                        break;
             default:
                     controllerPresetMain();
                     break;
@@ -401,5 +404,80 @@ public class RobotContainer {
         if(OperatingConstants.k_usingKitbotCoral){
                 m_driverController.b().whileTrue(new OutputCoral(m_kitbotcoralSub));
         }
+  }
+
+  /**
+   * NOTE : ONLY ONE SUBSYSTEM AT ONCE
+   * 
+   * Climb
+   *  Right Trigger = Positive Speed
+   *  Left Trigger = Positive Speed
+   *  Y Button = Reset Encoder
+   * 
+   * Algae
+   *  Right Trigger = Arm Positive Speed
+   *  Left Trigger = Arm Negative Speed
+   *  Right Bumper = Intake Positive Voltage
+   *  Left Bumper = Intake Negative Voltage
+   *  Y Button = Reset Encoder
+   * 
+   * Coral
+   *  Right Trigger = Arm Positive Speed
+   *  Left Trigger = Arm Negative Speed
+   *  Right Bumper = Intake Positive Voltage
+   *  Left Bumper = Intake Negative Voltage
+   *  Y Button = Reset Encoder
+   * 
+   * Swerve
+   * 
+   * 
+   */
+  public void controllerPresetThree() {
+        // Used For Debugging Subsystems
+        if(OperatingConstants.k_usingAlgae) {
+                m_driverController.rightTrigger().whileTrue(
+                        new TestAlgaeArm(m_algaeSub, 0, "Set Algae Arm Positive Speed")
+                );
+                m_driverController.leftTrigger().whileTrue(
+                        new TestAlgaeArm(m_algaeSub, 0, "Set Algae Arm Negative Speed")
+                );
+                m_driverController.rightBumper().whileTrue(
+                        new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Positive Voltage")
+                );
+                m_driverController.leftBumper().whileTrue(
+                        new TestAlgaeIntakeVoltage(m_algaeSub, 0, "Set Algae Intake Negative Voltage")
+                );
+                m_driverController.y().onTrue(
+                        new InstantCommand(()->m_algaeSub.resetEncoders(), m_algaeSub)
+                );
+         }
+         if(OperatingConstants.k_usingClimb) {
+                m_driverController.rightTrigger().whileTrue(
+                        new OverrideSpedClimbArm(m_climbSub, 0, "Set Coral Intake Positive Speed")
+                );
+                m_driverController.leftTrigger().whileTrue(
+                        new OverrideSpedClimbArm(m_climbSub, 0, "Set Climb Intake Negative Speed")
+                );
+                m_driverController.y().onTrue(
+                        new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub)
+                );
+         }
+         if(OperatingConstants.k_usingCoral) {
+                m_driverController.rightTrigger().whileTrue(
+                        new TestCoralArmVoltage(m_coralSub,0, "Set Coral Arm Positive Voltage")
+                );
+                m_driverController.leftTrigger().whileTrue(
+                        new TestCoralArmVoltage(m_coralSub, 0, "Set Coral Arm Negative Voltage")
+                );
+                m_driverController.rightBumper().whileTrue(
+                        new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Positive Voltage")
+                );
+                m_driverController.leftBumper().whileTrue(
+                        new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Negative Voltage")
+                );
+                m_driverController.y().onTrue(
+                        new InstantCommand(()->m_coralSub.resetEncoders(), m_coralSub)
+                );
+         }
   }
 }
