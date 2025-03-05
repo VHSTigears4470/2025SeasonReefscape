@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Configs;
 import frc.robot.Constants.DebuggingConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OperatingConstants;
 import frc.robot.Constants.TeleConstants;
 import frc.robot.Constants.DriveConstants.MotorLocation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -73,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
       MotorLocation.REAR_RIGHT);
 
   // The gyro sensor
-  private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id, "rio");
+  private final Pigeon2 m_gyro;
   // private final AHRS m_NAVXGyro = new AHRS(NavXComType.kMXP_SPI);
 
   private SwerveModuleState m_desiredModuleStates[] = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
@@ -92,6 +93,12 @@ public class DriveSubsystem extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
     RobotConfig config;
     
+    if(OperatingConstants.k_usingGyro) {
+      m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id, "rio");
+    } else {
+      m_gyro = null;
+    }
+
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
@@ -194,8 +201,10 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("Robot Heading (Yaw)", getRotation2d().getDegrees());
-        SmartDashboard.putNumber("Roll", m_gyro.getRoll().getValue().in(Units.Degree));
-        SmartDashboard.putNumber("Pitch", m_gyro.getPitch().getValue().in(Units.Degree));
+        if(OperatingConstants.k_usingGyro) {
+          SmartDashboard.putNumber("Roll", m_gyro.getRoll().getValue().in(Units.Degree));
+          SmartDashboard.putNumber("Pitch", m_gyro.getPitch().getValue().in(Units.Degree));
+        }
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
 
@@ -358,7 +367,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    m_gyro.reset();
+    if(OperatingConstants.k_usingGyro) {
+      m_gyro.reset();
+    }
   }
 
   /**
@@ -367,9 +378,12 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public Rotation2d getRotation2d() {
-    // return new Rotation2d(0);
     // return new Rotation2d(edu.wpi.first.math.util.Units.degreesToRadians(0)); // This way to avoid import issues
-    return new Rotation2d(m_gyro.getYaw().getValue());
+    if(OperatingConstants.k_usingGyro) {
+      return new Rotation2d(m_gyro.getYaw().getValue());
+    } else {
+      return new Rotation2d(0);
+    }
   }
 
   public void stopModules() {
