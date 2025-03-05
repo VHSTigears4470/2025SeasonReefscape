@@ -27,11 +27,12 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OIConstants.k_DriverControllerPort);
 
-        private TestMotorsSubsystem frontRightDrive, frontRightTurn;
-        private TestMotorsSubsystem frontLeftDrive, frontLeftTurn;
-        private TestMotorsSubsystem rearRightDrive, rearRightTurn;
-        private TestMotorsSubsystem rearLeftDrive, rearLeftTurn;
-        private Pigeon2 pigeon2 = new Pigeon2(DriveConstants.k_pigeon2Id);
+      private TestMotorsSubsystem testMotor;
+      // private Pigeon2 pigeon2 = new Pigeon2(DriveConstants.k_pigeon2Id);
+      //   private TestMotorsSubsystem frontRightDrive, frontRightTurn;
+      //   private TestMotorsSubsystem frontLeftDrive, frontLeftTurn;
+      //   private TestMotorsSubsystem rearRightDrive, rearRightTurn;
+      //   private TestMotorsSubsystem rearLeftDrive, rearLeftTurn;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,15 +42,16 @@ public class RobotContainer {
   }
 
   private void initSubsystems() {
-        frontRightDrive = new TestMotorsSubsystem(DriveConstants.k_FrontRightDrivingCanId);
-        frontLeftDrive = new TestMotorsSubsystem(DriveConstants.k_FrontLeftDrivingCanId);
-        rearRightDrive = new TestMotorsSubsystem(DriveConstants.k_RearRightDrivingCanId);
-        rearLeftDrive = new TestMotorsSubsystem(DriveConstants.k_RearLeftDrivingCanId);
+      testMotor = new TestMotorsSubsystem(10);
+      //   frontRightDrive = new TestMotorsSubsystem(DriveConstants.k_FrontRightDrivingCanId);
+      //   frontLeftDrive = new TestMotorsSubsystem(DriveConstants.k_FrontLeftDrivingCanId);
+      //   rearRightDrive = new TestMotorsSubsystem(DriveConstants.k_RearRightDrivingCanId);
+      //   rearLeftDrive = new TestMotorsSubsystem(DriveConstants.k_RearLeftDrivingCanId);
 
-        frontRightTurn = new TestMotorsSubsystem(DriveConstants.k_FrontRightTurningCanId);
-        frontLeftTurn = new TestMotorsSubsystem(DriveConstants.k_FrontLeftTurningCanId);
-        rearRightTurn = new TestMotorsSubsystem(DriveConstants.k_RearRightTurningCanId);
-        rearLeftTurn = new TestMotorsSubsystem(DriveConstants.k_RearLeftTurningCanId);
+      //   frontRightTurn = new TestMotorsSubsystem(DriveConstants.k_FrontRightTurningCanId);
+      //   frontLeftTurn = new TestMotorsSubsystem(DriveConstants.k_FrontLeftTurningCanId);
+      //   rearRightTurn = new TestMotorsSubsystem(DriveConstants.k_RearRightTurningCanId);
+      //   rearLeftTurn = new TestMotorsSubsystem(DriveConstants.k_RearLeftTurningCanId);
   }
 
   /**
@@ -88,11 +90,12 @@ public class RobotContainer {
  
   public void controllerPresetMain() { //subject to change (while/on true)
         double speed = 0.35;
-        m_driverController.y().whileTrue(new DriveMotors(frontRightTurn, speed));
-        m_driverController.x().whileTrue(new DriveMotors(frontRightTurn, -speed));
+        m_driverController.y().whileTrue(new DriveMotors(testMotor, speed));
+      //   m_driverController.y().whileTrue(new DriveMotors(frontRightTurn, speed));
+      //   m_driverController.x().whileTrue(new DriveMotors(frontRightTurn, -speed));
         
-        m_driverController.b().whileTrue(new DriveMotors(rearRightDrive, speed));
-        m_driverController.a().whileTrue(new DriveMotors(rearRightDrive, -speed));
+      //   m_driverController.b().whileTrue(new DriveMotors(rearRightDrive, speed));
+      //   m_driverController.a().whileTrue(new DriveMotors(rearRightDrive, -speed));
   }
 
 }
