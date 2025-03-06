@@ -185,8 +185,8 @@ public static final class AlgaeConstants {
 
     public static final double k_climbEncoderReversed = 1; //TODO
 
-    public static final double k_climbPullSpeed = 0; //0.1; // Speed when the robot is pulling itself up
-    public static final double k_climbReleaseSpeed = 0 ;//-0.1; // Speed when the robot is lowering itself down
+    public static final double k_climbPullSpeed = 0.3; //0.1; // Speed when the robot is pulling itself up
+    public static final double k_climbReleaseSpeed = -0.1;//-0.1; // Speed when the robot is lowering itself down
   }
 
   public static final class ModuleConstants {
@@ -258,7 +258,7 @@ public static final class AlgaeConstants {
   public static final class OperatingConstants {
     // Drives
     public static final boolean k_usingSwerveDrive = true;
-    public static final boolean k_usingGyro = true;
+    public static final boolean k_usingGyro = false;
 
     public static final boolean k_usingAlgae = false;
     public static final boolean k_usingCoral = false;
