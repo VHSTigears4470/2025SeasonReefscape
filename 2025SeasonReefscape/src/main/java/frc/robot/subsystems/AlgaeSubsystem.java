@@ -52,7 +52,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeClosedLoopController = m_algaeArmMotor.getClosedLoopController();
 
     b_stowArmWhenIdle = true;
-    m_algaeArmEncoder.setPosition(0); // 'DOWN' is at 0
+    m_algaeArmEncoder.setPosition(0); 
   }
   
   /**

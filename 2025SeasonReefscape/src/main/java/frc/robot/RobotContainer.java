@@ -226,7 +226,14 @@ public class RobotContainer {
                         PathPlannerAuto autoPath = new PathPlannerAuto("Demo Auto");
                         m_driveSub.resetOdometry(autoPath.getStartingPose());
                         
-                        return autoPath;
+                        return new SequentialCommandGroup(
+                                new InstantCommand(
+                                        () -> {
+                                                System.out.println(autoPath.getStartingPose());
+                                        }
+                                ),
+                                autoPath
+                        );
                 } catch(Exception e) {
                         DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 }

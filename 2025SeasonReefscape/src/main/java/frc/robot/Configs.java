@@ -194,7 +194,7 @@ public final class Configs {
             algaeArmMotor.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to (change?) them for your own robot!
-                .pid(0.0, 0, 0)
+                .pid(0.01, 0, 0)
                 .outputRange(AlgaeConstants.k_algaeArmMinOutput, AlgaeConstants.k_algaeArmMaxOutput); // TODO, FIND RELEASTIC VALUES
         }
 

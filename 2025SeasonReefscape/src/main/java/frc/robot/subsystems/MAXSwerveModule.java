@@ -101,7 +101,7 @@ public class MAXSwerveModule {
    * @return double of velocity of the drive module converted
    */
   public double getDriveVelocity() {
-      return m_driveEncoderInverted * m_driveEncoder.getVelocity();
+      return m_driveEncoder.getVelocity();
   }
 
     /**
