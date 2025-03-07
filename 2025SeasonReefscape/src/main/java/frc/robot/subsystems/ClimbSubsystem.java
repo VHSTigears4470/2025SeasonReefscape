@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
+import frc.robot.Constants.LimitSwitchConstants;
 
 /** CLimb Subsystem */
 public class ClimbSubsystem extends SubsystemBase {
@@ -28,7 +29,11 @@ public class ClimbSubsystem extends SubsystemBase {
   public ClimbSubsystem() {
     m_climbMotor = new SparkMax(Constants.ClimbConstants.k_climbMotorID, MotorType.kBrushless);
     m_climbEncoder = m_climbMotor.getEncoder();
-    m_maxLimitSwitch = new DigitalInput(ClimbConstants.k_maxLimitSwitchID);
+    if(LimitSwitchConstants.k_usingClimbMaxLimitSwitch) {
+      m_maxLimitSwitch = new DigitalInput(ClimbConstants.k_maxLimitSwitchID);
+    } else {
+      m_maxLimitSwitch = null;
+    }
     m_climbMotor.configure(Configs.ClimbConfigs.climbMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
@@ -106,7 +111,11 @@ public class ClimbSubsystem extends SubsystemBase {
    * @return True when the limit switch is hit
    */
   public boolean getMaxLimitSwitch() {
-    return m_maxLimitSwitch.get();
+    if(LimitSwitchConstants.k_usingClimbMaxLimitSwitch) {
+      return m_maxLimitSwitch.get();
+    } else {
+      return false;
+    }
   }
 
   @Override

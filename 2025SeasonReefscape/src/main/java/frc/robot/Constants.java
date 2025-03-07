@@ -269,4 +269,13 @@ public static final class AlgaeConstants {
     public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
     public static final boolean k_usingKitbotCoral = false; 
   }
+
+  public static final class LimitSwitchConstants {
+    public static final boolean k_usingAlgaeDownLimitSwitch = true;
+    public static final boolean k_usingAlgaeUpLimitSwitch = true;
+
+    public static final boolean k_usingClimbMaxLimitSwitch = true;
+
+    public static final boolean k_usingCoralStartLimitSwitch = true;
+  }
 }

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
 import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.LimitSwitchConstants;
 import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 
 /** Algae Subsystem */
@@ -41,8 +42,17 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
 
-    m_downLimitSwitch = new DigitalInput(AlgaeConstants.k_downLimitSwitchID);
-    m_upLimitSwitch = new DigitalInput(AlgaeConstants.k_upLimitSwitchID);
+    if(LimitSwitchConstants.k_usingAlgaeDownLimitSwitch) {
+      m_downLimitSwitch = new DigitalInput(AlgaeConstants.k_downLimitSwitchID);
+    } else {
+      m_downLimitSwitch = null;
+    }
+
+    if(LimitSwitchConstants.k_usingAlgaeUpLimitSwitch) {
+      m_upLimitSwitch = new DigitalInput(AlgaeConstants.k_upLimitSwitchID);
+    } else {
+      m_upLimitSwitch = null;
+    }
 
     m_algaeIntakeMotor.configure(Configs.AlgaeConfigs.algaeIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -195,7 +205,11 @@ public class AlgaeSubsystem extends SubsystemBase {
    * @return True when the limit switch is hit
    */
   public boolean getDownLimitSwitch() {
-    return m_downLimitSwitch.get();
+    if(LimitSwitchConstants.k_usingAlgaeDownLimitSwitch) {
+      return m_downLimitSwitch.get();
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -203,7 +217,11 @@ public class AlgaeSubsystem extends SubsystemBase {
    * @return True when the limit switch is hit
    */
   public boolean getUpLimitSwitch() {
-    return m_upLimitSwitch.get();
+    if(LimitSwitchConstants.k_usingAlgaeUpLimitSwitch) {
+      return m_upLimitSwitch.get();
+    } else {
+      return false;
+    }
   }
 
 @Override

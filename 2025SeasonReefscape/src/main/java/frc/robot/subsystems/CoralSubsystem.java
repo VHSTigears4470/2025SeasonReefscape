@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
 import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.LimitSwitchConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 
 public class CoralSubsystem extends SubsystemBase {
@@ -41,7 +42,11 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotorLoopController = m_armMotor.getClosedLoopController();
     m_armEncoder = m_armMotor.getEncoder();
 
-    m_startLimitSwitch = new DigitalInput(CoralConstants.k_startLimitSwitchID);
+    if(LimitSwitchConstants.k_usingCoralStartLimitSwitch) {
+      m_startLimitSwitch = new DigitalInput(CoralConstants.k_startLimitSwitchID);
+    } else {
+      m_startLimitSwitch = null;
+    }
     // m_endLimitSwitch = new DigitalInput(CoralConstants.k_endLimitSwitchID);
     
     m_intake.configure(Configs.CoralConfigs.coralIntakeMotor, ResetMode.kResetSafeParameters,
@@ -179,7 +184,11 @@ public class CoralSubsystem extends SubsystemBase {
    * @return True when the limit switch is hit
    */
   public boolean getStartLimitSwitch() {
-    return m_startLimitSwitch.get();
+    if(LimitSwitchConstants.k_usingCoralStartLimitSwitch) {
+      return m_startLimitSwitch.get();
+    } else {
+      return false;
+    }
   }
 
   /**
