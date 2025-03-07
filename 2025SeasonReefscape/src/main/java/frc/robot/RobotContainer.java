@@ -163,8 +163,8 @@ public class RobotContainer {
                SmartDashboard.putData("Alage Reset Encoders", new InstantCommand(()->m_algaeSub.resetEncoders(), m_algaeSub));
         }
         if(OperatingConstants.k_usingClimb) {
-                SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0, "Set Coral Intake Positive Speed"));
-                SmartDashboard.putData("Climb Negative Speed", new OverrideSpedClimbArm(m_climbSub, 0, "Set Climb Intake Negative Speed"));
+                SmartDashboard.putData("Climb Positive Speed", new OverrideSpedClimbArm(m_climbSub, 0.3, "Set Climb Intake Positive Speed"));
+                SmartDashboard.putData("Climb Negative Speed", new OverrideSpedClimbArm(m_climbSub, -0.1, "Set Climb Intake Negative Speed"));
                 SmartDashboard.putData("Climb Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
         }
         if(OperatingConstants.k_usingCoral) {
