@@ -238,8 +238,8 @@ public final class Configs {
                 .outputRange(-1, 1)
                 .maxMotion
                 // Set MAXMotion parameters for position control
-                .maxVelocity(2000) // TODO
-                .maxAcceleration(10000) // TODO
+                .maxVelocity(0) // Original 2000 // TODO 
+                .maxAcceleration(0) // Original 10000 // TODO
                 .allowedClosedLoopError(0.25); // TODO
 
             // coralArmMotor
