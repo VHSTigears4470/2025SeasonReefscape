@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -24,6 +26,8 @@ public class CoralSubsystem extends SubsystemBase {
   /** Variables for intake motors */
   private final SparkMax m_intake;
   private final SparkMax m_armMotor;
+  private final SparkClosedLoopController m_armMotorLoopController;
+
   private final DigitalInput m_startLimitSwitch;
   // private final DigitalInput m_endLimitSwitch;
   private final RelativeEncoder m_armEncoder;
@@ -34,6 +38,7 @@ public class CoralSubsystem extends SubsystemBase {
   public CoralSubsystem() {
     m_intake = new SparkMax(CoralConstants.k_intakeID, MotorType.kBrushless);
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
+    m_armMotorLoopController = m_armMotor.getClosedLoopController();
     m_armEncoder = m_armMotor.getEncoder();
 
     m_startLimitSwitch = new DigitalInput(CoralConstants.k_startLimitSwitchID);
@@ -99,6 +104,7 @@ public class CoralSubsystem extends SubsystemBase {
       d_desiredReferencePosition = Constants.CoralConstants.k_backwardArmPos;
     }
     e_armState = desiredState;
+    m_armMotorLoopController.setReference(d_desiredReferencePosition, ControlType.kMAXMotionPositionControl);
   }
 
   /**
@@ -191,6 +197,7 @@ public class CoralSubsystem extends SubsystemBase {
     
     setSmartDashboard();
 
+    /*
     double voltageOutput;
     
     // Calculates proper state that the arm should be in 0.02 seconds
@@ -216,7 +223,8 @@ public class CoralSubsystem extends SubsystemBase {
       voltageOutput = Math.max(Math.min(voltageOutput, 12), -12);
 
       SmartDashboard.putNumber("Coral Arm Voltage Output", voltageOutput);
-      m_armMotor.setVoltage(voltageOutput);
+      // m_armMotor.setVoltage(voltageOutput);
+      */
   }
 
   @Override

@@ -223,17 +223,31 @@ public final class Configs {
         public static final SparkMaxConfig coralArmMotor = new SparkMaxConfig();
 
         static {
-            double d_coralFactor = 1 / 20 * 2 * Math.PI; //TODO: Double Check
+            // double d_coralFactor = 1 / 20 * 2 * Math.PI; //TODO: Double Check
 
             coralIntakeMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO 
+
+            coralArmMotor.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12);
             coralArmMotor
-                .idleMode(IdleMode.kBrake)
-                .smartCurrentLimit(50); //TODO
-            coralArmMotor.encoder
-                .positionConversionFactor(d_coralFactor) //degrees
-                .velocityConversionFactor(d_coralFactor / 60.0); 
+                .closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // Set PID values for position control
+                .p(0.1)
+                .outputRange(-1, 1)
+                .maxMotion
+                // Set MAXMotion parameters for position control
+                .maxVelocity(2000) // TODO
+                .maxAcceleration(10000) // TODO
+                .allowedClosedLoopError(0.25); // TODO
+
+            // coralArmMotor
+            //     .idleMode(IdleMode.kBrake)
+            //     .smartCurrentLimit(50); //TODO
+            // coralArmMotor.encoder
+            //     .positionConversionFactor(d_coralFactor) //degrees
+            //     .velocityConversionFactor(d_coralFactor / 60.0); 
         }
     }
 
