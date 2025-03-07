@@ -73,7 +73,7 @@ public final class Constants {
     };
 
     // Pigeon2 Id
-    public static final int k_pigeon2Id = 16;
+    public static final int k_pigeon2Id = 8;
 
     public static final boolean k_GyroReversed = false;
   }
@@ -258,13 +258,13 @@ public static final class AlgaeConstants {
   public static final class OperatingConstants {
     // Drives
     public static final boolean k_usingSwerveDrive = true;
-    public static final boolean k_usingGyro = false;
+    public static final boolean k_usingGyro = true;
 
     public static final boolean k_usingAlgae = false;
     public static final boolean k_usingCoral = false;
     public static final boolean k_usingClimb = false;
 
-    public static final boolean k_usingCamera = true;
+    public static final boolean k_usingCamera = false;
     
     public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
     public static final boolean k_usingKitbotCoral = false; 

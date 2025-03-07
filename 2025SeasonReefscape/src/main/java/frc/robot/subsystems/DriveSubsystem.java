@@ -74,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
       MotorLocation.REAR_RIGHT);
 
   // The gyro sensor
-  private final Pigeon2 m_gyro;
+  private final Pigeon2 m_gyro = OperatingConstants.k_usingGyro ? new Pigeon2(DriveConstants.k_pigeon2Id) : null;
   // private final AHRS m_NAVXGyro = new AHRS(NavXComType.kMXP_SPI);
 
   private SwerveModuleState m_desiredModuleStates[] = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
@@ -93,11 +93,11 @@ public class DriveSubsystem extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
     RobotConfig config;
     
-    if(OperatingConstants.k_usingGyro) {
-      m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id, "rio");
-    } else {
-      m_gyro = null;
-    }
+    // if(OperatingConstants.k_usingGyro) {
+      //m_gyro = new Pigeon2(DriveConstants.k_pigeon2Id);
+    // } else {
+    //   m_gyro = null;
+    // }
 
     try{
       config = RobotConfig.fromGUISettings();
