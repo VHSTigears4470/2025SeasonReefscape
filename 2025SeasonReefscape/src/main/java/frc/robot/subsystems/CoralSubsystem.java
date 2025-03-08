@@ -29,7 +29,7 @@ public class CoralSubsystem extends SubsystemBase {
   private final SparkClosedLoopController m_armMotorLoopController;
 
   private final DigitalInput m_startLimitSwitch;
-  // private final DigitalInput m_endLimitSwitch;
+  private final DigitalInput m_endLimitSwitch;
   private final RelativeEncoder m_armEncoder;
   private double d_desiredReferencePosition;
   private CORAL_ARM_STATE e_armState;
@@ -46,7 +46,11 @@ public class CoralSubsystem extends SubsystemBase {
     } else {
       m_startLimitSwitch = null;
     }
-    // m_endLimitSwitch = new DigitalInput(CoralConstants.k_endLimitSwitchID);
+    if(LimitSwitchConstants.k_usingCoralSEndLimitSwitch) {
+      m_endLimitSwitch = new DigitalInput(CoralConstants.k_endLimitSwitchID);
+    } else {
+      m_endLimitSwitch = null;
+    }
     
     m_intake.configure(Configs.CoralConfigs.coralIntakeMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -201,9 +205,13 @@ public class CoralSubsystem extends SubsystemBase {
    * Gets whether or not the end limit switch is hit
    * @return True when the limit switch is hit
    */
-  // public boolean getEndLimitSwitch() {
-  //   return m_endLimitSwitch.get();
-  // }
+  public boolean getEndLimitSwitch() {
+    if(LimitSwitchConstants.k_usingCoralSEndLimitSwitch) {
+      return m_endLimitSwitch.get();
+    } else {
+      return false;
+    }
+  }
   
   
   // This method will be called once per scheduler run
@@ -211,6 +219,15 @@ public class CoralSubsystem extends SubsystemBase {
   public void periodic() {
     
     setSmartDashboard();
+
+    if(getStartLimitSwitch()) {
+      m_armEncoder.setPosition(LimitSwitchConstants.k_coralStartLimitSwitchPosition);
+    }
+
+    if(getEndLimitSwitch()) {
+      m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
+    }
+
 
     /*
     double voltageOutput;

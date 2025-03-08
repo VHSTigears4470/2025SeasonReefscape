@@ -174,12 +174,14 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void periodic() {
     setSmartDashboard();
     if(getDownLimitSwitch()) {
+      m_algaeArmEncoder.setPosition(LimitSwitchConstants.k_algaeDownLimitSwitchPosition);
       // Prevents Algae Arm From Going Down Further
       if(m_algaeArmMotor.getBusVoltage() >= 0) {
         m_algaeArmMotor.setVoltage(0);
       }
     }
     if(getUpLimitSwitch()) {
+      m_algaeArmEncoder.setPosition(LimitSwitchConstants.k_algaeUpLimitSwitchPosition);
       // Prevents Algae Arm From Going Up Further
       if(m_algaeArmMotor.getBusVoltage() <= 0) { 
         m_algaeArmMotor.setVoltage(0);

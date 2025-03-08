@@ -120,6 +120,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if(getMaxLimitSwitch()) {
+      m_climbEncoder.setPosition(LimitSwitchConstants.k_climbMaxLimitSwitchPosition);
+    }
     // This method will be called once per scheduler run
     setSmartDashboard();
   }

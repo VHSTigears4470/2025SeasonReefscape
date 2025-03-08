@@ -261,10 +261,16 @@ public static final class AlgaeConstants {
 
   public static final class LimitSwitchConstants {
     public static final boolean k_usingAlgaeDownLimitSwitch = false;
+    public static final double k_algaeDownLimitSwitchPosition = 1000; // TODO
     public static final boolean k_usingAlgaeUpLimitSwitch = false;
+    public static final double k_algaeUpLimitSwitchPosition = 0;
 
     public static final boolean k_usingClimbMaxLimitSwitch = false;
+    public static final double k_climbMaxLimitSwitchPosition = 100000; // TODO
 
     public static final boolean k_usingCoralStartLimitSwitch = false;
+    public static final double k_coralStartLimitSwitchPosition = 0;
+    public static final boolean k_usingCoralSEndLimitSwitch = false;
+    public static final double k_coralEndLimitSwitchPosition = 1000000; // TODO
   }
 }
