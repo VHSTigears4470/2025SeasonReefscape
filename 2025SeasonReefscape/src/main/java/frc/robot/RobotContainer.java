@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Configs.AlgaeConfigs;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatingConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
+import frc.robot.commands.DriveMotors;
 import frc.robot.commands.AlgaeCommands.IdleAlgae;
 import frc.robot.commands.AlgaeCommands.IntakeAlgae;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
@@ -30,6 +33,7 @@ import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.KitbotCoralSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
+import frc.robot.subsystems.TestMotorsSubsystem;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -53,6 +57,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   private DriveSubsystem m_driveSub;
   private KitbotDriveSubsystem m_kitbotDriveSub;
+  private TestMotorsSubsystem m_algaeAltSub;
   private CoralSubsystem m_coralSub;
   private AlgaeSubsystem m_algaeSub;
   private ClimbSubsystem m_climbSub;
@@ -102,8 +107,12 @@ public class RobotContainer {
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub = new AlgaeSubsystem();
                 m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
+        } else if(OperatingConstants.k_usingAlgaeAlt) {
+                m_algaeAltSub = new TestMotorsSubsystem(AlgaeConstants.k_algaeIntakeID, AlgaeConfigs.algaeIntakeMotor);
+                m_algaeSub = null;
         } else {
                 m_algaeSub = null;
+                m_algaeAltSub = null;
         }
 
         if(OperatingConstants.k_usingClimb) {
@@ -270,10 +279,14 @@ public class RobotContainer {
         //Right Trigger
         if(OperatingConstants.k_usingAlgae){
                 m_driverController.rightTrigger().whileTrue(new IntakeAlgae(m_algaeSub));
+        } else if (OperatingConstants.k_usingAlgaeAlt) {
+                m_driverController.rightTrigger().whileTrue(new DriveMotors(m_algaeAltSub, -.35));
         }
         //Right Bumper
         if(OperatingConstants.k_usingAlgae){
                 m_driverController.rightBumper().onTrue(new ShootAlgae(m_algaeSub));
+        } else if (OperatingConstants.k_usingAlgaeAlt) {
+                m_driverController.rightBumper().whileTrue(new DriveMotors(m_algaeAltSub, .35));
         }
         //Left Bumper
         if(OperatingConstants.k_usingClimb){

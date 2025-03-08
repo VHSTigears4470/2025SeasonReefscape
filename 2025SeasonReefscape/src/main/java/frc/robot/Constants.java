@@ -133,7 +133,7 @@ public final class Constants {
 
 public static final class AlgaeConstants {
     //Change IDS
-    public static final int k_algaeTopID = 20;
+    public static final int k_algaeIntakeID = 20;
     public static final int k_algaeArmID = 21; 
     
     public static final int k_downLimitSwitchID = 2; // TODO
@@ -250,6 +250,8 @@ public static final class AlgaeConstants {
     public static final boolean k_usingGyro = true;
 
     public static final boolean k_usingAlgae = false;
+    public static final boolean k_usingAlgaeAlt = !k_usingAlgae && true;
+
     public static final boolean k_usingCoral = false;
     public static final boolean k_usingClimb = true;
 

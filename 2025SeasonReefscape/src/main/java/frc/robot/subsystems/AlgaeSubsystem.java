@@ -29,7 +29,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    private final DigitalInput m_upLimitSwitch;
 
   public AlgaeSubsystem(){
-    m_algaeIntakeMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless); // motor controller
+    m_algaeIntakeMotor = new SparkMax(Constants.AlgaeConstants.k_algaeIntakeID, MotorType.kBrushless); // motor controller
     m_algaeArmMotor = new SparkMax(Constants.AlgaeConstants.k_algaeArmID, MotorType.kBrushless);
     m_algaeArmEncoder = m_algaeArmMotor.getEncoder();
 
