@@ -13,6 +13,7 @@ import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.AlgaeCommands.TestAlgaeArm;
 import frc.robot.commands.AlgaeCommands.TestAlgaeIntakeVoltage;
 import frc.robot.commands.ClimbCommands.PullUpArm;
+import frc.robot.commands.ClimbCommands.ReleaseDownArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
 import frc.robot.commands.CoralCommands.IntakeCoral;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
@@ -276,14 +277,12 @@ public class RobotContainer {
         }
         //Left Bumper
         if(OperatingConstants.k_usingClimb){
-                m_driverController.leftBumper().whileTrue(new PullUpArm(m_climbSub));
+                m_driverController.start().whileTrue(new PullUpArm(m_climbSub));
         }
         //Left Trigger 
-        /*
         if(OperatingConstants.k_usingClimb){
-                m_driverController.leftTrigger().whileTrue(new ReleaseDownArm(m_climbSub)); *Decide whether necessary
+                m_driverController.leftBumper().whileTrue(new ReleaseDownArm(m_climbSub));
         }
-        */
         if(OperatingConstants.k_usingSwerveDrive){
                 m_driverController.leftTrigger().whileTrue(
                         new RunCommand(
