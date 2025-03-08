@@ -89,8 +89,8 @@ public final class Constants {
     public static final int k_armID = 19;
 
     // Limit Switch
-    public static final int k_startLimitSwitchID = 0; // TODO
-    public static final int k_endLimitSwitchID = 0; // TODO
+    public static final int k_startLimitSwitchID = 1; // TODO
+    public static final int k_endLimitSwitchID = 1; // TODO
     public static final double k_startResetPosition = 0; // Position for when the hard limit switch is hit // TODO
     public static final double k_endResetPosition = 0; // TODO
 
@@ -136,8 +136,8 @@ public static final class AlgaeConstants {
     public static final int k_algaeTopID = 20;
     public static final int k_algaeArmID = 21; 
     
-    public static final int k_downLimitSwitchID = 0; // TODO
-    public static final int k_upLimitSwitchID = 0; // TODO
+    public static final int k_downLimitSwitchID = 2; // TODO
+    public static final int k_upLimitSwitchID = 2; // TODO
 
     public static final double k_downLimitSwitchPos = 0; // TODO
     public static final double k_upLimitSwitchPos = 0; // TODO
@@ -246,12 +246,12 @@ public static final class AlgaeConstants {
 
   public static final class OperatingConstants {
     // Drives
-    public static final boolean k_usingSwerveDrive = false;
+    public static final boolean k_usingSwerveDrive = true;
     public static final boolean k_usingGyro = true;
 
-    public static final boolean k_usingAlgae = true;
+    public static final boolean k_usingAlgae = false;
     public static final boolean k_usingCoral = false;
-    public static final boolean k_usingClimb = false;
+    public static final boolean k_usingClimb = true;
 
     public static final boolean k_usingCamera = false;
     

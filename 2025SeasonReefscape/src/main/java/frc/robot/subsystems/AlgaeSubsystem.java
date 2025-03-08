@@ -163,7 +163,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    */
   public boolean getUpLimitSwitch() {
     if(LimitSwitchConstants.k_usingAlgaeUpLimitSwitch) {
-      return m_upLimitSwitch.get();
+      return !m_upLimitSwitch.get();
     } else {
       return false;
     }
