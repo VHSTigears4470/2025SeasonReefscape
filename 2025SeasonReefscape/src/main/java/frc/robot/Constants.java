@@ -109,6 +109,8 @@ public final class Constants {
     //Change voltages
     public static final double k_fastVoltage = 0.0; //4.0; // TODO
     public static final double k_slowVoltage = 0.0; //1.5; // TODO
+    public static final double k_intakeVoltage = 0.0; //1.5; // TODO
+
 
     //Set arm speed
     public static final double k_coralArmSpeed = 0.0; //0.2; // TODO
@@ -133,38 +135,25 @@ public static final class AlgaeConstants {
     //Change IDS
     public static final int k_algaeTopID = 20;
     public static final int k_algaeArmID = 21; 
-
-    public static final double k_algaeArmMaxOutput = 0.0; // TODO
-    public static final double k_algaeArmMinOutput = 0.0; // TODO
     
     public static final int k_downLimitSwitchID = 0; // TODO
     public static final int k_upLimitSwitchID = 0; // TODO
 
     public static final double k_downLimitSwitchPos = 0; // TODO
     public static final double k_upLimitSwitchPos = 0; // TODO
-
-    public static final double k_positionBufferAlgae = 1; //TODO: Update
-
-    //Find correct values; radians
-    public static final double k_downArmPos = 0; // TODO; Radians
-    public static final double k_holdingArmPos = 5; // TODO
-    public static final double k_stowedArmPos = 20; // TODO
     
     //Find correct voltages
-    public static final double k_intakeVoltage = 0.0; //-0.7; // TODO
-    public static final double k_dispenseVoltage = 0.0; //0.7; // TODO
-    public static final double k_holdVoltage = 0.0; //TODO
+    public static final double k_intakeVoltage = -0.7; //-0.7; // TODO
+    public static final double k_dispenseVoltage = 0.7; //0.7; // TODO
     
     //Algae Arm Speed
-    public static final double k_algaeArmSpeed = 0.0; //0.3; // TODO
+    public static final double k_algaeArmSpeed = 3; //0.3; // TODO
+    public static final double k_forwardVoltage = 3; //TODO
+    public static final double k_idleVoltage = -1.0; //TODO
 
-    public static final int k_algaeArmEncoderReversed = 1; //TODO
+    public static final double k_armDownGravityPosition = 0.0; // Position when gravity can take the arm down // TODO
 
-    public static enum ALGAE_ARM_STATE {
-      DOWN,
-      HOLDING,
-      STOWED;
-    }    
+    public static final int k_algaeArmEncoderReversed = 1; //TODO 
   }
 
   public static final class KitbotCoralConstants {
@@ -181,7 +170,7 @@ public static final class AlgaeConstants {
 
     //Find correct values; radians
     public static final double k_pullUpClimbPos = 90; // TODO; Radians
-    public static final double k_releaseDownClimbPos = 45; // TODO
+    public static final double k_releaseDownClimbPos = -10; // TODO
 
     public static final double k_climbEncoderReversed = 1; //TODO
 
@@ -257,10 +246,10 @@ public static final class AlgaeConstants {
 
   public static final class OperatingConstants {
     // Drives
-    public static final boolean k_usingSwerveDrive = true;
+    public static final boolean k_usingSwerveDrive = false;
     public static final boolean k_usingGyro = true;
 
-    public static final boolean k_usingAlgae = false;
+    public static final boolean k_usingAlgae = true;
     public static final boolean k_usingCoral = false;
     public static final boolean k_usingClimb = false;
 
@@ -271,11 +260,11 @@ public static final class AlgaeConstants {
   }
 
   public static final class LimitSwitchConstants {
-    public static final boolean k_usingAlgaeDownLimitSwitch = true;
-    public static final boolean k_usingAlgaeUpLimitSwitch = true;
+    public static final boolean k_usingAlgaeDownLimitSwitch = false;
+    public static final boolean k_usingAlgaeUpLimitSwitch = false;
 
-    public static final boolean k_usingClimbMaxLimitSwitch = true;
+    public static final boolean k_usingClimbMaxLimitSwitch = false;
 
-    public static final boolean k_usingCoralStartLimitSwitch = true;
+    public static final boolean k_usingCoralStartLimitSwitch = false;
   }
 }

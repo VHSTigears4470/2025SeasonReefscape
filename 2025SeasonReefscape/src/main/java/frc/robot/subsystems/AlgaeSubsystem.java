@@ -6,10 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -19,7 +17,6 @@ import frc.robot.Configs;
 import frc.robot.Constants;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.LimitSwitchConstants;
-import frc.robot.Constants.AlgaeConstants.ALGAE_ARM_STATE;
 
 /** Algae Subsystem */
 public class AlgaeSubsystem extends SubsystemBase {
@@ -29,13 +26,6 @@ public class AlgaeSubsystem extends SubsystemBase {
    private final RelativeEncoder m_algaeArmEncoder;
    private final DigitalInput m_downLimitSwitch;
    private final DigitalInput m_upLimitSwitch;
-
-   private final SparkClosedLoopController m_algaeClosedLoopController;
-   
-   private ALGAE_ARM_STATE e_armState;
-   private double d_desiredReferencePosition;
-   private boolean b_stowArmWhenIdle;
-
 
   public AlgaeSubsystem(){
     m_algaeIntakeMotor = new SparkMax(Constants.AlgaeConstants.k_algaeTopID, MotorType.kBrushless); // motor controller
@@ -59,43 +49,15 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeArmMotor.configure(Configs.AlgaeConfigs.algaeArmMotor, ResetMode.kResetSafeParameters,
       PersistMode.kPersistParameters);
 
-    m_algaeClosedLoopController = m_algaeArmMotor.getClosedLoopController();
-
-    b_stowArmWhenIdle = true;
     m_algaeArmEncoder.setPosition(0); 
   }
   
-  /**
+  /*
    * Gets the algae arm encoder
    * @return algae arm encoder
    */
   public double getAlgaeArmEncoder() {
     return AlgaeConstants.k_algaeArmEncoderReversed * m_algaeArmEncoder.getPosition(); 
-  }
-
-  /**
-   * Returns the desired arm state
-   * @return The current desired arm state
-   */
-  public ALGAE_ARM_STATE getArmState(){
-    return e_armState;
-  }
-
-  /**
-   * Sets the arm state 
-   * (DOES NOT MEAN THE ARM IS ALREADY THERE, IT JUST MEANS THAT IT IS GOING THERE)
-   * @param desiredState
-   */
-  public void setArmState(ALGAE_ARM_STATE desiredState) { // setting the arm state; DOWN, HOLDING, STOWED
-    e_armState = desiredState;
-    if (desiredState == ALGAE_ARM_STATE.DOWN) 
-      d_desiredReferencePosition = Constants.AlgaeConstants.k_downArmPos;
-    else if (desiredState == ALGAE_ARM_STATE.HOLDING) 
-      d_desiredReferencePosition = Constants.AlgaeConstants.k_holdingArmPos;
-    else  // ALGAE_ARM_STATE.STOWED
-      d_desiredReferencePosition = Constants.AlgaeConstants.k_stowedArmPos;
-    
-    m_algaeClosedLoopController.setReference(d_desiredReferencePosition, ControlType.kPosition); //make sure in radians
   }
   
   /**
@@ -104,8 +66,6 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void intake() {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_intakeVoltage); 
   }
-
-  
   /**
    * This methods
    */
@@ -113,11 +73,12 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_dispenseVoltage);
   }
 
-  /**
-   * Sets voltage for intake motor to hold the alage
-   */
-  public void hold() {
-    m_algaeIntakeMotor.setVoltage(AlgaeConstants.k_holdVoltage);
+  public void armForward() {
+    m_algaeArmMotor.setVoltage(Constants.AlgaeConstants.k_forwardVoltage);
+  }
+
+  public void holdIdle() {
+    m_algaeArmMotor.setVoltage(Constants.AlgaeConstants.k_idleVoltage);
   }
 
   /**
@@ -149,22 +110,6 @@ public class AlgaeSubsystem extends SubsystemBase {
    */
   public void testIntakeMotorsVoltage(double voltage) {
     m_algaeIntakeMotor.setVoltage(voltage);
-  }
-
-  /**
-   * Sets if the arm should be in stow while idle
-   * @param stowWhenIdle True is the robot should be in stow when idle
-   */
-  public void setStowArmWhenIdle(boolean stowWhenIdle) {
-    b_stowArmWhenIdle = stowWhenIdle;
-  }
-
-  /**
-   * Whether the robot is commanded to stow arm when idle
-   * @return Whether the robot is commanded to stow arm when idle
-   */
-  public boolean getStowArmWhenIdle() {
-    return b_stowArmWhenIdle;
   }
 
   /**

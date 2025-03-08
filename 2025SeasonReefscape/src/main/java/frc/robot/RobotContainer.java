@@ -14,7 +14,7 @@ import frc.robot.commands.AlgaeCommands.TestAlgaeArm;
 import frc.robot.commands.AlgaeCommands.TestAlgaeIntakeVoltage;
 import frc.robot.commands.ClimbCommands.PullUpArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
-import frc.robot.commands.ClimbCommands.ReleaseDownArm;
+import frc.robot.commands.CoralCommands.IntakeCoral;
 import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.TestCoralArmVoltage;
@@ -120,7 +120,7 @@ public class RobotContainer {
         if(OperatingConstants.k_usingKitbotCoral) {
             m_kitbotcoralSub = new KitbotCoralSubsystem();
       } else {
-                  m_coralSub = null;
+            m_kitbotcoralSub = null;
       }
   }
 
@@ -134,7 +134,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    int preset = 1;
+    int preset = 0;
     switch (preset) {
             case 0: 
                     controllerPresetMain(); // Competition Configs
@@ -240,6 +240,12 @@ public class RobotContainer {
         }
         return null;
   }
+  
+  public void onStart() {
+        if(OperatingConstants.k_usingAlgae) {
+                m_algaeSub.resetEncoders();
+        }
+  }
 
   // Presets
   /**
@@ -259,46 +265,53 @@ public class RobotContainer {
    */
  
   public void controllerPresetMain() { //subject to change (while/on true)
-        //Swerve stuff goes here
-        //Left Joystick
-        
-        //Right Joystick
-        
-        //Y-button
-        // if(OperatingConstants.k_usingAlgae){
-        // m_driverController.y().onTrue(new IntakeAlgae(m_algaeSub));
-        // }
-        //B-Button
+        //Right Trigger
         if(OperatingConstants.k_usingAlgae){
-        m_driverController.b().whileTrue(new IntakeAlgae(m_algaeSub));
+                m_driverController.rightTrigger().whileTrue(new IntakeAlgae(m_algaeSub));
+        }
+        //Right Bumper
+        if(OperatingConstants.k_usingAlgae){
+                m_driverController.rightBumper().onTrue(new ShootAlgae(m_algaeSub));
+        }
+        //Left Bumper
+        if(OperatingConstants.k_usingClimb){
+                m_driverController.leftBumper().whileTrue(new PullUpArm(m_climbSub));
+        }
+        //Left Trigger 
+        /*
+        if(OperatingConstants.k_usingClimb){
+                m_driverController.leftTrigger().whileTrue(new ReleaseDownArm(m_climbSub)); *Decide whether necessary
+        }
+        */
+        if(OperatingConstants.k_usingSwerveDrive){
+                m_driverController.leftTrigger().whileTrue(
+                        new RunCommand(
+                                () -> m_driveSub.drive(
+                                        OIConstants.k_driverYAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisY), OIConstants.k_DriveDeadband), 
+                                        OIConstants.k_driverXAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisX), OIConstants.k_DriveDeadband), 
+                                        OIConstants.k_driverRotAxisInverted * MathUtil.applyDeadband(m_driverController.getRawAxis(OIConstants.k_driverAxisRot), OIConstants.k_DriveDeadband), 
+                                        false,
+                                        "Robot Orientated"
+                                ), 
+                                m_driveSub
+                        )
+                );
+        }
+        //Y-Button
+        if(OperatingConstants.k_usingCoral){
+                m_driverController.y().onTrue(new ToggleCoralArm(m_coralSub, CORAL_ARM_STATE.BACKWARD));
+        }
+        //B-Button
+        if(OperatingConstants.k_usingCoral){
+                m_driverController.b().whileTrue(new ShootCoralFast(m_coralSub));
+        }
+        //A-Button
+        if(OperatingConstants.k_usingCoral){
+                m_driverController.a().whileTrue(new ShootCoralSlow(m_coralSub));
         }
         //X-Button
         if(OperatingConstants.k_usingCoral){
-        m_driverController.x().onTrue(new ToggleCoralArm(m_coralSub, CORAL_ARM_STATE.BACKWARD));
-        }
-        //A-Button
-        if(OperatingConstants.k_usingAlgae){
-        m_driverController.a().onTrue(new ShootAlgae(m_algaeSub));
-        }
-        //LB
-        if(OperatingConstants.k_usingCoral){
-        m_driverController.leftBumper().onTrue(new ShootCoralFast(m_coralSub));
-        }
-        //LT
-        if(OperatingConstants.k_usingCoral){
-        m_driverController.leftTrigger().onTrue(new ShootCoralSlow(m_coralSub));
-        }
-        //RB
-        if(OperatingConstants.k_usingClimb){
-        m_driverController.rightBumper().whileTrue(new PullUpArm(m_climbSub));
-        }
-        //RT
-        if(OperatingConstants.k_usingClimb){
-        m_driverController.rightTrigger().whileTrue(new ReleaseDownArm(m_climbSub));
-        }
-        //D-Pad 
-        if(OperatingConstants.k_usingCoral){
-        m_driverController.povUp().whileTrue(new ShootCoralFast(m_coralSub));// TODO chack validity later
+                m_driverController.x().whileTrue(new IntakeCoral(m_coralSub));// TODO chack validity later
         }
   }
 

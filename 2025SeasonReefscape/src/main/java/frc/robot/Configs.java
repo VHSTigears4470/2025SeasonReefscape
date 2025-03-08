@@ -4,7 +4,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
  
@@ -179,7 +178,7 @@ public final class Configs {
         public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
 
         static {
-            double d_algaeFactor = 1 / 45 * 2 * Math.PI; //TODO: Double Check
+            double d_algaeFactor = 1.0 / 45 * 2 * Math.PI; //TODO: Double Check
 
             algaeIntakeMotor
             .idleMode(IdleMode.kBrake)
@@ -191,11 +190,6 @@ public final class Configs {
             algaeArmMotor.encoder
                 .positionConversionFactor(d_algaeFactor) //degrees
                 .velocityConversionFactor(d_algaeFactor / 60.0); 
-            algaeArmMotor.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                // These are example gains you may need to (change?) them for your own robot!
-                .pid(0.01, 0, 0)
-                .outputRange(AlgaeConstants.k_algaeArmMinOutput, AlgaeConstants.k_algaeArmMaxOutput); // TODO, FIND RELEASTIC VALUES
         }
 
     }
@@ -206,7 +200,7 @@ public final class Configs {
         public static final SparkMaxConfig climbMotor = new SparkMaxConfig();
 
         static {
-            double d_climbFactor = 1 / 108 * 2 * Math.PI; //TODO: Double Check
+            double d_climbFactor = 1.0 / 108 * 2 * Math.PI; //TODO: Double Check
             climbMotor
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50); //TODO

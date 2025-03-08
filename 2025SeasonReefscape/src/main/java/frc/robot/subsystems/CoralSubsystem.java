@@ -12,7 +12,6 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -96,6 +95,13 @@ public class CoralSubsystem extends SubsystemBase {
    */
   public void shootFast() {
     m_intake.setVoltage(CoralConstants.k_fastVoltage);
+  }
+
+  /**
+   * Intake Coral
+   */
+  public void intake() {
+    m_intake.setVoltage(CoralConstants.k_intakeVoltage);
   }
 
   /**
