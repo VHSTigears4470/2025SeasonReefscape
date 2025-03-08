@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
+import frc.robot.Configs.AlgaeConfigs;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.LimitSwitchConstants;
 
@@ -189,5 +190,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  }
+
+  public void changeArmConfig() {
+    m_algaeArmMotor.configure(AlgaeConfigs.algaeArmMotorAlt, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 }

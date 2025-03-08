@@ -244,6 +244,7 @@ public class RobotContainer {
   public void onStart() {
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub.resetEncoders();
+                m_algaeSub.changeArmConfig();
         }
   }
 

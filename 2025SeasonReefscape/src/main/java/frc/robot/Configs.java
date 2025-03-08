@@ -176,6 +176,7 @@ public final class Configs {
         //AlgaeSubsystem
         public static final SparkMaxConfig algaeIntakeMotor = new SparkMaxConfig();
         public static final SparkMaxConfig algaeArmMotor = new SparkMaxConfig();
+        public static final SparkMaxConfig algaeArmMotorAlt = new SparkMaxConfig(); // When algae arm is enabled
 
         static {
             double d_algaeFactor = 1.0 / 45 * 2 * Math.PI; //TODO: Double Check
@@ -190,6 +191,15 @@ public final class Configs {
             algaeArmMotor.encoder
                 .positionConversionFactor(d_algaeFactor) //degrees
                 .velocityConversionFactor(d_algaeFactor / 60.0); 
+
+                
+
+        algaeArmMotorAlt
+            .idleMode(IdleMode.kCoast)
+            .smartCurrentLimit(50); //TODO
+        algaeArmMotorAlt.encoder
+            .positionConversionFactor(d_algaeFactor) //degrees
+            .velocityConversionFactor(d_algaeFactor / 60.0); 
         }
 
     }
