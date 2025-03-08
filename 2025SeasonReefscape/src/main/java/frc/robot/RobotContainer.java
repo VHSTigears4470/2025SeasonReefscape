@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Configs.AlgaeConfigs;
 import frc.robot.Constants.AlgaeConstants;
+import frc.robot.Constants.LimitSwitchConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatingConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
@@ -108,7 +109,7 @@ public class RobotContainer {
                 m_algaeSub = new AlgaeSubsystem();
                 m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
         } else if(OperatingConstants.k_usingAlgaeAlt) {
-                m_algaeAltSub = new TestMotorsSubsystem(AlgaeConstants.k_algaeIntakeID, AlgaeConfigs.algaeIntakeMotor);
+                m_algaeAltSub = new TestMotorsSubsystem("Algae Alt Intake", AlgaeConstants.k_algaeIntakeID, AlgaeConfigs.algaeIntakeMotor, AlgaeConstants.k_upLimitSwitchID, true);
                 m_algaeSub = null;
         } else {
                 m_algaeSub = null;
