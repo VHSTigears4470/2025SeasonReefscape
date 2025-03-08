@@ -162,7 +162,7 @@ public class CoralSubsystem extends SubsystemBase {
    */
   public void setSmartDashboard() {
     SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
-    SmartDashboard.putNumber("Coral Arm Bus Voltage", m_armMotor.getBusVoltage());
+    SmartDashboard.putNumber("Coral Arm Speed", m_armMotor.get());
     SmartDashboard.putBoolean("Coral Start Limit Switch", getStartLimitSwitch());
     // SmartDashboard.putBoolean("Coral End Limit Switch", getEndLimitSwitch());
   }

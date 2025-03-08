@@ -119,7 +119,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void setSmartDashboard() {
     //Encoder values in degrees - subject to change 
     SmartDashboard.putNumber("Algae Arm Encoder (Radians)", getAlgaeArmEncoder());
-    SmartDashboard.putNumber("Algae Arm Bus Voltage", m_algaeArmMotor.getBusVoltage());
+    SmartDashboard.putNumber("Algae Arm Speed", m_algaeArmMotor.get());
     SmartDashboard.putBoolean("Algae Down Limit Switch", getDownLimitSwitch());
     SmartDashboard.putBoolean("Algae Up Limit Switch", getUpLimitSwitch());
   }
@@ -176,14 +176,14 @@ public class AlgaeSubsystem extends SubsystemBase {
     if(getDownLimitSwitch()) {
       m_algaeArmEncoder.setPosition(LimitSwitchConstants.k_algaeDownLimitSwitchPosition);
       // Prevents Algae Arm From Going Down Further
-      if(m_algaeArmMotor.getBusVoltage() >= 0) {
+      if(m_algaeArmMotor.get() >= 0) {
         m_algaeArmMotor.setVoltage(0);
       }
     }
     if(getUpLimitSwitch()) {
       m_algaeArmEncoder.setPosition(LimitSwitchConstants.k_algaeUpLimitSwitchPosition);
       // Prevents Algae Arm From Going Up Further
-      if(m_algaeArmMotor.getBusVoltage() <= 0) { 
+      if(m_algaeArmMotor.get() <= 0) { 
         m_algaeArmMotor.setVoltage(0);
       }
     }
