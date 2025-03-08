@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
+import frc.robot.Configs.CoralConfigs;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.LimitSwitchConstants;
 import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
@@ -27,6 +28,9 @@ public class CoralSubsystem extends SubsystemBase {
   private final SparkMax m_intake;
   private final SparkMax m_armMotor;
   private final SparkClosedLoopController m_armMotorLoopController;
+
+  private boolean m_hasHitStartLimit;
+  private boolean m_hasHitEndLimit;
 
   private final DigitalInput m_startLimitSwitch;
   private final DigitalInput m_endLimitSwitch;
@@ -40,6 +44,9 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor = new SparkMax(CoralConstants.k_armID, MotorType.kBrushless);
     m_armMotorLoopController = m_armMotor.getClosedLoopController();
     m_armEncoder = m_armMotor.getEncoder();
+
+    m_hasHitStartLimit = false;
+    m_hasHitEndLimit = false;
 
     if(LimitSwitchConstants.k_usingCoralStartLimitSwitch) {
       m_startLimitSwitch = new DigitalInput(CoralConstants.k_startLimitSwitchID);
@@ -213,21 +220,50 @@ public class CoralSubsystem extends SubsystemBase {
     }
   }
   
-  
-  // This method will be called once per scheduler run
-  @Override
-  public void periodic() {
-    
-    setSmartDashboard();
+  public void limitSwitchLogic() {
 
     if(getStartLimitSwitch()) {
       m_armEncoder.setPosition(LimitSwitchConstants.k_coralStartLimitSwitchPosition);
+      if(!m_hasHitStartLimit) {
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(0, 0.5);
+        m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_hasHitStartLimit = true;
+      }
+    } else {
+      if(m_hasHitStartLimit) {
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5); // TODO
+        m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_hasHitStartLimit = false;
+      }
     }
 
     if(getEndLimitSwitch()) {
       m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
     }
 
+    if(getEndLimitSwitch()) {
+      m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
+      if(!m_hasHitEndLimit) {
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.0); // TODO
+        m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_hasHitEndLimit = true;
+      }
+    } else {
+      if(m_hasHitEndLimit) {
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5);
+        m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_hasHitEndLimit = false;
+      }
+    }
+
+  }
+  
+  // This method will be called once per scheduler run
+  @Override
+  public void periodic() {
+    
+    setSmartDashboard();
+    limitSwitchLogic();
 
     /*
     double voltageOutput;
