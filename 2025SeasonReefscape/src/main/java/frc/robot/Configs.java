@@ -4,6 +4,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.KitbotDriveConstants;
 import frc.robot.Constants.ModuleConstants;
  
@@ -239,11 +240,11 @@ public final class Configs {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
                 .p(0.1)
-                .outputRange(-.5, 0.5)
+                .outputRange(CoralConstants.k_minArmOutput, CoralConstants.k_maxArmOutput)
                 .maxMotion
                 // Set MAXMotion parameters for position control
-                .maxVelocity(600) // Original 2000 // TODO 
-                .maxAcceleration(300) // Original 10000 // TODO
+                .maxVelocity(CoralConstants.k_maxVelocity) // Original 2000 // TODO 
+                .maxAcceleration(CoralConstants.k_maxAcceleration) // Original 10000 // TODO
                 .allowedClosedLoopError(0.25); // TODO
 
             // coralArmMotor

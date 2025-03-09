@@ -96,14 +96,17 @@ public final class Constants {
 
 
     // Arm Max Velocity
-    public static final double k_maxVelocity = 0; // TODO
-    public static final double k_maxAcceleration = 0; // TODO
+    public static final double k_maxVelocity = 600; // TODO
+    public static final double k_maxAcceleration = 300; // TODO
     public static final TrapezoidProfile trapezoidProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(CoralConstants.k_maxVelocity, CoralConstants.k_maxAcceleration));
     
+    // Arm Max Output
+    public static final double k_maxArmOutput = 0.7;
+    public static final double k_minArmOutput = -0.7;
 
     //Find correct values; radians
     public static final double k_forwardArmPos = 0; // TODO
-    public static final double k_backwardArmPos = 0; // TODO
+    public static final double k_backwardArmPos = -30.43; // TODO
     public static final double k_startingArmPos = 0; // TODO
     
     //Change voltages
@@ -143,11 +146,10 @@ public static final class AlgaeConstants {
     public static final double k_upLimitSwitchPos = 0; // TODO
     
     //Find correct voltages
-    public static final double k_intakeVoltage = -0.7; //-0.7; // TODO
-    public static final double k_dispenseVoltage = 0.7; //0.7; // TODO
+    public static final double k_intakeVoltage = -6; //-0.7; // TODO
+    public static final double k_dispenseVoltage = 4; //0.7; // TODO
     
     //Algae Arm Speed
-    public static final double k_algaeArmSpeed = 3; //0.3; // TODO
     public static final double k_forwardVoltage = -1.0; //TODO
     public static final double k_idleVoltage = 1.0; //TODO
 
@@ -246,14 +248,14 @@ public static final class AlgaeConstants {
 
   public static final class OperatingConstants {
     // Drives
-    public static final boolean k_usingSwerveDrive = false;
-    public static final boolean k_usingGyro = false;
+    public static final boolean k_usingSwerveDrive = true;
+    public static final boolean k_usingGyro = true;
 
-    public static final boolean k_usingAlgae = false;
+    public static final boolean k_usingAlgae = true;
     public static final boolean k_usingAlgaeAlt = !k_usingAlgae && false;
 
-    public static final boolean k_usingCoral = true;
-    public static final boolean k_usingClimb = false;
+    public static final boolean k_usingCoral = false;
+    public static final boolean k_usingClimb = true;
 
     public static final boolean k_usingCamera = false;
     

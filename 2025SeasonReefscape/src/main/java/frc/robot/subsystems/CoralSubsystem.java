@@ -230,7 +230,7 @@ public class CoralSubsystem extends SubsystemBase {
       if(!m_hasHitStartLimit) {
         // m_armEncoder.setPosition(LimitSwitchConstants.k_coralStartLimitSwitchPosition);
         SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.0");
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.0);
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(CoralConstants.k_minArmOutput, 0.0);
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitStartLimit = true;
       }
@@ -239,7 +239,7 @@ public class CoralSubsystem extends SubsystemBase {
       // m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
       if(!m_hasHitEndLimit) {
         SmartDashboard.putString("Coral Sub PID", "Output Range Now : 0.0, 0.5");
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(0.0, 0.5); 
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(0.0, CoralConstants.k_maxArmOutput); 
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitEndLimit = true;
       }
@@ -247,13 +247,14 @@ public class CoralSubsystem extends SubsystemBase {
     } else {
       if(m_hasHitEndLimit) {
         SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.5");
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5);
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(CoralConstants.k_minArmOutput, CoralConstants.k_maxArmOutput);
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitEndLimit = false;
       } 
       if(m_hasHitStartLimit) {
         SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.5");
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5);
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(CoralConstants.k_minArmOutput, CoralConstants.k_maxArmOutput
+        );
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitStartLimit = false;
       }
