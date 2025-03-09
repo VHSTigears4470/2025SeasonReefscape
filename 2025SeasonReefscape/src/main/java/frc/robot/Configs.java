@@ -186,7 +186,7 @@ public final class Configs {
             .smartCurrentLimit(50); //TODO
 
             algaeArmMotor
-                .idleMode(IdleMode.kBrake)
+                .idleMode(IdleMode.kCoast)
                 .smartCurrentLimit(50); //TODO
             algaeArmMotor.encoder
                 .positionConversionFactor(d_algaeFactor) //degrees
@@ -239,11 +239,11 @@ public final class Configs {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
                 .p(0.1)
-                .outputRange(-1, 1)
+                .outputRange(-.5, 0.5)
                 .maxMotion
                 // Set MAXMotion parameters for position control
-                .maxVelocity(0) // Original 2000 // TODO 
-                .maxAcceleration(0) // Original 10000 // TODO
+                .maxVelocity(600) // Original 2000 // TODO 
+                .maxAcceleration(300) // Original 10000 // TODO
                 .allowedClosedLoopError(0.25); // TODO
 
             // coralArmMotor

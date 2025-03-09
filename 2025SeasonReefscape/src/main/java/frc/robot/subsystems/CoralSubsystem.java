@@ -129,21 +129,25 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotorLoopController.setReference(d_desiredReferencePosition, ControlType.kMAXMotionPositionControl);
   }
 
+  public void setTestReference(double position) {
+    m_armMotorLoopController.setReference(position, ControlType.kMAXMotionPositionControl);
+  }
+
   /**
    * Testing function to move the arm  motor
    * @param voltage of the arm motor
    */
   public void testArmMotorsVoltage(double voltage) {
-    if(getStartLimitSwitch()) {
-      // If arm at climber side, only allow to go positive / climber side
-      voltage = Math.min(voltage, 0);
-  }
+    // if(getStartLimitSwitch()) {
+    //   // If arm at climber side, only allow to go positive / climber side
+    //   voltage = Math.min(voltage, 0);
+    // }
     // if(getEndLimitSwitch()) {
     //   // If arm at algae side, only allow to go negative / algae side
     //   voltage = Math.max(voltage, 0);
     // }
     // Clamps the motor from -12 to 12
-    m_armMotor.setVoltage(Math.max(Math.min(voltage, 12), -12));
+    // m_armMotor.setVoltage(Math.max(Math.min(voltage, 12), -12));
   }
 
   /**
@@ -171,7 +175,7 @@ public class CoralSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Coral Arm Encoder (Radians)", getArmEncoder());
     SmartDashboard.putNumber("Coral Arm Speed", m_armMotor.get());
     SmartDashboard.putBoolean("Coral Start Limit Switch", getStartLimitSwitch());
-    // SmartDashboard.putBoolean("Coral End Limit Switch", getEndLimitSwitch());
+    SmartDashboard.putBoolean("Coral End Limit Switch", getEndLimitSwitch());
   }
 
   /**
@@ -202,7 +206,7 @@ public class CoralSubsystem extends SubsystemBase {
    */
   public boolean getStartLimitSwitch() {
     if(LimitSwitchConstants.k_usingCoralStartLimitSwitch) {
-      return m_startLimitSwitch.get();
+      return !m_startLimitSwitch.get();
     } else {
       return false;
     }
@@ -223,36 +227,35 @@ public class CoralSubsystem extends SubsystemBase {
   public void limitSwitchLogic() {
 
     if(getStartLimitSwitch()) {
-      m_armEncoder.setPosition(LimitSwitchConstants.k_coralStartLimitSwitchPosition);
       if(!m_hasHitStartLimit) {
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(0, 0.5);
+        // m_armEncoder.setPosition(LimitSwitchConstants.k_coralStartLimitSwitchPosition);
+        SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.0");
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.0);
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitStartLimit = true;
       }
-    } else {
-      if(m_hasHitStartLimit) {
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5); // TODO
-        m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-        m_hasHitStartLimit = false;
-      }
-    }
-
-    if(getEndLimitSwitch()) {
-      m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
-    }
-
-    if(getEndLimitSwitch()) {
-      m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
+      m_hasHitEndLimit = false;
+    } else if(getEndLimitSwitch()) {
+      // m_armEncoder.setPosition(LimitSwitchConstants.k_coralEndLimitSwitchPosition);
       if(!m_hasHitEndLimit) {
-        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.0); // TODO
+        SmartDashboard.putString("Coral Sub PID", "Output Range Now : 0.0, 0.5");
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(0.0, 0.5); 
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitEndLimit = true;
       }
+      m_hasHitStartLimit = false;
     } else {
       if(m_hasHitEndLimit) {
+        SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.5");
         CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5);
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_hasHitEndLimit = false;
+      } 
+      if(m_hasHitStartLimit) {
+        SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.5");
+        CoralConfigs.coralArmMotor.closedLoop.outputRange(-0.5, 0.5);
+        m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_hasHitStartLimit = false;
       }
     }
 

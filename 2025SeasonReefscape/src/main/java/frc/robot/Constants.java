@@ -89,7 +89,7 @@ public final class Constants {
     public static final int k_armID = 19;
 
     // Limit Switch
-    public static final int k_startLimitSwitchID = 1; // TODO
+    public static final int k_startLimitSwitchID = 0; // TODO
     public static final int k_endLimitSwitchID = 1; // TODO
     public static final double k_startResetPosition = 0; // Position for when the hard limit switch is hit // TODO
     public static final double k_endResetPosition = 0; // TODO
@@ -148,10 +148,10 @@ public static final class AlgaeConstants {
     
     //Algae Arm Speed
     public static final double k_algaeArmSpeed = 3; //0.3; // TODO
-    public static final double k_forwardVoltage = 3; //TODO
-    public static final double k_idleVoltage = -1.0; //TODO
+    public static final double k_forwardVoltage = -1.0; //TODO
+    public static final double k_idleVoltage = 1.0; //TODO
 
-    public static final double k_armDownGravityPosition = 0.0; // Position when gravity can take the arm down // TODO
+    public static final double k_armDownGravityPosition = -1.32; // Position when gravity can take the arm down // TODO
 
     public static final int k_algaeArmEncoderReversed = 1; //TODO 
   }
@@ -164,7 +164,7 @@ public static final class AlgaeConstants {
   public static final class ClimbConstants {
     public static final int k_climbMotorID = 9; 
 
-    public static final int k_maxLimitSwitchID = 0;
+    public static final int k_maxLimitSwitchID = 3;
 
     public static final double k_positionBufferClimb = 1; //TODO: Update
 
@@ -174,8 +174,8 @@ public static final class AlgaeConstants {
 
     public static final double k_climbEncoderReversed = 1; //TODO
 
-    public static final double k_climbPullSpeed = 0.3; //0.1; // Speed when the robot is pulling itself up
-    public static final double k_climbReleaseSpeed = -0.1;//-0.1; // Speed when the robot is lowering itself down
+    public static final double k_climbPullSpeed = -0.1; //0.1; // Speed when the robot is pulling itself up
+    public static final double k_climbReleaseSpeed = 0.3;//-0.1; // Speed when the robot is lowering itself down
   }
 
   public static final class ModuleConstants {
@@ -246,14 +246,14 @@ public static final class AlgaeConstants {
 
   public static final class OperatingConstants {
     // Drives
-    public static final boolean k_usingSwerveDrive = true;
-    public static final boolean k_usingGyro = true;
+    public static final boolean k_usingSwerveDrive = false;
+    public static final boolean k_usingGyro = false;
 
     public static final boolean k_usingAlgae = false;
-    public static final boolean k_usingAlgaeAlt = !k_usingAlgae && true;
+    public static final boolean k_usingAlgaeAlt = !k_usingAlgae && false;
 
-    public static final boolean k_usingCoral = false;
-    public static final boolean k_usingClimb = true;
+    public static final boolean k_usingCoral = true;
+    public static final boolean k_usingClimb = false;
 
     public static final boolean k_usingCamera = false;
     
@@ -264,15 +264,15 @@ public static final class AlgaeConstants {
   public static final class LimitSwitchConstants {
     public static final boolean k_usingAlgaeDownLimitSwitch = false;
     public static final double k_algaeDownLimitSwitchPosition = 1000; // TODO
-    public static final boolean k_usingAlgaeUpLimitSwitch = false;
+    public static final boolean k_usingAlgaeUpLimitSwitch = true;
     public static final double k_algaeUpLimitSwitchPosition = 0;
 
-    public static final boolean k_usingClimbMaxLimitSwitch = false;
+    public static final boolean k_usingClimbMaxLimitSwitch = true;
     public static final double k_climbMaxLimitSwitchPosition = 100000; // TODO
 
-    public static final boolean k_usingCoralStartLimitSwitch = false;
+    public static final boolean k_usingCoralStartLimitSwitch = true;
     public static final double k_coralStartLimitSwitchPosition = 0;
-    public static final boolean k_usingCoralSEndLimitSwitch = false;
+    public static final boolean k_usingCoralSEndLimitSwitch = true;
     public static final double k_coralEndLimitSwitchPosition = 1000000; // TODO
   }
 }

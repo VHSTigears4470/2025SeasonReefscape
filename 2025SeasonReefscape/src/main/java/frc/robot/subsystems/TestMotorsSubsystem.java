@@ -56,7 +56,7 @@ public class TestMotorsSubsystem extends SubsystemBase{
 
     public boolean getLimitSwitch() {
         if(m_usingLimitSwitch) {
-            return m_limitSwitch.get();
+            return !m_limitSwitch.get();
         } else {
             return false;
         }

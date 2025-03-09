@@ -24,6 +24,7 @@ import frc.robot.commands.CoralCommands.ShootCoralFast;
 import frc.robot.commands.CoralCommands.ShootCoralSlow;
 import frc.robot.commands.CoralCommands.TestCoralArmVoltage;
 import frc.robot.commands.CoralCommands.TestCoralIntakeVoltage;
+import frc.robot.commands.CoralCommands.TestCoralPosition;
 import frc.robot.commands.CoralCommands.ToggleCoralArm;
 import frc.robot.commands.KitbotCoralCommands.OutputCoral;
 import frc.robot.commands.KitbotDrivetrain.ArcadeDrive;
@@ -107,7 +108,7 @@ public class RobotContainer {
 
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub = new AlgaeSubsystem();
-                m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
+                // m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
         } else if(OperatingConstants.k_usingAlgaeAlt) {
                 m_algaeAltSub = new TestMotorsSubsystem("Algae Alt Intake", AlgaeConstants.k_algaeIntakeID, AlgaeConfigs.algaeIntakeMotor, AlgaeConstants.k_upLimitSwitchID, true);
                 m_algaeSub = null;
@@ -145,7 +146,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    int preset = 0;
+    int preset = 4;
     switch (preset) {
             case 0: 
                     controllerPresetMain(); // Competition Configs
@@ -159,6 +160,9 @@ public class RobotContainer {
             case 3:
                         controllerPresetThree(); // For Debugging
                         break;
+                case 4: 
+                controllerPresetFour(); // For indiv debugging
+                break;
             default:
                     controllerPresetMain();
                     break;
@@ -179,10 +183,10 @@ public class RobotContainer {
                 SmartDashboard.putData("Climb Reset Encoders", new InstantCommand(()->m_climbSub.resetEncoders(), m_climbSub));
         }
         if(OperatingConstants.k_usingCoral) {
-                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Positive Voltage"));
-                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralIntakeVoltage(m_coralSub, 0, "Set Coral Intake Negative Voltage"));
-                SmartDashboard.putData("Coral Arm Positive Voltage", new TestCoralArmVoltage(m_coralSub,0, "Set Coral Arm Positive Voltage"));
-                SmartDashboard.putData("Coral Arm Negative Voltage", new TestCoralArmVoltage(m_coralSub, 0, "Set Coral Arm Negative Voltage"));
+                SmartDashboard.putData("Coral Intake Positive Voltage", new TestCoralIntakeVoltage(m_coralSub, 2, "Set Coral Intake Positive Voltage"));
+                SmartDashboard.putData("Coral Intake Negative Voltage", new TestCoralIntakeVoltage(m_coralSub, -11, "Set Coral Intake Negative Voltage"));
+                SmartDashboard.putData("Coral Arm Positive Voltage", new TestCoralArmVoltage(m_coralSub,1, "Set Coral Arm Positive Voltage"));
+                SmartDashboard.putData("Coral Arm Negative Voltage", new TestCoralArmVoltage(m_coralSub, -1, "Set Coral Arm Negative Voltage"));
                 SmartDashboard.putData("Coral Reset Encoders", new InstantCommand(()->m_coralSub.resetEncoders(), m_coralSub));
         }
   }
@@ -513,5 +517,36 @@ public class RobotContainer {
                         new InstantCommand(()->m_coralSub.resetEncoders(), m_coralSub)
                 );
          }
+  }
+
+  public void controllerPresetFour() {
+        if(OperatingConstants.k_usingAlgae) {
+                m_driverController.a().whileTrue(
+                        new IdleAlgae(m_algaeSub)
+                );
+
+                m_driverController.b().whileTrue(
+                        new IntakeAlgae(m_algaeSub)
+                );
+
+                m_driverController.y().whileTrue(
+                        new ShootAlgae(m_algaeSub)
+                );
+        }
+
+        if(OperatingConstants.k_usingCoral) {
+                m_driverController.a().whileTrue(
+                        new TestCoralPosition(m_coralSub, 0)
+                );
+                
+                m_driverController.b().whileTrue(
+                        new TestCoralPosition(m_coralSub, -30.43)
+                );
+
+                m_driverController.x().onTrue(
+                        new InstantCommand( () -> {m_coralSub.resetEncoders();}
+                                , m_coralSub)
+                );
+        }
   }
 }

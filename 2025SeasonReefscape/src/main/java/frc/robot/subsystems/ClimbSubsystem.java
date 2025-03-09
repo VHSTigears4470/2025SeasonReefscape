@@ -55,16 +55,16 @@ public class ClimbSubsystem extends SubsystemBase {
   public void setArmSpeed(double speed){
     if(getMaxLimitSwitch()) {
       // robot hits the max limit, then only allows robot to go down
-      speed = Math.min(speed, 0);
+      speed = Math.max(speed, 0);
     }
-    if(getClimbEncoder() >= ClimbConstants.k_pullUpClimbPos) { 
-      // robot already at pulling up soft limit, then only allow robot to go down
-      speed = Math.min(speed, 0);
-    }
-    if(getClimbEncoder() <= ClimbConstants.k_releaseDownClimbPos){
-      // robot already at release soft limit, the only allow robot to pull up
-      speed = Math.max(speed, 0);    
-    }
+    // if(getClimbEncoder() >= ClimbConstants.k_pullUpClimbPos) { 
+    //   // robot already at pulling up soft limit, then only allow robot to go down
+    //   speed = Math.min(speed, 0);
+    // }
+    // if(getClimbEncoder() <= ClimbConstants.k_releaseDownClimbPos){
+    //   // robot already at release soft limit, the only allow robot to pull up
+    //   speed = Math.max(speed, 0);    
+    // }
 
     m_climbMotor.set(speed);
   }
@@ -78,7 +78,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public void setArmSpeedOverride(double speed) {
     if(getMaxLimitSwitch()) {
       // robot already at max, only allows for release / negative
-      speed = Math.min(speed, 0);
+      speed = Math.max(speed, 0); // TODO, make everything
     }
     m_climbMotor.set(speed);
   }
@@ -112,7 +112,7 @@ public class ClimbSubsystem extends SubsystemBase {
    */
   public boolean getMaxLimitSwitch() {
     if(LimitSwitchConstants.k_usingClimbMaxLimitSwitch) {
-      return m_maxLimitSwitch.get();
+      return !m_maxLimitSwitch.get();
     } else {
       return false;
     }
@@ -121,7 +121,7 @@ public class ClimbSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(getMaxLimitSwitch()) {
-      m_climbEncoder.setPosition(LimitSwitchConstants.k_climbMaxLimitSwitchPosition);
+      // m_climbEncoder.setPosition(LimitSwitchConstants.k_climbMaxLimitSwitchPosition); // TODO
     }
     // This method will be called once per scheduler run
     setSmartDashboard();

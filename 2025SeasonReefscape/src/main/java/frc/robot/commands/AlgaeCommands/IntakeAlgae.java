@@ -23,7 +23,7 @@ public class IntakeAlgae extends Command {
     // Called every time he scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(m_algaeSub.getAlgaeArmEncoder() > AlgaeConstants.k_armDownGravityPosition) {
+        if(m_algaeSub.getAlgaeArmEncoder() < AlgaeConstants.k_armDownGravityPosition) {
             // once the arm has hit down
             m_algaeSub.stopArmMotor();
         }
@@ -33,7 +33,7 @@ public class IntakeAlgae extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_algaeSub.stopArmMotor();
+        m_algaeSub.stopIntakeMotor();
     }
 
     // Returns true when the command should end.

@@ -79,7 +79,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void holdIdle() {
-    m_algaeArmMotor.setVoltage(Constants.AlgaeConstants.k_idleVoltage);
+    if(getUpLimitSwitch()) {
+      m_algaeArmMotor.setVoltage(0);
+    } else {
+      m_algaeArmMotor.setVoltage(Constants.AlgaeConstants.k_idleVoltage);
+    }
   }
 
   /**
@@ -94,15 +98,15 @@ public class AlgaeSubsystem extends SubsystemBase {
    * @param speed of the arm motor
    */
   public void testArmMotors(double speed) {
-    if(getDownLimitSwitch()) {
-      // if already at down max, only allows negative / going up
-      speed = Math.min(speed, 0);
-    }
-    if(getUpLimitSwitch()) {
-      // if already at up max, only allows going down / positive
-      speed = Math.max(speed, 0);
-    }
-    m_algaeArmMotor.set(speed);
+    // if(getDownLimitSwitch()) {
+    //   // if already at down max, only allows negative / going up
+    //   speed = Math.min(speed, 0);
+    // }
+    // if(getUpLimitSwitch()) {
+    //   // if already at up max, only allows going down / positive
+    //   speed = Math.max(speed, 0);
+    // }
+    // m_algaeArmMotor.set(speed);
   }
 
   /**
@@ -178,14 +182,16 @@ public class AlgaeSubsystem extends SubsystemBase {
       // Prevents Algae Arm From Going Down Further
       if(m_algaeArmMotor.get() >= 0) {
         m_algaeArmMotor.setVoltage(0);
+        m_algaeIntakeMotor.setVoltage(0);
       }
     }
     if(getUpLimitSwitch()) {
       m_algaeArmEncoder.setPosition(LimitSwitchConstants.k_algaeUpLimitSwitchPosition);
       // Prevents Algae Arm From Going Up Further
-      if(m_algaeArmMotor.get() <= 0) { 
-        m_algaeArmMotor.setVoltage(0);
-      }
+      // if(m_algaeArmMotor.get() >= 0) { 
+      //   m_algaeArmMotor.setVoltage(0);
+      //   m_algaeIntakeMotor.setVoltage(0);
+      // }
     }
   }
 

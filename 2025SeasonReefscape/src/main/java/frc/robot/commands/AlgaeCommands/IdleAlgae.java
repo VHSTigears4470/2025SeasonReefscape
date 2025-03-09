@@ -21,12 +21,12 @@ public class IdleAlgae extends Command {
         // Called every time the scheduler runs while the command is scheduled.
         @Override
         public void execute(){
-              m_algaeSub.stopIntakeMotor();
-              if(m_algaeSub.getUpLimitSwitch()) {
-                m_algaeSub.stopArmMotor();
-              } else {
-                m_algaeSub.holdIdle();
-              }
+            m_algaeSub.stopIntakeMotor();
+            if(m_algaeSub.getUpLimitSwitch()) {
+              m_algaeSub.stopArmMotor();
+            } else {
+              m_algaeSub.holdIdle();
+            }
               
         }
 
