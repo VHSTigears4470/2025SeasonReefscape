@@ -146,7 +146,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    int preset = 4;
+    int preset = 0;
     switch (preset) {
             case 0: 
                     controllerPresetMain(); // Competition Configs
@@ -287,20 +287,30 @@ public class RobotContainer {
         } else if (OperatingConstants.k_usingAlgaeAlt) {
                 m_driverController.rightTrigger().whileTrue(new DriveMotors(m_algaeAltSub, -.35));
         }
+
         //Right Bumper
         if(OperatingConstants.k_usingAlgae){
                 m_driverController.rightBumper().onTrue(new ShootAlgae(m_algaeSub));
         } else if (OperatingConstants.k_usingAlgaeAlt) {
                 m_driverController.rightBumper().whileTrue(new DriveMotors(m_algaeAltSub, .35));
         }
-        //Left Bumper
+
+        //Back
+        if(OperatingConstants.k_usingAlgae){
+                m_driverController.back().onTrue(new IdleAlgae(m_algaeSub));
+        }
+
+        //Start
         if(OperatingConstants.k_usingClimb){
                 m_driverController.start().whileTrue(new PullUpArm(m_climbSub));
         }
-        //Left Trigger 
+
+        //Left Bumper 
         if(OperatingConstants.k_usingClimb){
                 m_driverController.leftBumper().whileTrue(new ReleaseDownArm(m_climbSub));
         }
+
+        // Left Trigger
         if(OperatingConstants.k_usingSwerveDrive){
                 m_driverController.leftTrigger().whileTrue(
                         new RunCommand(
@@ -315,18 +325,22 @@ public class RobotContainer {
                         )
                 );
         }
+
         //Y-Button
         if(OperatingConstants.k_usingCoral){
                 m_driverController.y().onTrue(new ToggleCoralArm(m_coralSub, CORAL_ARM_STATE.BACKWARD));
         }
+
         //B-Button
         if(OperatingConstants.k_usingCoral){
                 m_driverController.b().whileTrue(new ShootCoralFast(m_coralSub));
         }
+
         //A-Button
         if(OperatingConstants.k_usingCoral){
                 m_driverController.a().whileTrue(new ShootCoralSlow(m_coralSub));
         }
+
         //X-Button
         if(OperatingConstants.k_usingCoral){
                 m_driverController.x().whileTrue(new IntakeCoral(m_coralSub));// TODO chack validity later
@@ -544,8 +558,33 @@ public class RobotContainer {
                 );
 
                 m_driverController.x().onTrue(
-                        new InstantCommand( () -> {m_coralSub.resetEncoders();}
-                                , m_coralSub)
+                        new InstantCommand( 
+                                () -> {m_coralSub.resetEncoders();}
+                                , m_coralSub
+                        )
+                );
+        }
+        
+        if(OperatingConstants.k_usingClimb){
+                //Left Bumper
+                m_driverController.start().whileTrue(new PullUpArm(m_climbSub));
+                //Left Trigger 
+                m_driverController.leftBumper().whileTrue(new ReleaseDownArm(m_climbSub));
+        }
+
+        if(OperatingConstants.k_usingSwerveDrive) {
+                // Reset Odom
+                m_driverController.b().onTrue(
+                        new SequentialCommandGroup(
+                                new InstantCommand(
+                                        ()-> m_driveSub.zeroHeading(),
+                                        m_driveSub
+                                ),
+                                new InstantCommand(
+                                        ()-> m_driveSub.resetOdometry(new Pose2d()),
+                                        m_driveSub
+                                )
+                        )
                 );
         }
   }
