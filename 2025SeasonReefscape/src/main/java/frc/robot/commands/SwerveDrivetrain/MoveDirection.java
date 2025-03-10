@@ -2,6 +2,7 @@ package frc.robot.commands.SwerveDrivetrain;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
@@ -9,7 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class MoveDirection extends Command {
     private final DriveSubsystem swerveSubsystem;
     private final String statusName;
-    private final Transform2d translation;
+    private final Translation2d translation;
     private Pose2d finalPosition;
     private double xVal, yVal;
     private final double multiplier, threshold;
@@ -23,10 +24,10 @@ public class MoveDirection extends Command {
      * @param fieldOrientedFunction field orientation (true for field orientated, false for robot orientated)
      * @param statusName the name of which command the robot is running
      */
-    public MoveDirection(DriveSubsystem swerveSubsystem, String statusName, Transform2d tranlsation) {
+    public MoveDirection(DriveSubsystem swerveSubsystem, String statusName, Translation2d translation) {
         this.swerveSubsystem = swerveSubsystem;
         this.statusName = statusName;
-        this.translation = tranlsation;
+        this.translation = translation;
         multiplier = 0.75;
         threshold = 0.2;
         addRequirements(swerveSubsystem);
@@ -35,7 +36,7 @@ public class MoveDirection extends Command {
     @Override
     public void initialize() {
         SmartDashboard.putString("Drive Mode", "MoveDirection/" + statusName); // Helps understand which command swerve drive is using
-        finalPosition = swerveSubsystem.getPose().plus(translation);
+        finalPosition = swerveSubsystem.getPose().plus(new Transform2d(translation, swerveSubsystem.getRotation2d()));
         double distance = Math.sqrt(translation.getX() * translation.getX() + translation.getY() * translation.getY()); // Pythag Theorem
         xVal = multiplier * translation.getX() / distance;
         yVal = multiplier * translation.getY() / distance;
@@ -43,6 +44,7 @@ public class MoveDirection extends Command {
 
     @Override
     public void execute() {
+        SmartDashboard.putString("Joystick", "X : " + xVal + "Y : " + yVal + " Theta : " + 0);
         swerveSubsystem.drive(xVal, yVal, 0, false, "MoveDirection/" + statusName);
     }
 

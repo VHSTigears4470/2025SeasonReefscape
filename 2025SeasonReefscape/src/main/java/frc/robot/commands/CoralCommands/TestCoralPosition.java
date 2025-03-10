@@ -1,7 +1,6 @@
 package frc.robot.commands.CoralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 import frc.robot.subsystems.CoralSubsystem;
 
 public class TestCoralPosition extends Command {

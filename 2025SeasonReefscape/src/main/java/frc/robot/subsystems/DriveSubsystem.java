@@ -111,8 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            this::pathPlannerDriveRobotRelative, // Stripped from Template Pathplanner Github
-            // this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
                     new PIDConstants(0.04, 0, 0), // Translation PID constants
                     new PIDConstants(1, 0, 0) // Rotation PID constants
@@ -131,24 +130,6 @@ public class DriveSubsystem extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
     );
-    // new Thread(() -> {
-    //   try{
-    //     Thread.sleep(1000);
-    //     zeroHeading();
-    //     resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
-    //   } catch(Exception e) {
-
-    //   }
-
-    // }).start();
-  }
-
-  public void pathPlannerDriveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    // Stripped from Template Pathplanner Github
-    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
-
-    SwerveModuleState[] targetStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(targetSpeeds);
-    setModuleStates(targetStates);
   }
 
     /**
@@ -156,12 +137,15 @@ public class DriveSubsystem extends SubsystemBase {
      * @param robotRelativeSpeeds
      */
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-      drive(robotRelativeSpeeds.vyMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, robotRelativeSpeeds.vxMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, robotRelativeSpeeds.omegaRadiansPerSecond/DriveConstants.k_MaxAngularSpeed, false, "AutoBuilder");
-        // SwerveModuleState[] desiredStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        // m_frontLeft.setDesiredState(desiredStates[0]);
-        // m_frontRight.setDesiredState(desiredStates[1]);
-        // m_rearLeft.setDesiredState(desiredStates[2]);
-        // m_rearRight.setDesiredState(desiredStates[3]);
+      drive(robotRelativeSpeeds.vxMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, robotRelativeSpeeds.vyMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, robotRelativeSpeeds.omegaRadiansPerSecond/DriveConstants.k_MaxAngularSpeed, false, "AutoBuilder");
+      
+      /*
+       // Stripped from Template Pathplanner Github
+      ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+      SwerveModuleState[] targetStates = DriveConstants.k_DriveKinematics.toSwerveModuleStates(targetSpeeds);
+      setModuleStates(targetStates);
+       */
     }
     /**
      * Gets a list of Swerve Module States

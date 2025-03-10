@@ -6,12 +6,10 @@ import frc.robot.subsystems.CoralSubsystem;
 
 public class ToggleCoralArm extends Command {
     private final CoralSubsystem m_coralSub;
-    private CORAL_ARM_STATE m_coralArmState;
     
     //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.
-    public ToggleCoralArm(CoralSubsystem coralSub, CORAL_ARM_STATE armState) {
+    public ToggleCoralArm(CoralSubsystem coralSub) {
         m_coralSub = coralSub;
-        m_coralArmState = armState;
     }
 
     // Called when the command is initially scheduled.

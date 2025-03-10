@@ -6,10 +6,8 @@ package frc.robot;
 
 import frc.robot.Configs.AlgaeConfigs;
 import frc.robot.Constants.AlgaeConstants;
-import frc.robot.Constants.LimitSwitchConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatingConstants;
-import frc.robot.Constants.CoralConstants.CORAL_ARM_STATE;
 import frc.robot.commands.DriveMotors;
 import frc.robot.commands.AlgaeCommands.IdleAlgae;
 import frc.robot.commands.AlgaeCommands.IntakeAlgae;
@@ -197,44 +195,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-        if(OperatingConstants.k_usingSwerveDrive) {
-                // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-                //         3, 3);
-                // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-                //         new Pose2d(0, 0, new Rotation2d(0)), 
-                //         List.of(),
-                //         new Pose2d(1, 0, new Rotation2d(0)),
-                //         trajectoryConfig
-                // );
-                // PIDController xController = new PIDController(1, 0, 0);
-                // PIDController yController = new PIDController(1, 0, 0);
-                // ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0, 
-                //         new TrapezoidProfile.Constraints(3, 3)
-                // );
-                // thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-                // SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-                //         trajectory,
-                //         m_driveSub::getPose,
-                //         DriveConstants.k_DriveKinematics,
-                //         xController,
-                //         yController,
-                //         thetaController,
-                //         m_driveSub::setModuleStates,
-                //         m_driveSub
-                // );
-                // return new SequentialCommandGroup(
-                //         new InstantCommand(
-                //                 () -> m_driveSub.resetOdometry(trajectory.getInitialPose())
-                //         ),
-                //         swerveControllerCommand,
-                //         new InstantCommand(
-                //                 () -> m_driveSub.stopModules()
-                //         )
-                // );
-                // return new PathPlannerAuto("Straight Auto");
-        
-        //        
+        if(OperatingConstants.k_usingSwerveDrive) {     
+                // /*   
                 try {
                         m_driveSub.resetEncoders();
                         m_driveSub.zeroHeading();
@@ -252,6 +214,12 @@ public class RobotContainer {
                 } catch(Exception e) {
                         DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 }
+                // */
+                
+                /*
+                // Basic Auto That Should Move Robot in One Direction
+                return new MoveDirection(m_driveSub, "Straight", new Translation2d(1, 0));
+                */
         }
         return null;
   }
@@ -328,7 +296,7 @@ public class RobotContainer {
 
         //Y-Button
         if(OperatingConstants.k_usingCoral){
-                m_driverController.y().onTrue(new ToggleCoralArm(m_coralSub, CORAL_ARM_STATE.BACKWARD));
+                m_driverController.y().onTrue(new ToggleCoralArm(m_coralSub));
         }
 
         //B-Button
