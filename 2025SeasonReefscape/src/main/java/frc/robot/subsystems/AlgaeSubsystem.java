@@ -79,7 +79,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void holdIdle() {
-    if(getUpLimitSwitch()) {
+    if(getUpLimitSwitch() || Math.abs(getAlgaeArmEncoder()) < AlgaeConstants.k_algaePositionBuffer){
       m_algaeArmMotor.setVoltage(0);
     } else {
       m_algaeArmMotor.setVoltage(Constants.AlgaeConstants.k_idleVoltage);

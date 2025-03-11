@@ -218,7 +218,7 @@ public class CoralSubsystem extends SubsystemBase {
    */
   public boolean getEndLimitSwitch() {
     if(LimitSwitchConstants.k_usingCoralSEndLimitSwitch) {
-      return m_endLimitSwitch.get();
+      return !m_endLimitSwitch.get();
     } else {
       return false;
     }

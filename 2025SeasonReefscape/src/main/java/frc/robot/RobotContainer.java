@@ -106,7 +106,7 @@ public class RobotContainer {
 
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub = new AlgaeSubsystem();
-                // m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
+                m_algaeSub.setDefaultCommand(new IdleAlgae(m_algaeSub));
         } else if(OperatingConstants.k_usingAlgaeAlt) {
                 m_algaeAltSub = new TestMotorsSubsystem("Algae Alt Intake", AlgaeConstants.k_algaeIntakeID, AlgaeConfigs.algaeIntakeMotor, AlgaeConstants.k_upLimitSwitchID, true);
                 m_algaeSub = null;
@@ -258,7 +258,7 @@ public class RobotContainer {
 
         //Right Bumper
         if(OperatingConstants.k_usingAlgae){
-                m_driverController.rightBumper().onTrue(new ShootAlgae(m_algaeSub));
+                m_driverController.rightBumper().whileTrue(new ShootAlgae(m_algaeSub));
         } else if (OperatingConstants.k_usingAlgaeAlt) {
                 m_driverController.rightBumper().whileTrue(new DriveMotors(m_algaeAltSub, .35));
         }

@@ -83,7 +83,7 @@ public final class Constants {
     public static final ArmFeedforward k_armFeedForward = new ArmFeedforward(0,0,0); //TODO
 
     public static final int k_coralArmEncoderReversed = 1; //TODO
-    public static final double k_positionBufferCoral = 1; //TODO: Update
+    public static final double k_positionBufferCoral = 1.0; //TODO: Update
     //Change IDS
     public static final int k_intakeID = 18;
     public static final int k_armID = 19;
@@ -106,13 +106,13 @@ public final class Constants {
 
     //Find correct values; radians
     public static final double k_forwardArmPos = 0; // TODO
-    public static final double k_backwardArmPos = -30.43; // TODO
+    public static final double k_backwardArmPos = -25.95; // TODO
     public static final double k_startingArmPos = 0; // TODO
     
     //Change voltages
-    public static final double k_fastVoltage = 0.0; //4.0; // TODO
-    public static final double k_slowVoltage = 0.0; //1.5; // TODO
-    public static final double k_intakeVoltage = 0.0; //1.5; // TODO
+    public static final double k_fastVoltage = -8.0; //4.0; // TODO
+    public static final double k_slowVoltage = -4.0; //1.5; // TODO
+    public static final double k_intakeVoltage = 2.0; //1.5; // TODO
 
 
     //Set arm speed
@@ -150,10 +150,11 @@ public static final class AlgaeConstants {
     public static final double k_dispenseVoltage = 4; //0.7; // TODO
     
     //Algae Arm Speed
-    public static final double k_forwardVoltage = -1.0; //TODO
-    public static final double k_idleVoltage = 1.0; //TODO
+    public static final double k_forwardVoltage = -2.0; //TODO
+    public static final double k_idleVoltage = 2.0; //TODO
 
     public static final double k_armDownGravityPosition = -1.32; // Position when gravity can take the arm down // TODO
+    public static final double k_algaePositionBuffer = .11; //TODO
 
     public static final int k_algaeArmEncoderReversed = 1; //TODO 
   }
@@ -251,13 +252,13 @@ public static final class AlgaeConstants {
     public static final boolean k_usingSwerveDrive = true;
     public static final boolean k_usingGyro = true;
 
-    public static final boolean k_usingAlgae = true;
+    public static final boolean k_usingAlgae = false;
     public static final boolean k_usingAlgaeAlt = !k_usingAlgae && false;
 
     public static final boolean k_usingCoral = false;
-    public static final boolean k_usingClimb = true;
+    public static final boolean k_usingClimb = false;
 
-    public static final boolean k_usingCamera = false;
+    public static final boolean k_usingCamera = true;
     
     public static final boolean k_usingKitbotDrive = false; // Should be true if swerve is not in use
     public static final boolean k_usingKitbotCoral = false; 

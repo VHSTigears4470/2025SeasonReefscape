@@ -1,6 +1,7 @@
 package frc.robot.commands.AlgaeCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.subsystems.AlgaeSubsystem;
 
 public class IdleAlgae extends Command {
@@ -22,7 +23,7 @@ public class IdleAlgae extends Command {
         @Override
         public void execute(){
             m_algaeSub.stopIntakeMotor();
-            if(m_algaeSub.getUpLimitSwitch()) {
+            if(m_algaeSub.getUpLimitSwitch() || Math.abs(m_algaeSub.getAlgaeArmEncoder()) < AlgaeConstants.k_algaePositionBuffer) {
               m_algaeSub.stopArmMotor();
             } else {
               m_algaeSub.holdIdle();
