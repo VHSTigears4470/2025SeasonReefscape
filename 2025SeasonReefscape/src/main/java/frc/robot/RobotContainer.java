@@ -14,6 +14,10 @@ import frc.robot.commands.AlgaeCommands.IntakeAlgae;
 import frc.robot.commands.AlgaeCommands.ShootAlgae;
 import frc.robot.commands.AlgaeCommands.TestAlgaeArm;
 import frc.robot.commands.AlgaeCommands.TestAlgaeIntakeVoltage;
+import frc.robot.commands.AutoCommands.CoralArmShootFastSecond;
+import frc.robot.commands.AutoCommands.CoralArmShootSlowSecond;
+import frc.robot.commands.AutoCommands.CoralArmToIntakePosition;
+import frc.robot.commands.AutoCommands.CoralArmToShootPosition;
 import frc.robot.commands.ClimbCommands.PullUpArm;
 import frc.robot.commands.ClimbCommands.ReleaseDownArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
@@ -35,6 +39,7 @@ import frc.robot.subsystems.KitbotCoralSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 import frc.robot.subsystems.TestMotorsSubsystem;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
@@ -73,6 +78,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     configureSmartDashboard();
+    configurePathPlanner();
   }
 
   private void initSubsystems() {
@@ -132,6 +138,14 @@ public class RobotContainer {
       } else {
             m_kitbotcoralSub = null;
       }
+  }
+
+  private void configurePathPlanner() {
+        NamedCommands.registerCommand("CoralArmForward", new CoralArmToIntakePosition(m_coralSub));
+        NamedCommands.registerCommand("CoralArmBackward", new CoralArmToShootPosition(m_coralSub));
+        
+        NamedCommands.registerCommand("ShootCoralFast", new CoralArmShootFastSecond(m_coralSub, 2));
+        NamedCommands.registerCommand("ShootCoralSlow", new CoralArmShootSlowSecond(m_coralSub, 3));
   }
 
   /**
