@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cameraserver.CameraServerShared;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.OperatingConstants;
@@ -34,16 +37,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     if(OperatingConstants.k_usingCamera) {
-      Thread  m_visionThread =
-        new Thread(
-            () -> {
-              // Get the UsbCamera from CameraServer
-              UsbCamera camera = CameraServer.startAutomaticCapture();
-              // Set the resolution
-              camera.setResolution(1280, 960);
-            });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+              UsbCamera cameraOne = CameraServer.startAutomaticCapture("Camera 1", 0);
+              cameraOne.setResolution(1280, 960);
+              // UsbCamera cameraTwo = CameraServer.startAutomaticCapture("Camera 2", 1);
+              // cameraTwo.setResolution(1280, 960);
+
+              // Shuffleboard.getTab("Cameras").add("Cam1", cameraOne).withWidget(BuiltInWidgets.kCameraStream);
+              // Shuffleboard.getTab("Cameras").add("Cam2", cameraTwo).withWidget(BuiltInWidgets.kCameraStream);           
+           
   }
     m_robotContainer.onStart();
   }

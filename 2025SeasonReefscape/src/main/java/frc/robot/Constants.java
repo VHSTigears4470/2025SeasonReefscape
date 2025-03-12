@@ -104,7 +104,7 @@ public final class Constants {
 
     //Find correct values; radians
     public static final double k_forwardArmPos = 0; // TODO
-    public static final double k_backwardArmPos = -25.95; // TODO
+    public static final double k_backwardArmPos = -25.15; // TODO
     public static final double k_startingArmPos = 0; // TODO
     
     //Change voltages
