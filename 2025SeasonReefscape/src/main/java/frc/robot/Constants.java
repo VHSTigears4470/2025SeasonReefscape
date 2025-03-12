@@ -79,8 +79,6 @@ public final class Constants {
   }
 
   public static final class CoralConstants {
-    public static PIDController k_armPID = new PIDController(0,0,0); //TODO
-    public static final ArmFeedforward k_armFeedForward = new ArmFeedforward(0,0,0); //TODO
 
     public static final int k_coralArmEncoderReversed = 1; //TODO
     public static final double k_positionBufferCoral = 1.0; //TODO: Update
@@ -111,7 +109,7 @@ public final class Constants {
     
     //Change voltages
     public static final double k_fastVoltage = -8.0; //4.0; // TODO
-    public static final double k_slowVoltage = -4.0; //1.5; // TODO
+    public static final double k_slowVoltage = -2.0; //1.5; // TODO
     public static final double k_intakeVoltage = 2.0; //1.5; // TODO
 
 
@@ -252,11 +250,11 @@ public static final class AlgaeConstants {
     public static final boolean k_usingSwerveDrive = true;
     public static final boolean k_usingGyro = true;
 
-    public static final boolean k_usingAlgae = false;
+    public static final boolean k_usingAlgae = true;
     public static final boolean k_usingAlgaeAlt = !k_usingAlgae && false;
 
-    public static final boolean k_usingCoral = false;
-    public static final boolean k_usingClimb = false;
+    public static final boolean k_usingCoral = true;
+    public static final boolean k_usingClimb = true;
 
     public static final boolean k_usingCamera = true;
     
