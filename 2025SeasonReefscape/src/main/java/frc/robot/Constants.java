@@ -187,7 +187,7 @@ public static final class AlgaeConstants {
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double k_DrivingMotorFreeSpeedRps = NeoMotorConstants.k_FreeSpeedRpmNEO_V1_1 / 60;
-    public static final double k_WheelDiameterMeters = 0.0762;
+    public static final double k_WheelDiameterMeters = Units.inchesToMeters(3);
     public static final double k_WheelCircumferenceMeters = k_WheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion

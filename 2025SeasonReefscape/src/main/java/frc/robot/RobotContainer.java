@@ -144,8 +144,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("CoralArmForward", new CoralArmToIntakePosition(m_coralSub));
         NamedCommands.registerCommand("CoralArmBackward", new CoralArmToShootPosition(m_coralSub));
         
-        NamedCommands.registerCommand("ShootCoralFast", new CoralArmShootFastSecond(m_coralSub, 2));
-        NamedCommands.registerCommand("ShootCoralSlow", new CoralArmShootSlowSecond(m_coralSub, 3));
+        NamedCommands.registerCommand("ShootCoralFast", new CoralArmShootFastSecond(m_coralSub, m_algaeSub, 2));
+        NamedCommands.registerCommand("ShootCoralSlow", new CoralArmShootSlowSecond(m_coralSub, m_algaeSub, 3));
   }
 
   /**
@@ -315,12 +315,12 @@ public class RobotContainer {
 
         //B-Button
         if(OperatingConstants.k_usingCoral){
-                m_driverController.b().whileTrue(new ShootCoralFast(m_coralSub));
+                m_driverController.b().whileTrue(new ShootCoralFast(m_coralSub, m_algaeSub));
         }
 
         //A-Button
         if(OperatingConstants.k_usingCoral){
-                m_driverController.a().whileTrue(new ShootCoralSlow(m_coralSub));
+                m_driverController.a().whileTrue(new ShootCoralSlow(m_coralSub, m_algaeSub));
         }
 
         //X-Button
