@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "CoralArmBackward"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Diagonal"
+            "pathName": "Straight Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCoralSlow"
           }
         }
       ]

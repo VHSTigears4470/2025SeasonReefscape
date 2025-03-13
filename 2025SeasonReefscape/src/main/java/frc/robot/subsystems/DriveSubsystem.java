@@ -137,7 +137,8 @@ public class DriveSubsystem extends SubsystemBase {
      * @param robotRelativeSpeeds
      */
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-      drive(-robotRelativeSpeeds.vxMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond,- robotRelativeSpeeds.vyMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond, -robotRelativeSpeeds.omegaRadiansPerSecond/DriveConstants.k_MaxAngularSpeed, false, "AutoBuilder");
+      double multipler = 0.5;
+      drive(-robotRelativeSpeeds.vxMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond * multipler,- robotRelativeSpeeds.vyMetersPerSecond/DriveConstants.k_MaxSpeedMetersPerSecond * multipler, -robotRelativeSpeeds.omegaRadiansPerSecond/DriveConstants.k_MaxAngularSpeed * multipler, false, "AutoBuilder");
       
       /*
        // Stripped from Template Pathplanner Github

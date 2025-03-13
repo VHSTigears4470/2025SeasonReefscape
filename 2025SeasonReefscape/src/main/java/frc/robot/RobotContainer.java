@@ -82,6 +82,7 @@ public class RobotContainer {
   private UsbCamera camera1;
   private UsbCamera camera2;
   private NetworkTableEntry cameraSelection;
+//   private VideoSink server;
   private boolean cameraSource;
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -261,13 +262,17 @@ public class RobotContainer {
   
   public void onStart() {        
         if(OperatingConstants.k_usingCamera) {
-                camera1 = CameraServer.startAutomaticCapture("Camera 1", 0);
-                camera1.setResolution(640, 480);
+                double multipler = 1.5;
+                camera1 = CameraServer.startAutomaticCapture(0);
+                camera1.setResolution((int)(160 * multipler), (int)(120 * multipler));
 
-                camera2 = CameraServer.startAutomaticCapture("Camera 2", 1);
-                camera2.setResolution(640, 480);      
+                camera2 = CameraServer.startAutomaticCapture( 1);
+                camera2.setResolution((int)(160 * multipler), (int)(120 * multipler));      
 
                 cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
+                // server = CameraServer.getServer();
+                camera1.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+                camera2.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         }
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub.resetEncoders();
@@ -323,6 +328,7 @@ public class RobotContainer {
                         new InstantCommand(
                                 () -> {
                                         cameraSelection.setString(camera2.getName());
+                                        // server.setSource(camera2);
                                 }
                         )
                 );
@@ -331,6 +337,7 @@ public class RobotContainer {
                         new InstantCommand(
                                 () -> {
                                         cameraSelection.setString(camera1.getName());
+                                        // server.setSource(camera1);
                                 }
                         )
                 );
