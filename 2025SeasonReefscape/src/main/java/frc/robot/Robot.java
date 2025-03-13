@@ -36,16 +36,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    if(OperatingConstants.k_usingCamera) {
-              UsbCamera cameraOne = CameraServer.startAutomaticCapture("Camera 1", 0);
-              cameraOne.setResolution(1280, 960);
-              // UsbCamera cameraTwo = CameraServer.startAutomaticCapture("Camera 2", 1);
-              // cameraTwo.setResolution(1280, 960);
-
-              // Shuffleboard.getTab("Cameras").add("Cam1", cameraOne).withWidget(BuiltInWidgets.kCameraStream);
-              // Shuffleboard.getTab("Cameras").add("Cam2", cameraTwo).withWidget(BuiltInWidgets.kCameraStream);           
-           
-  }
     m_robotContainer.onStart();
   }
 

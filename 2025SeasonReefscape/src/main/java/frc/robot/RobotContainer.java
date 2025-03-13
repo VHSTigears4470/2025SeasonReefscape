@@ -18,6 +18,7 @@ import frc.robot.commands.AutoCommands.CoralArmShootFastSecond;
 import frc.robot.commands.AutoCommands.CoralArmShootSlowSecond;
 import frc.robot.commands.AutoCommands.CoralArmToIntakePosition;
 import frc.robot.commands.AutoCommands.CoralArmToShootPosition;
+import frc.robot.commands.AutoCommands.DrivetoPosPose;
 import frc.robot.commands.ClimbCommands.PullUpArm;
 import frc.robot.commands.ClimbCommands.ReleaseDownArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
@@ -39,11 +40,18 @@ import frc.robot.subsystems.KitbotCoralSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 import frc.robot.subsystems.TestMotorsSubsystem;
 
+import java.time.Instant;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -67,6 +75,11 @@ public class RobotContainer {
   private AlgaeSubsystem m_algaeSub;
   private ClimbSubsystem m_climbSub;
   private KitbotCoralSubsystem m_kitbotcoralSub;
+
+  private UsbCamera camera1;
+  private UsbCamera camera2;
+  private VideoSink server;
+  private boolean cameraSource;
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -209,8 +222,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-        if(OperatingConstants.k_usingSwerveDrive) {     
-                // /*   
+        if(OperatingConstants.k_usingSwerveDrive) {      
                 try {
                         m_driveSub.resetEncoders();
                         m_driveSub.zeroHeading();
@@ -228,10 +240,16 @@ public class RobotContainer {
                 } catch(Exception e) {
                         DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 }
-                // */
+              
+                // return new SequentialCommandGroup(
+                //                 new InstantCommand(
+                //                         () -> m_driveSub.resetOdometry(new Pose2d(0,0, new Rotation2d(0))),
+                //                         m_driveSub),
+                //                 new DrivetoPosPose(m_driveSub)
+                // );
                 
                 /*
-                // Basic Auto That Should Move Robot in One Direction
+                //Basic Auto That Should Move Robot in One Direction
                 return new MoveDirection(m_driveSub, "Straight", new Translation2d(1, 0));
                 */
         }
@@ -239,10 +257,21 @@ public class RobotContainer {
   }
   
   public void onStart() {
+        if(OperatingConstants.k_usingCamera) {
+                camera1 = CameraServer.startAutomaticCapture("Camera 1", 0);
+                camera1.setResolution(640, 480);
+
+                camera2 = CameraServer.startAutomaticCapture("Camera 2", 1);
+                camera2.setResolution(640, 480);      
+
+                server = CameraServer.getServer();  
+                server.setSource(camera1);
+                cameraSource = true;
+        }
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub.resetEncoders();
                 m_algaeSub.changeArmConfig();
-        }
+        }   
   }
 
   // Presets
@@ -278,8 +307,8 @@ public class RobotContainer {
         }
 
         //Back
-        if(OperatingConstants.k_usingAlgae){
-                m_driverController.back().onTrue(new IdleAlgae(m_algaeSub));
+        if(OperatingConstants.k_usingClimb){
+                m_driverController.back().whileTrue(new ReleaseDownArm(m_climbSub));
         }
 
         //Start
@@ -288,8 +317,14 @@ public class RobotContainer {
         }
 
         //Left Bumper 
-        if(OperatingConstants.k_usingClimb){
-                m_driverController.leftBumper().whileTrue(new ReleaseDownArm(m_climbSub));
+        if(OperatingConstants.k_usingCamera){
+                if(m_driverController.leftBumper().getAsBoolean()){
+                        cameraSource = !cameraSource;
+                        if(cameraSource)
+                                server.setSource(camera1);
+                        else    
+                                server.setSource(camera2);
+                };
         }
 
         // Left Trigger

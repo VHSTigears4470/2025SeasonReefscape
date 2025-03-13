@@ -239,7 +239,7 @@ public final class Configs {
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
-                .p(.5)
+                .p(.7)
                 .outputRange(CoralConstants.k_minArmOutput, CoralConstants.k_maxArmOutput)
                 .maxMotion
                 // Set MAXMotion parameters for position control
