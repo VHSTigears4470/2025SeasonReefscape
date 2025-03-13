@@ -232,6 +232,8 @@ public class CoralSubsystem extends SubsystemBase {
         SmartDashboard.putString("Coral Sub PID", "Output Range Now : -0.5, 0.0");
         CoralConfigs.coralArmMotor.closedLoop.outputRange(CoralConstants.k_minArmOutput, 0.0);
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        d_desiredReferencePosition = m_armEncoder.getPosition();
+        m_armMotorLoopController.setReference(d_desiredReferencePosition, ControlType.kMAXMotionPositionControl);
         m_hasHitStartLimit = true;
       }
       m_hasHitEndLimit = false;
@@ -241,6 +243,8 @@ public class CoralSubsystem extends SubsystemBase {
         SmartDashboard.putString("Coral Sub PID", "Output Range Now : 0.0, 0.5");
         CoralConfigs.coralArmMotor.closedLoop.outputRange(0.0, CoralConstants.k_maxArmOutput); 
         m_armMotor.configure(CoralConfigs.coralArmMotor, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        d_desiredReferencePosition = m_armEncoder.getPosition();
+        m_armMotorLoopController.setReference(d_desiredReferencePosition, ControlType.kMAXMotionPositionControl);
         m_hasHitEndLimit = true;
       }
       m_hasHitStartLimit = false;

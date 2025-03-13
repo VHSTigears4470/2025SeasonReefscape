@@ -52,6 +52,8 @@ import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -76,9 +78,10 @@ public class RobotContainer {
   private ClimbSubsystem m_climbSub;
   private KitbotCoralSubsystem m_kitbotcoralSub;
 
+
   private UsbCamera camera1;
   private UsbCamera camera2;
-  private VideoSink server;
+  private NetworkTableEntry cameraSelection;
   private boolean cameraSource;
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -256,7 +259,7 @@ public class RobotContainer {
         return null;
   }
   
-  public void onStart() {
+  public void onStart() {        
         if(OperatingConstants.k_usingCamera) {
                 camera1 = CameraServer.startAutomaticCapture("Camera 1", 0);
                 camera1.setResolution(640, 480);
@@ -264,9 +267,7 @@ public class RobotContainer {
                 camera2 = CameraServer.startAutomaticCapture("Camera 2", 1);
                 camera2.setResolution(640, 480);      
 
-                server = CameraServer.getServer();  
-                server.setSource(camera1);
-                cameraSource = true;
+                cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
         }
         if(OperatingConstants.k_usingAlgae) {
                 m_algaeSub.resetEncoders();
@@ -318,13 +319,21 @@ public class RobotContainer {
 
         //Left Bumper 
         if(OperatingConstants.k_usingCamera){
-                if(m_driverController.leftBumper().getAsBoolean()){
-                        cameraSource = !cameraSource;
-                        if(cameraSource)
-                                server.setSource(camera1);
-                        else    
-                                server.setSource(camera2);
-                };
+                m_driverController.leftBumper().whileTrue(
+                        new InstantCommand(
+                                () -> {
+                                        cameraSelection.setString(camera2.getName());
+                                }
+                        )
+                );
+
+                m_driverController.leftBumper().whileFalse(
+                        new InstantCommand(
+                                () -> {
+                                        cameraSelection.setString(camera1.getName());
+                                }
+                        )
+                );
         }
 
         // Left Trigger
