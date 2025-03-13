@@ -6,12 +6,14 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 
-public class PullUpArm extends Command {
+public class PullUpArmAuto extends Command {
     private final ClimbSubsystem m_climbSub;
     private final AlgaeSubsystem m_algaeSub;
+    
+    private boolean hasHitUpper;
 
     //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.   
-    public PullUpArm(ClimbSubsystem climbSub, AlgaeSubsystem algaeSub) {
+    public PullUpArmAuto(ClimbSubsystem climbSub, AlgaeSubsystem algaeSub) {
         m_climbSub = climbSub;
         m_algaeSub = algaeSub;
         addRequirements(m_climbSub, m_algaeSub);
@@ -20,17 +22,34 @@ public class PullUpArm extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        hasHitUpper = false;
         m_algaeSub.armForward();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        // Keeps algae arm down
         if(m_algaeSub.getAlgaeArmEncoder() < AlgaeConstants.k_armDownGravityPosition) {
             // once the arm has hit down
             m_algaeSub.stopArmMotor();
         }
-        m_climbSub.setArmSpeed(ClimbConstants.k_climbPullSpeed);
+
+        // If it has not climbed above the buffer, keep climbing
+        if(!hasHitUpper && m_climbSub.getClimbEncoder() < ClimbConstants.k_pullUpClimbPos + ClimbConstants.k_positionBufferClimb) {
+            m_climbSub.setArmSpeed(ClimbConstants.k_climbPullSpeed);
+        } else {
+            // Signals that it has hit the buffer
+            hasHitUpper = true;
+        }
+
+        // If has hit the upper and climb is still within buffer, stop climb
+        if(hasHitUpper && m_climbSub.getClimbEncoder() > ClimbConstants.k_pullUpClimbPos) {
+            m_climbSub.setArmSpeed(0);
+        } else {
+            // Signals that it has fallen out of the buffer
+            hasHitUpper = false;
+        }
     }
 
     // Called once the command ends or is interrupted.

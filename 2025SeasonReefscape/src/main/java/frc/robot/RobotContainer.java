@@ -319,7 +319,7 @@ public class RobotContainer {
 
         //Start
         if(OperatingConstants.k_usingClimb){
-                m_driverController.start().whileTrue(new PullUpArm(m_climbSub));
+                m_driverController.start().whileTrue(new PullUpArm(m_climbSub, m_algaeSub));
         }
 
         //Left Bumper 
@@ -600,7 +600,7 @@ public class RobotContainer {
         
         if(OperatingConstants.k_usingClimb){
                 //Left Bumper
-                m_driverController.start().whileTrue(new PullUpArm(m_climbSub));
+                m_driverController.start().whileTrue(new PullUpArm(m_climbSub, m_algaeSub));
                 //Left Trigger 
                 m_driverController.leftBumper().whileTrue(new ReleaseDownArm(m_climbSub));
         }

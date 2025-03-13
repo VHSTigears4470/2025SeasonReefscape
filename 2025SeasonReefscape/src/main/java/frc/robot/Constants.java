@@ -171,6 +171,8 @@ public static final class AlgaeConstants {
 
     //Find correct values; radians
     public static final double k_pullUpClimbPos = 90; // TODO; Radians
+    public static final double k_pullUpClimbBuffer = 1; // TODO; Buffer before starts pulling up again
+
     public static final double k_releaseDownClimbPos = -10; // TODO
 
     public static final double k_climbEncoderReversed = 1; //TODO
