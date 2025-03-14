@@ -11,6 +11,7 @@ public class PullUpArmAuto extends Command {
     private final AlgaeSubsystem m_algaeSub;
     
     private boolean hasHitUpper;
+    private boolean hasPassed;
 
     //Constructor for TestAlgaeArm, also adds requirments so that this is the only command using algaeSub.   
     public PullUpArmAuto(ClimbSubsystem climbSub, AlgaeSubsystem algaeSub) {
@@ -23,6 +24,7 @@ public class PullUpArmAuto extends Command {
     @Override
     public void initialize() {
         hasHitUpper = false;
+        hasPassed = false;
         m_algaeSub.armForward();
     }
 
@@ -36,15 +38,20 @@ public class PullUpArmAuto extends Command {
         }
 
         // If it has not climbed above the buffer, keep climbing
-        if(!hasHitUpper && m_climbSub.getClimbEncoder() < ClimbConstants.k_pullUpClimbPos + ClimbConstants.k_positionBufferClimb) {
-            m_climbSub.setArmSpeed(ClimbConstants.k_climbPullSpeed);
+        if(!hasHitUpper && m_climbSub.getClimbEncoder() > ClimbConstants.k_pullUpClimbPos) {
+            if(!hasPassed) {
+                m_climbSub.setArmSpeed(ClimbConstants.k_climbPullSpeed);
+            } else {
+                m_climbSub.setArmSpeed(-0.1);
+            }
         } else {
             // Signals that it has hit the buffer
             hasHitUpper = true;
+            hasPassed = true;
         }
 
         // If has hit the upper and climb is still within buffer, stop climb
-        if(hasHitUpper && m_climbSub.getClimbEncoder() > ClimbConstants.k_pullUpClimbPos) {
+        if(hasHitUpper && m_climbSub.getClimbEncoder() < ClimbConstants.k_pullUpClimbPos + ClimbConstants.k_positionBufferClimb) {
             m_climbSub.setArmSpeed(0);
         } else {
             // Signals that it has fallen out of the buffer

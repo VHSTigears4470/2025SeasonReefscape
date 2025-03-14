@@ -19,7 +19,9 @@ import frc.robot.commands.AutoCommands.CoralArmShootSlowSecond;
 import frc.robot.commands.AutoCommands.CoralArmToIntakePosition;
 import frc.robot.commands.AutoCommands.CoralArmToShootPosition;
 import frc.robot.commands.AutoCommands.DrivetoPosPose;
+import frc.robot.commands.AutoCommands.RotateDegrees;
 import frc.robot.commands.ClimbCommands.PullUpArm;
+import frc.robot.commands.ClimbCommands.PullUpArmAuto;
 import frc.robot.commands.ClimbCommands.ReleaseDownArm;
 import frc.robot.commands.ClimbCommands.OverrideSpedClimbArm;
 import frc.robot.commands.CoralCommands.IntakeCoral;
@@ -52,6 +54,7 @@ import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -230,7 +233,7 @@ public class RobotContainer {
                 try {
                         m_driveSub.resetEncoders();
                         m_driveSub.zeroHeading();
-                        PathPlannerAuto autoPath = new PathPlannerAuto("Demo Auto");
+                        PathPlannerAuto autoPath = new PathPlannerAuto("Plan B Auto");
                         m_driveSub.resetOdometry(autoPath.getStartingPose());
                         
                         return new SequentialCommandGroup(
@@ -241,6 +244,9 @@ public class RobotContainer {
                                 ),
                                 autoPath
                         );
+                        // m_driveSub.resetOdometry(new Pose2d());
+                        // Positive => ccw; Negative => cw
+                        // return new RotateDegrees(m_driveSub, new Rotation2d(Units.degreesToRadians(90)), false);
                 } catch(Exception e) {
                         DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
                 }
@@ -319,7 +325,7 @@ public class RobotContainer {
 
         //Start
         if(OperatingConstants.k_usingClimb){
-                m_driverController.start().whileTrue(new PullUpArm(m_climbSub, m_algaeSub));
+                m_driverController.start().whileTrue(new PullUpArmAuto(m_climbSub, m_algaeSub));
         }
 
         //Left Bumper 

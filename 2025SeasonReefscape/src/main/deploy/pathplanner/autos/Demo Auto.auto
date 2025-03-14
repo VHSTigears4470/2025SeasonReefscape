@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Rotation"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Plan C"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CoralArmBackward"
+                }
+              }
+            ]
           }
         }
       ]

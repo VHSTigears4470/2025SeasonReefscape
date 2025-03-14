@@ -167,18 +167,18 @@ public static final class AlgaeConstants {
 
     public static final int k_maxLimitSwitchID = 3;
 
-    public static final double k_positionBufferClimb = 1; //TODO: Update
+    public static final double k_positionBufferClimb = .1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_pullUpClimbPos = 90; // TODO; Radians
-    public static final double k_pullUpClimbBuffer = 1; // TODO; Buffer before starts pulling up again
+    public static final double k_pullUpClimbPos = -9; // TODO; Radians
+    // public static final double k_pullUpClimbBuffer = 0.2; // TODO; Buffer before starts pulling up again
 
     public static final double k_releaseDownClimbPos = -10; // TODO
 
     public static final double k_climbEncoderReversed = 1; //TODO
 
-    public static final double k_climbPullSpeed = -0.1; //0.1; // Speed when the robot is pulling itself up
-    public static final double k_climbReleaseSpeed = 0.3;//-0.1; // Speed when the robot is lowering itself down
+    public static final double k_climbPullSpeed = -0.4; //0.1; // Speed when the robot is pulling itself up
+    public static final double k_climbReleaseSpeed = 0.2;//-0.1; // Speed when the robot is lowering itself down
   }
 
   public static final class ModuleConstants {
