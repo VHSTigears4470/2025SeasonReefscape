@@ -94,8 +94,8 @@ public final class Constants {
 
 
     // Arm Max Velocity
-    public static final double k_maxVelocity = 600; // TODO
-    public static final double k_maxAcceleration = 300; // TODO
+    public static final double k_maxVelocity = 1000; // TODO
+    public static final double k_maxAcceleration = 700; // TODO
     public static final TrapezoidProfile trapezoidProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(CoralConstants.k_maxVelocity, CoralConstants.k_maxAcceleration));
     
     // Arm Max Output
@@ -110,7 +110,7 @@ public final class Constants {
     //Change voltages
     public static final double k_fastVoltage = -8.0; //4.0; // TODO
     public static final double k_slowVoltage = -2.0; //1.5; // TODO
-    public static final double k_intakeVoltage = 2.0; //1.5; // TODO
+    public static final double k_intakeVoltage = 4.0; //1.5; // TODO
 
 
     //Set arm speed

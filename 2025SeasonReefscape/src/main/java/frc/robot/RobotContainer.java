@@ -85,7 +85,7 @@ public class RobotContainer {
   private UsbCamera camera1;
   private UsbCamera camera2;
   private NetworkTableEntry cameraSelection;
-//   private VideoSink server;
+  private VideoSink server;
   private boolean cameraSource;
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -268,7 +268,7 @@ public class RobotContainer {
   
   public void onStart() {        
         if(OperatingConstants.k_usingCamera) {
-                double multipler = 1.5;
+                double multipler = 1;
                 camera1 = CameraServer.startAutomaticCapture(0);
                 camera1.setResolution((int)(160 * multipler), (int)(120 * multipler));
 
@@ -276,7 +276,7 @@ public class RobotContainer {
                 camera2.setResolution((int)(160 * multipler), (int)(120 * multipler));      
 
                 cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
-                // server = CameraServer.getServer();
+                server = CameraServer.getServer();
                 camera1.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
                 camera2.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         }
@@ -345,6 +345,15 @@ public class RobotContainer {
                                         cameraSelection.setString(camera1.getName());
                                         // server.setSource(camera1);
                                 }
+                        )
+                );
+
+                m_driverController.leftBumper().onTrue(
+                        new InstantCommand(
+                                () -> {
+                                        m_driveSub.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+                                },
+                                m_driveSub
                         )
                 );
         }
