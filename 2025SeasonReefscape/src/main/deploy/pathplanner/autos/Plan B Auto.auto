@@ -9,18 +9,6 @@
           "data": {
             "pathName": "Plan B"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Plan B - 2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootCoralFast"
-          }
         }
       ]
     }

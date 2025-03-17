@@ -170,7 +170,7 @@ public static final class AlgaeConstants {
     public static final double k_positionBufferClimb = .1; //TODO: Update
 
     //Find correct values; radians
-    public static final double k_pullUpClimbPos = -9; // TODO; Radians
+    public static final double k_pullUpClimbPos = -8.85; // TODO; Radians
     // public static final double k_pullUpClimbBuffer = 0.2; // TODO; Buffer before starts pulling up again
 
     public static final double k_releaseDownClimbPos = -10; // TODO

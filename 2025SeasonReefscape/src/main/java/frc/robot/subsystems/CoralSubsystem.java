@@ -66,6 +66,8 @@ public class CoralSubsystem extends SubsystemBase {
     
     m_armEncoder.setPosition(CoralConstants.k_startingArmPos);
     setArmState(CoralConstants.CORAL_ARM_STATE.FORWARD);
+
+    setupSmartDashboard();
   }
 
   /**
@@ -176,6 +178,13 @@ public class CoralSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Coral Arm Speed", m_armMotor.get());
     SmartDashboard.putBoolean("Coral Start Limit Switch", getStartLimitSwitch());
     SmartDashboard.putBoolean("Coral End Limit Switch", getEndLimitSwitch());
+  }
+
+  public void setupSmartDashboard() {
+    SmartDashboard.putNumber("Coral Arm Encoder (Radians)", 0);
+    SmartDashboard.putNumber("Coral Arm Speed", 0);
+    SmartDashboard.putBoolean("Coral Start Limit Switch", false);
+    SmartDashboard.putBoolean("Coral End Limit Switch", false);
   }
 
   /**
