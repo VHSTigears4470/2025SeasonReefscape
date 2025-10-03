@@ -64,8 +64,13 @@ public class CoralSubsystem extends SubsystemBase {
     m_armMotor.configure(Configs.CoralConfigs.coralArmMotor, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
     
-    m_armEncoder.setPosition(CoralConstants.k_startingArmPos);
-    setArmState(CoralConstants.CORAL_ARM_STATE.FORWARD);
+    if(getEndLimitSwitch()) {
+      m_armEncoder.setPosition(CoralConstants.k_backwardArmPos);
+      setArmState(CoralConstants.CORAL_ARM_STATE.BACKWARD);
+    } else {
+      m_armEncoder.setPosition(CoralConstants.k_forwardArmPos);
+      setArmState(CoralConstants.CORAL_ARM_STATE.FORWARD);
+    }
 
     setupSmartDashboard();
   }
